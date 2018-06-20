@@ -8,18 +8,20 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
     block head
   body
-  nav.navabar.navbar-expand-lg.navbar-light.bg-light
-  a.navbar-brand(href="#") NavBar
-  button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
-    .span.navbar-toggler-icon
-  .collapse.navbar-collapse#navbarSupportedContent
-  ul.navbar-bav.mr-auto
-    li.nav-item.active
-      a.nav-link(href="#") home
-        span.sr-only (current)
-
-
+    nav.navbar.navbar-light(style="background-color: #3c7045;")
+      button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      #navbarNavAltMarkup.collapse.navbar-collapse
+        .navbar-nav
+          a.nav-item.nav-link.active(href="/")
+            | Home 
+            span.sr-only (current)
+          a.nav-item.nav-link(href="#") Friends 
+          a.nav-item.nav-link(href="#") Calendar
+          a.nav-item.nav-link.disabled(href="#") My account
     block content
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous")
+
+  

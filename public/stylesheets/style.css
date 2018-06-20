@@ -10,3 +10,12 @@
   background-color: blue;
   color:white;
 }
+
+.margin {
+  border-left: 0.1in;
+  padding-left: 5mm;
+  margin-left: 15px;
+  border-right: 0.1in;
+  padding-right: 5mm;
+  margin-right: 15px;
+}
