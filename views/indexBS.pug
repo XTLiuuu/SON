@@ -1,38 +1,43 @@
-extends layoutBS
+extends layoutBS2
 
 block content
   .margin
     .row
-      .col-sm-12.text-center
-        h1 SON
+      .col-12.text-center
+        h1.text-center= title
         input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
-        hr
+    hr
     .row
-      .col-sm-4
-        label input
-        br
-        textarea(rows="5" cols="50")
-        br
+      .col-4
+        label New Event 
+        textarea(rows="5" cols="52")
         br
         br
-        form-group.row
-          label.col-sm-2.col-form-label Date
-          .col-sm-8.text-right
-            input(type="Date" name="Date")
         br
-        form-group.row
-          label.col-sm-2.col-form-label Time
-          .col-sm-8.text-right
-            input(type="Time" name="Time")
-        br
-        form-group.row
-          label.col-sm-2.col-form-label Location
-          .col-sm-8.text-right
-            input(type="Location" name="Location")
-        br
-        form-group.row
-          label.col-sm-2.col-form-label People
-          .col-sm-8.text-right
-            input(type="People" name="People")
-        hr
-        input.button-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
+        form(method="post")
+          .form-row
+            .formGroup.col-2
+              label Date 
+            .formGroup.col-10.text-right
+              input(type="date" name="Date")
+          br
+          .form-row
+            .formGroup.col-2
+              label Time 
+            .formGroup.col-10.text-right
+              input(type="time" name="time")
+          br
+          .form-row
+            .formGroup.col-2
+              label Location  
+            .formGroup.col-10.text-right
+              input(type="text" name="location")      
+          br
+          .form-row
+            .formGroup.col-2
+              label People 
+            .formGroup.col-10.text-right
+              input(type="text" name="people")
+          hr
+        
+        input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
