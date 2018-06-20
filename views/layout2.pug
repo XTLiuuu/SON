@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    block head
+  body
+    .nav
+      ul
+        li.home
+          a(href="/") Home
+        li.cssdemo
+          a(href="/cssdemo") CSS Demo
+        li.about
+          a(href="about") About
+    block content
