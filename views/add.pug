@@ -11,11 +11,13 @@ block content
       .col-5
         label New Event 
         br
-        textarea(rows="5" cols="65")
+        form(method="post" action="saveInput")
+          textarea(rows="5" cols="65" name="content")
+          input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
         br
         br
         br
-        form(method="post")
+        form
           .form-row
             .formGroup.col-2
               label Date 
@@ -47,6 +49,6 @@ block content
           .card-header
             | Schedule for today
           ul.list-group.list-group-flush
-            li.list-group-item Cras justo odio
-            li.list-group-item Dapibus ac facilisis in
-            li.list-group-item Vestibulum at eros
+            li.list-group-item content
+              
+        
