@@ -4,13 +4,14 @@ block content
   .margin
     .row
       .col-12.text-center
-        h1.text-center= title
+        h1.text-center SON
         input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
     hr
     .row
-      .col-4
+      .col-5
         label New Event 
-        textarea(rows="5" cols="52")
+        br
+        textarea(rows="5" cols="65")
         br
         br
         br
@@ -39,5 +40,13 @@ block content
             .formGroup.col-10.text-right
               input(type="text" name="people")
           hr
-        
-        input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
+          input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
+      .col-1
+      .col-6
+        .card(style="width: 35rem;")
+          .card-header
+            | Schedule for today
+          ul.list-group.list-group-flush
+            li.list-group-item Cras justo odio
+            li.list-group-item Dapibus ac facilisis in
+            li.list-group-item Vestibulum at eros
