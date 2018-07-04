@@ -5,11 +5,33 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 const inputController = require('./controllers/inputController');
+const profileController = require('./controllers/profileController');
 
+var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
 
 var app = express();
+
+const User = require( './models/user' )
+//const flash = require('connect-flash')
+const session = require("express-session")
+const bodyParser = require("body-parser");
+const usersController = require('./controllers/usersController')
+//NEW CODE FOR authentication
+//const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const passport = require('passport')
+const configPassport = require('./config/passport')
+configPassport(passport)
+
+// here is where we connect to the database!
+mongoose.connect( 'mongodb://localhost/SON' );
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+ console.log("we are connected!")
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,10 +41,80 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'zzbbyanana' }));
+//app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/add', addRouter,inputController.getAllInputs);
-app.use('/saveinput',inputController.saveInput);
+app.use((req,res,next) => {
+  res.locals.loggedIn = false
+  if (req.isAuthenticated()){
+    console.log("user has been Authenticated")
+    res.locals.user = req.user
+    res.locals.loggedIn = true
+    if (req.user){
+      if (req.user.googleemail=='lxt@brandeis.edu'){
+        console.log("Owner has logged in")
+        res.locals.status = '0211'
+      } else {
+        console.log('User has logged in')
+        res.locals.status = 'user'
+      }
+    }
+  }
+  next()
+})
+
+//Now add the authentication routes
+app.get('/loginerror', function(req,res){
+  res.render('loginerror',{})
+})
+
+app.get('/login', function(req,res){
+  res.render('login',{})
+    })
+
+app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+app.use('/login', loginRouter);
+
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+app.get('/login/authorized',
+        passport.authenticate('google', {
+                successRedirect : '/',
+                failureRedirect : '/loginerror'
+        }));
+
+        // route middleware to make sure a user is logged in
+        function isLoggedIn(req, res, next) {
+            console.log("checking to see if they are authenticated!")
+            // if user is authenticated in the session, carry on
+            if (req.isAuthenticated()){
+              console.log("user has been Authenticated")
+              return next();
+            }
+            console.log("user has not been authenticated...")
+            // if they aren't redirect them to the home page
+            res.redirect('/login');
+        }
+
+console.log("before the users routes...")
+console.dir(usersController)
+app.get('/users', isLoggedIn, usersController.getAllUsers );
+app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
+
+app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
+app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
+
+app.use('/add', isLoggedIn, addRouter,inputController.getAllInputs);
+app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/', welcomeRouter);
 
 // catch 404 and forward to error handler

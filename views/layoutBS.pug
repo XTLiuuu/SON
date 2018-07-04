@@ -40,9 +40,13 @@ html(lang="en")
               i.fa.fa-child 
               | My Account
             .w3-dropdown-content.w3-bar-block.w3-card-4
-              a.w3-bar-item.w3-button(href="#") My Profile
-              a.w3-bar-item.w3-button(href="#") Friends 
-              a.w3-bar-item.w3-button(href="#") Sign in 
+              a.w3-bar-item.w3-button(href="/profile") My Profile
+              if loggedIn
+                if status=='0211'
+                  a.w3-bar-item.w3-button(href="/users") Google Users
+                a.w3-bar-item.w3-button(href="/logout") Logout
+              else 
+                a.w3-bar-item.w3-button(href="/login") Sign in 
     br
     br
     hr

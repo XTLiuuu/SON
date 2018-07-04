@@ -1,0 +1,41 @@
+extends layoutBS
+
+block content
+    .body
+      .margin
+        h2.text-monospace Potato
+          .margin2
+        hr
+        br
+        .container
+          .row
+            form(method="post" action="/newtrip").col-5
+              p.font-weight-bold.text-monospace Sign Into My Account
+              .form-group
+                label(for="exampleInputEmail1").text-monospace Username
+                input#exampleInputEmail1.form-control(name="usernameo" type="text" style="width:100%" aria-describedby="emailHelp" placeholder="Enter email")
+              .form-group
+                label(for="exampleInputPassword1").text-monospace Password
+                input#exampleInputPassword1.form-control(name="passwordo" type="text" style="width:100%" placeholder="Password")
+                a.badge.badge-secondary.text-monospace(href="http://www.brandeis.edu") Forgot your password
+              .form-group.form-check
+                input#exampleCheck1.form-check-input(type="checkbox")
+                label.form-check-label.text-monospace(for="exampleCheck1") Keep me signed in
+              button.btn.btn-warning.text-monospace(type="submit") Sign in
+              br
+              br
+              a.btn.btn-danger(href="/auth/google")
+                span.fa.fa-google-plus.text-monospace  Login with Google
+            form.col-1
+            form(method="post" action="/newtrip").col-5
+              p.font-weight-bold.text-monospace Create New Account
+              .form-group
+                label.text-monospace(for="exampleInputEmail1") Username
+                input#exampleInputEmail1.form-control.text-monospace(name="usernamen" type="text" style="width:100%" aria-describedby="emailHelp" placeholder="Enter email")
+              .form-group
+                label.text-monospace(for="exampleInputPassword1") Password
+                input#exampleInputPassword1.form-control.text-monospace(name="passwordn" type="text" style="width:100%" placeholder="Password")
+              .form-group
+                label.text-monospace(for="exampleInputPassword1").text-monospace Confirm password
+                input#exampleInputPassword1.form-control(name="passwordn2" type="text" style="width:100%" placeholder="Password")
+              button.btn.btn-warning.text-monospace(type="submit").text-monospace Create account
