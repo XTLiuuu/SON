@@ -1,25 +1,13 @@
-const
-
-  createError = require('http-errors');
-  express = require('express');
-  path = require('path');
-  cookieParser = require('cookie-parser');
-  logger = require('morgan');
-  inputsController = require('./controllers/inputsController');
-  //mongoose = require( 'mongoose' );
-
-// mongoose.connect( 'mongodb://localhost/reminder' );
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   console.log("we are connected!")
-// });
-
-
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const mongoose = require( 'mongoose' );
+const inputController = require('./controllers/inputController');
 
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
-
 
 var app = express();
 
