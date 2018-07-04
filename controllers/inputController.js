@@ -1,16 +1,16 @@
 'use strict';
-const input = require( '../models/Input' );
+const Input = require( '../models/Input' );
 console.log("loading the input Controller")
 
 
 // this displays all of the skills
-exports.getAllInput = ( req, res ) => {
+exports.getAllInputs = ( req, res ) => {
   console.log('in getAllInput')
   Input.find( {} )
     .exec()
-    .then( ( input ) => {
+    .then( ( inputs ) => {
       res.render( 'add', {
-        input: input
+        inputs: inputs
       } );
     } )
     .catch( ( error ) => {
@@ -22,12 +22,12 @@ exports.getAllInput = ( req, res ) => {
     } );
 };
 
-exports.attachInput = ( req, res, next ) => {
-  console.log('in attachInput')
+exports.attachInputs = ( req, res, next ) => {
+  console.log('in attachInputs')
   Input.find( {} )
     .exec()
-    .then( ( input ) => {
-      res.locals.input = input
+    .then( ( inputs ) => {
+      res.locals.inputs = inputs
       console.dir(res.locals)
       next()
     } )
@@ -54,7 +54,7 @@ exports.saveInput = ( req, res ) => {
 
   newInput.save()
     .then( () => {
-      res.redirect( '/newinput' );
+      res.redirect( '/add' );
     } )
     .catch( error => {
       res.send( error );

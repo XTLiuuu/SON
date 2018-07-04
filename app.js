@@ -1,11 +1,21 @@
+<<<<<<< HEAD
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
+=======
+const
+  inputController = require('./controllers/inputController');
 
-const inputController = require('./controllers/inputController')
+  createError = require('http-errors');
+  express = require('express');
+  path = require('path');
+  cookieParser = require('cookie-parser');
+  logger = require('morgan');
+>>>>>>> 286fd2ee42dbcf98772e656c14913316b4db61f7
+
 
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
@@ -23,7 +33,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/add', addRouter);
+app.use('/add', addRouter,inputController.getAllInputs);
+app.use('/saveinput',inputController.saveInput);
+
 app.use('/', welcomeRouter);
 
 // catch 404 and forward to error handler
