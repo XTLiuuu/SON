@@ -1,11 +1,20 @@
 const
-  inputController = require('./controllers/inputController');
 
   createError = require('http-errors');
   express = require('express');
   path = require('path');
   cookieParser = require('cookie-parser');
   logger = require('morgan');
+  inputsController = require('./controllers/inputsController');
+  //mongoose = require( 'mongoose' );
+
+// mongoose.connect( 'mongodb://localhost/reminder' );
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   console.log("we are connected!")
+// });
+
 
 
 var addRouter = require('./routes/add');
@@ -24,8 +33,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/add', addRouter,inputController.getAllInputs);
-app.use('/saveinput',inputController.saveInput);
+app.use('/add', addRouter, inputsController.getAllInputs);
+app.use('/saveinput',inputsController.saveInput);
 
 app.use('/', welcomeRouter);
 
