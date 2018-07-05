@@ -49,7 +49,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-<<<<<<< HEAD
 app.use((req,res,next) => {
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
@@ -116,11 +115,9 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, addRouter,inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
-=======
-app.use('/add', addRouter, inputsController.getAllInputs);
-app.use('/saveinput',inputsController.saveInput);
+app.use('/add', addRouter, inputController.getAllInputs);
+app.use('/saveinput',inputController.saveInput);
 
->>>>>>> ea36d490ec6a6d5922b1008faf3eb517567be463
 app.use('/', welcomeRouter);
 
 // catch 404 and forward to error handler
