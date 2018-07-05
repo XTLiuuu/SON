@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
-const inputsController = require('./controllers/inputsController');
+const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 
 var usersRouter = require('./routes/users');
@@ -113,18 +113,10 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
-<<<<<<< HEAD
 app.use('/add', isLoggedIn, addRouter,inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/add', addRouter, inputController.getAllInputs);
 app.use('/saveinput',inputController.saveInput);
-=======
-app.use('/add', isLoggedIn, inputsController.getAllInputs);
-app.use('/saveinput',isLoggedIn, inputsController.saveInput);
-//app.use('/add', addRouter, inputsController.getAllInputs);
-//app.use('/saveinput',inputsController.saveInput);
->>>>>>> 0b7bdf5e6d35f4981520213f45c22b4b3f75edc8
-
 app.use('/', welcomeRouter);
 
 // catch 404 and forward to error handler
