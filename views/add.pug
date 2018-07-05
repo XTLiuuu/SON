@@ -50,6 +50,7 @@ block content
             .card-header
               | Schedule for today
             ul.list-group.list-group-flush
-              li.list-group-item content
+              each input in inputs
+                li.list-group-item #{input.content}
                 
           
