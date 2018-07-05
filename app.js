@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
-const inputController = require('./controllers/inputController');
+const inputsController = require('./controllers/inputsController');
 const profileController = require('./controllers/profileController');
 
 var usersRouter = require('./routes/users');
@@ -26,7 +26,7 @@ const configPassport = require('./config/passport')
 configPassport(passport)
 
 // here is where we connect to the database!
-mongoose.connect( 'mongodb://localhost/SON' );
+mongoose.connect( 'mongodb://localhost:27017/SON' );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -113,10 +113,17 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
+<<<<<<< HEAD
 app.use('/add', isLoggedIn, addRouter,inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/add', addRouter, inputController.getAllInputs);
 app.use('/saveinput',inputController.saveInput);
+=======
+app.use('/add', isLoggedIn, inputsController.getAllInputs);
+app.use('/saveinput',isLoggedIn, inputsController.saveInput);
+//app.use('/add', addRouter, inputsController.getAllInputs);
+//app.use('/saveinput',inputsController.saveInput);
+>>>>>>> 0b7bdf5e6d35f4981520213f45c22b4b3f75edc8
 
 app.use('/', welcomeRouter);
 
