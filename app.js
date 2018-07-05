@@ -113,10 +113,10 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
-app.use('/add', isLoggedIn, addRouter,inputController.getAllInputs);
+app.use('/add', isLoggedIn, inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
-app.use('/add', addRouter, inputController.getAllInputs);
-app.use('/saveinput',inputController.saveInput);
+//app.use('/add', addRouter, inputController.getAllInputs);
+//app.use('/saveinput',inputController.saveInput);
 app.use('/', welcomeRouter);
 
 // catch 404 and forward to error handler
