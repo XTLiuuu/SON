@@ -120,7 +120,7 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 app.use('/add', isLoggedIn, inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
-app.post('/hook',helloDFController.process_request);
+app.post('/hook', helloDFController.process_request);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
