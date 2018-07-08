@@ -1,6 +1,7 @@
 'use strict';
 const Schedule = require( '../models/Schedule' );
 console.log("loading the schedule Controller")
+var data = [];
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
@@ -24,25 +25,22 @@ exports.process_request =  (req, res) => {
 
   // broadcast all schedules
   // e.g. What do I need to do before three p.m.?
-  /**
+  // the current version is ask about a certain time and return one thing
+  // e.g. What am I going to do at 8 pm
+  // you cannot ask for a time interval
   else if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/d4489da3-80c8-4692-ad9d-4530e2cda7e8"){
     console.log("in Broadcast_Event");
     var time = req.body.queryResult.parameters["time"]
-    Schedule.findOne({time:time})
-  //Profile.findOne(objId) //{"_id": objId})
-    .exec()
-    .then( ( schedule ) => {
-      res.locals.profile = profile
-      next()
+    output_string = bcEvent(time);
   }
-  */
 
+  /**
   // delete event
   else if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/88f75d90-304f-4311-bffa-507fc91d82ac"){
     console.log("in Delete_Event");
     output_string = exports.deleteEvent(req.body.queryResult);
   }
-
+  */
   return res.json({
               "fulfillmentMessages": [],
               "fulfillmentText": output_string,
@@ -89,11 +87,25 @@ function addEvent(req){
     date: date,
     schedule: text
   })
+  data.push(newSchedule);
+  console.log("data length is " + data.length);
   newSchedule.save()
   console.log("time is " + newSchedule.time);
   console.log("date is " + newSchedule.date);
   console.log("schedule is " + newSchedule.schedule);
-  console.log("name is " + newSchedule.name);
+  return response;
+}
+
+function bcEvent(time){
+  var response;
+  for(var i = 0; i < data.length; i ++){
+    if(data[i].time == time){
+      response = "You will " + data[i].schedule + " at " + time;
+    }
+  }
+  if(response == null){
+    response = "There is no schedule at " + time
+  }
   return response;
 }
 
@@ -117,37 +129,6 @@ exports.getAllSchedule = ( req, res ) => {
     } );
 };
 
-// this displays all of the skills
-exports.getSchedules = ( req, res, next ) => {
-  console.log('in getSchedules')
-  Schedule.find( {} )
-    .exec()
-    .then( ( schedule ) => {
-        schedule = schedule
-        next()
-    })
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'getSchedules promise complete' );
-    } );
-};
-
-// this displays all of the skills
-function getCurrSchedule(res, time) {
-    console.log('in getCurrSchedule')
-    var response;
-    var result = res.locals.schedule.find({time:time});
-    console.log(result.length);
-    for(var s in result){
-      //console.log("current schedule is "+ s.count);
-      var curr = "ID: " + s.count + ", Time: " + s.time + ", Date: " + s.date + ", Event: " + s.schedule
-      response = curr;
-    }
-    return response;
-};
 
 exports.deleteEvent = (req) => {
   console.log("in deleteEvent")

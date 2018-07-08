@@ -120,7 +120,7 @@ app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', helloDFController.getAllSchedule);
-app.post('/hook', helloDFController.getSchedules, helloDFController.process_request);
+app.post('/hook', helloDFController.process_request);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
