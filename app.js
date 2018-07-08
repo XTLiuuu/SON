@@ -53,10 +53,6 @@ var server = app.listen(8081, function(){
 })
 
 
-
-
-
-
 app.use((req,res,next) => {
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
@@ -120,7 +116,11 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 app.use('/add', isLoggedIn, inputController.getAllInputs);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
-app.post('/hook', helloDFController.process_request);
+
+app.get('/test', helloDFController.getAllSchedule);
+app.post('/deleteSchedule', helloDFController.deleteSchedule);
+app.get('/hook', helloDFController.getAllSchedule);
+app.post('/hook', helloDFController.getSchedules, helloDFController.process_request);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

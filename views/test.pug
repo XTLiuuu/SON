@@ -1,0 +1,19 @@
+extends layoutBS
+
+block content
+
+  h1 All saved schedules 
+
+  ul
+    form(method="post" action="deleteSchedule")
+      each s in schedule
+        input(name="deleteSchedule" value=s.schedule type="checkbox")
+        li
+          | ID: #{s.count}
+          br
+          | Time: #{s.time}, Date: #{s.date}
+          br
+          | Event: #{s.schedule}
+          br
+          hr
+      input(type="submit" value="Delete checked items")
