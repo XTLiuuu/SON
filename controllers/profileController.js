@@ -64,43 +64,6 @@ exports.saveProfile = ( req, res ) => {
         });
       };
 
-  /*
-  if(res.locals.profile==null){
-    console.log("in save!")
-    let newProfile = new Profile ({
-      name: req.user.googlename,
-      email: req.user.googleemail,
-      phone: req.body.phone,
-      gender: req.body.gender,
-      dob: req.body.dob,
-    } )
-    //console.log("profile = "+ newProfile)
-    newProfile.save()
-      .then( () => {
-        res.redirect( '/profile' );
-      } )
-      .catch( error => {
-        res.send( error );
-      } );
-  }else{
-    console.log("in update!")
-    var uProfile = Profile.findOne({email:res.locals.user.googleemail})
-    //console.log(uProfile)
-    uProfile.update({email:res.locals.user.googleemail},
-      {phone: req.body.phone,
-       gender: req.body.gender,
-       dob: req.body.dob})
-      .exec()
-      .then( () => {
-        res.redirect( '/profile' );
-      } )
-      .catch( error => {
-        res.send( error );
-      } );
-  }
-  //console.dir(req)
-*/
-
 exports.attachProfile = ( req, res, next ) => {
   console.log('in attachProfile')
   //const objId = new mongo.ObjectId(req.params.id)
