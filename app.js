@@ -110,7 +110,7 @@ app.use('/', welcomeRouter);
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
-app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
+app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, inputController.getAllInputs);

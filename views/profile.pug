@@ -9,6 +9,7 @@ block content
         br
         h3.text-monospace.font-weight-bold Profile
         br
+          
         form.text-monospace(method="post" action="saveProfile")
           .row.text-monospace
             .formGroup.col-md-4
@@ -26,14 +27,14 @@ block content
             .formGroup.col-md-4
               label Phone Number
             .formGroup.col-md-6
-              input.form-control(name="phone" type="text")
+              input.form-control(name="phone" type="text" value=profile.phone)
           br
           .row.text-monospace
             .formGroup.col-md-4
               label Gender
             .formGroup.col-md-6
-              select.text-monospace#airline(name="gender").form-control
-                option(selected="") Select
+              select.text-monospace(name="gender").form-control
+                option(selected="") #{profile.gender}
                 option Male
                 option Female
                 option Other
@@ -42,11 +43,7 @@ block content
             .formGroup.col-md-4
               label Date of Birth
             .formGroup.col-md-6
-              input.form-control(name="dob" type="date")
-          br
-          .row.text-monospace
-            .formGroup.col-md-6
-              input.form-control(name="fav" type="text")
+              input.form-control(name="dob" type="date" value=profile.dob)
           br
           input.btn.btn-warning.btn-lg(type="submit" value="SAVE")
           br

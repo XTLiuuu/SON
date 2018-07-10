@@ -1,0 +1,55 @@
+extends layoutBS
+
+block content
+  form#form1.text-monospace(method="post" action="saveProfile")
+    .row.text-monospace
+      .formGroup.col-md-4
+        label Name
+      .formGroup.col-md-6
+        input.form-control(name="name" type="text" value=user.googlename)
+    br
+    .row.text-monospace
+      .formGroup.col-md-4
+        label Email
+      .formGroup.col-md-6
+        input.form-control(name="email" type="email" value=user.googleemail)
+    br
+    .row.text-monospace
+      .formGroup.col-md-4
+        label Phone Number
+      .formGroup.col-md-6
+        input.form-control(name="phone" type="text" value=)
+    br
+    .row.text-monospace
+      .formGroup.col-md-4
+        label Gender
+      .formGroup.col-md-6
+        select.text-monospace(name="gender" type="text").form-control
+          option(selected="") Select
+          option Male
+          option Female
+          option Other
+    br
+    .row.text-monospace
+      .formGroup.col-md-4
+        label Date of Birth
+      .formGroup.col-md-6
+        input.form-control(name="dob" type="date")
+    br
+  button(type="submit" onclick='outputinfo()') submit
+  script.
+      function outputinfo() {
+      var x,y,z,a,b,c
+      x=document.getElementById("form1") ;
+      y=x.elements["name"].value;
+      z=x.elements["email"].value;
+      a=x.elements["phone"].value;
+      b=x.elements["gender"].value;
+      c=x.elements["dob"].value;
+      document.getElementById("demo").innerHTML=y+"<br>"+z+"<br>"+a+"<br>"+b+"<br>"+c;
+      document.getElementById("ph").attribute=a;
+    }
+      
+  p#demo
+  
+  
