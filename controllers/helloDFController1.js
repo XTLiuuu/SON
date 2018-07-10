@@ -9,39 +9,6 @@ exports.process_request =  (req, res) => {
   var output_string;
   var name;
 
-  if(req.body.request){
-    // this is the same as getting the intent name
-    console.log(req.body.request);
-    if(req.body.request.intent.name == "add_event"){
-      console.log("in Add_Event");
-      output_string = addEvent(req.body.request);
-    }
-    else if(req.body.request.intent.name == "ask_event"){
-      console.log("in Ask_Event");
-      output_string = askEvent(req.body.request);
-    }
-    return res.json({
-      "version": "beta",
-
-      "sessionAttributes":{
-        "key":"value"
-      },
-      "response": {
-        "outputSpeech": {
-          "type": "PlainText",
-          "text": output_string
-        },
-        "reprompt": {
-          "outputSpeech": {
-            "type": "PlainText",
-            "text": "Plain text string to speak reprompt"
-          }
-        },
-        "shouldEndSession": true
-      }
-    });
-  }
-
   // welcome and initialize list
   if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/0a65ec9a-eddd-47bb-b7d3-bec8204c1c58"){
     console.log("in Welcome");
@@ -94,32 +61,28 @@ function welcome(name) {
 
 
 function addEvent(req){
-  console.log("in addEvent1")
-  //var text = req.queryText;
+  console.log("in addEvent")
+  var text = req.queryText;
   var response;
-  var time = req.intent.slots.time["value"];
-  console.log("time is " + time);
-  var date = req.intent.slots.date["value"];
-  console.log("date is " + date);
-  var duration = req.intent.slots.duration["value"];
-  console.log("duration is " + duration);
-  var text = req.intent.slots.event["value"];
-  console.log("event is " + text);
+  var time;
+  var date;
   // user's input include time and date
-  if(time || date){
-    if(date){
-      response = "Okay, I will remind you on " + date + "at" + time + " ."
-    }
-    else{
+  if(req.parameters["sysTime"] != null){
+    time = req.parameters["sysTime"]; //how to get the date from time?  e.g. today, tomorrow
+    date = req.parameters["date"];
+    text = text.replace("Remind me to ", "")
+    var end = text.indexOf(' at')
+    if(end == -1) end = text.indexOf(' in') // e.g. in three minutes  Problem is locations using "in" too.
+    text = text.slice(0, end)
+    if(date == null){
       response = "Okay, I will remind you at " + time + " ."
     }
-  }
-  else if(duration){
-    var end = text.indexOf('in')
-    text = text.slice(0, end)
-    response = "Okay, I will remind you in " + duration
+    else{
+      response = "Okay, I will remind you on " + date + " at " + time + " ."
+    }
   }
   let newSchedule = new Schedule ({
+    count: 0,
     time: time,
     date: date,
     schedule: text
@@ -133,35 +96,15 @@ function addEvent(req){
   return response;
 }
 
-function askEvent(req){
-  console.log("in askEvent");
+function bcEvent(time){
   var response;
-  var time = req.intent.slots.time["value"];
-  console.log("time is " + time);
-  var date = req.intent.slots.date["value"];
-  console.log("date is " + date);
-  if(time){
-    for(var i = 0; i < data.length; i ++){
-      if(data[i].time == time){
-        response = "You will " + data[i].schedule + " at " + time;
-      }
-    }
-  }
-  else if(date){
-    for(var i = 0; i < data.length; i ++){
-      if(data[i].date == date){
-        console.log(data[i].date)
-        response = "You will " + data[i].schedule + " on " + date;
-      }
+  for(var i = 0; i < data.length; i ++){
+    if(data[i].time == time){
+      response = "You will " + data[i].schedule + " at " + time;
     }
   }
   if(response == null){
-    if(time){
-      response = "There is no schedule at " + time
-    }
-    else if(date){
-      response = "There is no schedule on " + date
-    }
+    response = "There is no schedule at " + time
   }
   return response;
 }
