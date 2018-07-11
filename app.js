@@ -126,7 +126,7 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
-app.use('/add', isLoggedIn, inputController.getAllInputs);
+app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
 app.get('/test', helloDFController.getAllSchedule);

@@ -2,6 +2,7 @@
 const mongoose = require( 'mongoose' );
 
 var inputSchema = mongoose.Schema( {
+  email: String,
   content: String
 } );
 
