@@ -7,7 +7,7 @@ block content
   ul
     form(method="post" action="deleteSchedule")
       each s in schedule
-        input(name="deleteSchedule" value=s.schedule type="checkbox")
+        input(name="deleteSchedule" value=s._id type="checkbox")
         li
           | ID: #{s.count}
           br
