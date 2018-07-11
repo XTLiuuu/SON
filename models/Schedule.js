@@ -5,7 +5,7 @@ const mongoose = require( 'mongoose' );
 var scheduleSchema = mongoose.Schema( {
   count: Number,
   time: String,
-  date: Date,
+  date: String,
   schedule: String
 } );
 
