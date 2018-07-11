@@ -24,8 +24,9 @@ const configPassport = require('./config/passport')
 configPassport(passport)
 
 // here is where we connect to the database!
-mongoose.connect( 'mongodb://localhost:27017/SON' );
+mongoose.connect( 'mongodb://localhost:27017/SON', {useNewUrlParser: true});
 const db = mongoose.connection;
+mongoose.Promise = global.Promise;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
  console.log("we are connected!")
@@ -39,7 +40,11 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'zzbbyanana' }));
+app.use(session({
+  secret: 'zzbbyanana',
+  resave: true,
+  saveUninitialized: false
+ }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -48,7 +53,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // The following changes are made for dialogflow
 
-var server = app.listen(8081, function(){
+var server = app.listen(3000, function(){
   console.log('API server listening...');
 })
 
@@ -110,7 +115,7 @@ app.use('/', welcomeRouter);
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
-app.get('/profile', isLoggedIn, profileController.attachProfile, profileController.getProfile);
+app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, inputController.getAllInputs);

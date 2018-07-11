@@ -7,7 +7,6 @@ var profileSchema = mongoose.Schema( {
   phone: String,
   gender: String,
   dob: String,
-  fav: String,
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );
