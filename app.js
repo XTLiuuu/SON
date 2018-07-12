@@ -4,11 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
+const clndr = require( './routes/clndr' );
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
+var calendarYRouter = require('./routes/calendarY');
+var calendarMRouter = require('./routes/calendarM');
+var calendarWRouter = require('./routes/calendarW');
+var calendarDRouter = require('./routes/calendarD');
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -111,7 +116,12 @@ app.get('/login/authorized',
 console.log("before the users routes...")
 console.dir(usersController)
 app.use('/', welcomeRouter);
+app.use('/calendarM', isLoggedIn, calendarMRouter);
+app.use('/calendarW', isLoggedIn, calendarWRouter);
+app.use('/calendarD', isLoggedIn, calendarDRouter);
+app.use('/calendarY', isLoggedIn, calendarYRouter);
 
+app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
@@ -120,7 +130,6 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
-
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
