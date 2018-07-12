@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
+const clndr = require( './routes/clndr' );
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
@@ -120,6 +121,7 @@ app.use('/calendarW', isLoggedIn, calendarWRouter);
 app.use('/calendarD', isLoggedIn, calendarDRouter);
 app.use('/calendarY', isLoggedIn, calendarYRouter);
 
+app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
