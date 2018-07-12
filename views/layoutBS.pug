@@ -21,32 +21,25 @@ html(lang="en")
           |   
           a.w3-bar-item.w3-button.w3-hide-small(href='/calendarM')
             i.fa.fa-calendar 
-            | Calendar  
+            |  Calendar  
           |
           a.w3-bar-item.w3-button.w3-hide-small(href='#')
             i.fa.fa-group 
-            | Friends 
+            |  Friends 
           |
           a.w3-bar-item.w3-button.w3-hide-small(href='#')
             i.fa.fa-bullhorn 
-            | Notifications
+            |  Notifications
           |
-          a.w3-bar-item.w3-button.w3-hide-small(href='#')
+          a.w3-bar-item.w3-button.w3-hide-small(href='/setting')
             i.fa.fa-cog 
-            | Settings    
-          |
-          .w3-dropdown-hover
-            button.w3-button
-              i.fa.fa-child 
-              | My Account
-            .w3-dropdown-content.w3-bar-block.w3-card-4
-              a.w3-bar-item.w3-button(href="/profile") My Profile
-              if loggedIn
-                if status=='0211'
-                  a.w3-bar-item.w3-button(href="/users") Google Users
-                a.w3-bar-item.w3-button(href="/logout") Logout
-              else 
-                a.w3-bar-item.w3-button(href="/login") Sign in 
+            |  Settings    
+          
+          if loggedIn
+            a.w3-bar-item.w3-button(href='/logout') Log Out 
+            if status=='0211'
+              a.w3-bar-item.w3-button(href="/users") Google Users
+            
     br
     br
     hr

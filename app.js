@@ -14,6 +14,7 @@ var calendarYRouter = require('./routes/calendarY');
 var calendarMRouter = require('./routes/calendarM');
 var calendarWRouter = require('./routes/calendarW');
 var calendarDRouter = require('./routes/calendarD');
+var settingRouter = require('./routes/setting');
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -86,14 +87,14 @@ app.use((req,res,next) => {
 app.get('/loginerror', function(req,res){
   res.render('loginerror',{})
 })
-app.get('/login', function(req,res){
-  res.render('login',{})
-    })
+// app.get('/login', function(req,res){
+//   res.render('login',{})
+//     })
 app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
-app.use('/login', loginRouter);
+//app.use('/login', loginRouter);
 app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 app.get('/login/authorized',
         passport.authenticate('google', {
@@ -110,7 +111,7 @@ app.get('/login/authorized',
             }
             console.log("user has not been authenticated...")
             // if they aren't redirect them to the home page
-            res.redirect('/login');
+            res.redirect('/auth/google');
         }
 
 console.log("before the users routes...")
@@ -124,6 +125,8 @@ app.use('/calendarY', isLoggedIn, calendarYRouter);
 app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
+
+app.use('/setting', settingRouter);
 
 app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
