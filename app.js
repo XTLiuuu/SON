@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 const clndr = require( './routes/clndr' );
+var moment = require('moment');
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');

@@ -6,6 +6,7 @@ var scheduleSchema = mongoose.Schema( {
   count: Number,
   time: String,
   date: String,
+  date1: Date, //used for calculate duration 
   schedule: String
 } );
 

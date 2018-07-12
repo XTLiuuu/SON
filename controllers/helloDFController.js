@@ -126,39 +126,85 @@ function addEvent(req){
   console.log("duration is " + duration);
   var text = req.intent.slots.event["value"];
   console.log("event is " + text);
-  if(date == null){
-    var today = new Date();
-    date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  }
   // user's input include time and date
   if(time){
+    console.log("add by time")
+    if(date == null){
+      var today = new Date();
+      date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    }
     response = "Okay, I will remind you on " + date + " at " + time + " ."
   }
-  else if(duration){
+  if(duration){
     console.log("in duration")
-    console.log("duration1 is " + duration)
     var end = text.indexOf('in')
-    console.log('text')
     text = text.slice(0, end)
-    response = "Okay, I will remind you in " + duration
-    console.log("type is " + duration.slice(-1));
     var type = duration.slice(-1);
-    var end1 = duration.index('T');
-    var num = text.slice(end1, -1);
-    console.log("num = " + num)
-    /**
-    var d = new Date();
-    d.getHours();
-    d.getMinutes();
-    d.getSeconds();
-    //time =
-    //date =
-    */
+    var end1 = duration.indexOf('T');
+    var num = duration.slice(end1 + 1, -1);
+    if(type == "M"){
+      if(num > 1){
+        type = "minutes"
+      }
+      else{
+        type = "minute"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*60000);
+    }
+    else if(type == "H"){
+      if(num > 1){
+        type = "hours"
+      }
+      else{
+        type = "hour"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*60*60000);
+    }
+    else if(type == "D"){
+      end1 = duration.indexOf('P');
+      num = duration.slice(end1 + 1, -1);
+      if(num > 1){
+        type = "days"
+      }
+      else{
+        type = "day"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*24*60*60000);
+    }
+    else if(type == "W"){
+      end1 = duration.indexOf('P');
+      num = duration.slice(end1 + 1, -1);
+      if(num > 1){
+        type = "weeks"
+      }
+      else{
+        type = "week"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*7*24*60*60000);
+    }
+    var hour = now.getHours()
+    var minute = now.getMinutes()
+    if(minute.toString().length == 1){
+      time = hour + ":0" + minute
+    }
+    else{
+      time = hour + ":" + minute
+    }
+    var day = now.getDate();
+    var month = now.getMonth() + 1;
+    var year = now.getFullYear();
+    date = year + "-" + month + "-" + day;
+    response = "Okay, I will remind you in " + num + " " + type
   }
   let newSchedule = new Schedule ({
     time: time,
     date: date,
-    schedule: text
+    schedule: text,
+    date1: date,
   })
   newSchedule.save()
   console.log("time is " + newSchedule.time);
@@ -212,3 +258,7 @@ exports.deleteSchedule = (req, res) => {
   }
 
 };
+
+function addByDuration(time, date, response){
+
+}
