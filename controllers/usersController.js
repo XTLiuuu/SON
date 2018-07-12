@@ -28,7 +28,7 @@ exports.getUser = ( req, res ) => {
   User.findOne(objId) //{"_id": objId})
     .exec()
     .then( ( user ) => {
-      res.render( 'users', {
+      res.render( 'add', {
         user: user
       } );
     } )

@@ -24,7 +24,7 @@ exports.getAllInputs = ( req, res ) => {
 
 exports.attachInputs = ( req, res, next ) => {
   console.log('in attachInputs')
-  Input.find( {} )
+  Input.find( {email:res.locals.user.googleemail} )
     .exec()
     .then( ( inputs ) => {
       res.locals.inputs = inputs
@@ -45,6 +45,7 @@ exports.saveInput = ( req, res ) => {
   console.log("in save input!")//after user save the input
   console.dir(req)
   let newInput = new Input( {
+    email: req.user.googleemail,
     content: req.body.content
   } )
 

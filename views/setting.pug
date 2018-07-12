@@ -1,0 +1,56 @@
+extends layoutBS
+
+block content
+  body
+    .margin
+      h4.text-monospace Setting
+      .row 
+        .col-4
+          #list-tab.list-group(role="tablist")
+            a#list-profile-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#profileSetting" role="tab" aria-controls="profile") Profile 
+            a#list-event-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventSetting" role="tab" aria-controls="event") Event
+        .col-8
+          #nav-tabContent.tab-content
+            #profileSetting.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
+              form(method="post" action="saveProfile")
+                .row
+                  .formGroup.col-md-4
+                    label Name
+                  .formGroup.col-md-6
+                    input.form-control(name="name" type="text")
+                br
+                .row
+                  .formGroup.col-md-4
+                    label Email
+                  .formGroup.col-md-6
+                    input.form-control(name="email" type="email")
+                br
+                .row
+                  .formGroup.col-md-4
+                    label Phone Number
+                  .formGroup.col-md-6
+                    input.form-control(name="phone" type="text")
+                br
+                .row
+                  .formGroup.col-md-4
+                    label Gender
+                  .formGroup.col-md-6
+                    select(name="gender").form-control
+                      option(selected="")
+                      option Male
+                      option Female
+                      option Other
+                br
+                .row
+                  .formGroup.col-md-4
+                    label Date of Birth
+                  .formGroup.col-md-6
+                    input.form-control(name="dob" type="date")
+                br
+                input.btn.btn-secondary.btn-lg(type="submit" value="SAVE")
+    
+
+            #eventSetting.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
+              | Hawaiian Airlines is a leading provider of air service between the Hawaiian Islands with a total of more than 250 daily flights system-wide. It has led 
+              | all U.S. carriers in on-time performance for the past 14 years as reported by the U.S. Department of Transportation. In addition, it also has the fewest denied boarding rate. 
+              

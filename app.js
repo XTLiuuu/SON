@@ -4,11 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
+const clndr = require( './routes/clndr' );
+var moment = require('moment');
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
+var calendarYRouter = require('./routes/calendarY');
+var calendarMRouter = require('./routes/calendarM');
+var calendarWRouter = require('./routes/calendarW');
+var calendarDRouter = require('./routes/calendarD');
+var settingRouter = require('./routes/setting');
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -81,14 +88,14 @@ app.use((req,res,next) => {
 app.get('/loginerror', function(req,res){
   res.render('loginerror',{})
 })
-app.get('/login', function(req,res){
-  res.render('login',{})
-    })
+// app.get('/login', function(req,res){
+//   res.render('login',{})
+//     })
 app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
     });
-app.use('/login', loginRouter);
+//app.use('/login', loginRouter);
 app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 app.get('/login/authorized',
         passport.authenticate('google', {
@@ -105,22 +112,28 @@ app.get('/login/authorized',
             }
             console.log("user has not been authenticated...")
             // if they aren't redirect them to the home page
-            res.redirect('/login');
+            res.redirect('/auth/google');
         }
 
 console.log("before the users routes...")
 console.dir(usersController)
 app.use('/', welcomeRouter);
+app.use('/calendarM', isLoggedIn, calendarMRouter);
+app.use('/calendarW', isLoggedIn, calendarWRouter);
+app.use('/calendarD', isLoggedIn, calendarDRouter);
+app.use('/calendarY', isLoggedIn, calendarYRouter);
 
+app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
+
+app.use('/setting', settingRouter);
 
 app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
-app.use('/add', isLoggedIn, inputController.getAllInputs);
+app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
-
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

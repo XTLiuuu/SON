@@ -1,0 +1,19 @@
+<script id="dot-template" type="text/template">
+    <div class="clndr-controls">
+        <div class="clndr-previous-button">&lsaquo;</div>
+        <div class="month">{{= it.month }}</div>
+        <div class="clndr-next-button">&rsaquo;</div>
+    </div>
+    <div class="clndr-grid">
+        <div class="days-of-the-week">
+        {{~it.daysOfTheWeek :day:index}}
+            <div class="header-day">{{= day }}</div>
+        {{~}}
+            <div class="days">
+            {{~it.days :day:index}}
+                <div class="{{= day.classes }}">{{= day.day }}</div>
+            {{~}}
+            </div>
+        </div>
+    </div>
+</script>

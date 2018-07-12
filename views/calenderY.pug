@@ -1,0 +1,20 @@
+extends layoutBS
+
+block content
+
+  h1 Calendar: Year 
+  
+  br
+  .row
+    .col-2
+      a.btn.btn-primary(href="/calendarY" role="button") Year
+    .col-2
+      a.btn.btn-primary(href="/calendarM" role="button") Month
+    .col-2
+      a.btn.btn-primary(href="/calendarW" role="button") Week
+    .col-2
+      a.btn.btn-primary(href="/calendarD" role="button") Day
+  br
+  br
+  br
+  a.btn.btn-primary(href="/add" role="button") Add New Schedule 

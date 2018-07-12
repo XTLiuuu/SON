@@ -69,6 +69,66 @@ exports.process_request =  (req, res) => {
       result.response.outputSpeech.text = output_string;
       res.json(result);
     })
+    if(date == null){
+      var today = new Date();
+      date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    }
+    if(date.charAt(5) == '0'){
+      date = date.replace('-0','-')
+    }
+    if(time){
+      Schedule.find({
+        time: time,
+        date: date,
+      }, function(err, schedule_list){
+        if(err){
+          console.log( error.message );
+        } else {
+          if(schedule_list.length == 0){
+            output_string = "You have nothing scheduled for " + date + " at " + time
+          } else {
+            if(schedule_list.length == 1){
+              output_string =  time + " on " + date + " : "+ schedule_list[0].schedule;
+            }
+            else{
+              output_string = time + " on " + date + " : "+ schedule_list[0].schedule;
+              for(var i = 1; i < schedule_list.length; i ++){
+                output_string = output_string + " , " + schedule_list[i].schedule;
+              }
+            }
+          }
+        }
+
+        result.response.outputSpeech.text = output_string;
+        res.json(result);
+      })
+    }
+    else{
+      Schedule.find({
+        date: date,
+      }, function(err, schedule_list){
+        if(err){
+          console.log( error.message );
+        } else {
+          if(schedule_list.length == 0){
+            output_string = "You have nothing scheduled for " + date
+          } else {
+            console.log("schedule is " + schedule_list)
+            if(schedule_list.length == 1){
+              output_string = date + " : "+ schedule_list[0].schedule;
+            }
+            else{
+              output_string = date + " : "+ schedule_list[0].schedule;
+              for(var i = 1; i < schedule_list.length; i ++){
+                output_string = output_string + " , " + schedule_list[i].schedule;
+              }
+            }
+          }
+        }
+        result.response.outputSpeech.text = output_string;
+        res.json(result);
+      })
+    }
   }
 
   else if(req.body.request.intent.name == "delete_event"){
@@ -154,11 +214,102 @@ function addEvent(req){
     //time =
     //date =
     */
+
+  if(time == null){
+    var d = new Date();
+    var hour = d.getHours()
+    var minute = d.getMinutes()
+    if(minute.toString().length == 1){
+      time = hour + ":0" + minute
+    }
+    else{
+      time = hour + ":" + minute
+    }
+  }
+  if(time){
+    console.log("add by time")
+    if(date == null){
+      var today = new Date();
+      date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    }
+    if(date.charAt(5) == '0'){
+      date = date.replace('-0','-')
+    }
+    response = "Okay, I will remind you on " + date + " at " + time + "."
+  }
+  if(duration){
+    console.log("in duration")
+    //var end = text.indexOf('in')
+    //text = text.slice(0, end) //sometimes there is no "in", end = 0 -> text.slice(0,-1)
+    var type = duration.slice(-1);
+    var end1 = duration.indexOf('T');
+    var num = duration.slice(end1 + 1, -1);
+    if(type == "M"){
+      if(num > 1){
+        type = "minutes"
+      }
+      else{
+        type = "minute"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*60000);
+    }
+    else if(type == "H"){
+      if(num > 1){
+        type = "hours"
+      }
+      else{
+        type = "hour"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*60*60000);
+    }
+    else if(type == "D"){
+      end1 = duration.indexOf('P');
+      num = duration.slice(end1 + 1, -1);
+      if(num > 1){
+        type = "days"
+      }
+      else{
+        type = "day"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*24*60*60000);
+    }
+    else if(type == "W"){
+      end1 = duration.indexOf('P');
+      num = duration.slice(end1 + 1, -1);
+      if(num > 1){
+        type = "weeks"
+      }
+      else{
+        type = "week"
+      }
+      var d = new Date();
+      var now = new Date(d.getTime() + num*7*24*60*60000);
+    }
+    var hour = now.getHours()
+    var minute = now.getMinutes()
+    if(minute.toString().length == 1){
+      time = hour + ":0" + minute
+    }
+    else{
+      time = hour + ":" + minute
+    }
+    var day = now.getDate();
+    var month = now.getMonth() + 1;
+    var year = now.getFullYear();
+    date = year + "-" + month + "-" + day;
+    response = "Okay, I will remind you in " + num + " " + type
+  }
+  if(date.charAt(5) == '0'){
+    date = date.replace('-0','-')
   }
   let newSchedule = new Schedule ({
     time: time,
     date: date,
-    schedule: text
+    schedule: text,
+    date1: date,
   })
   newSchedule.save()
   console.log("time is " + newSchedule.time);
