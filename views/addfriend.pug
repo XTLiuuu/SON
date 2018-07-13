@@ -1,11 +1,7 @@
 extends layoutBS
 
 block content
-  form(action='/hms/accommodations', method='GET')
-  .row
-    .col-xs-6.col-md-4
-      .input-group
-        input.form-control(type='text', placeholder='Search')
-        .input-group-btn
-          button.btn.btn-primary(type='submit', aria-hidden="true")
-            span.glyphicon.glyphicon-search
+  .container
+    form.form-inline.mr-auto
+      input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search')
+      button.btn.btn-primary(type='submit') Search
