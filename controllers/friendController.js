@@ -1,18 +1,18 @@
 'use strict';
-const Profile = require( '../models/profile' );
+const Profile = require( '../models/Friend' );
 const mongo = require('mongodb');
 console.log("loading the profile Controller")
 
 // this displays all of the hotel reviews
-exports.getProfile = ( req, res ) => {
+exports.getFriend = ( req, res ) => {
   const objId = new mongo.ObjectId(req.params.id)
-  console.log('in getSetting')
+  console.log('in getprofile')
   Profile.findOne(objId)
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( profile ) => {
       profile: profile
-      res.render('profile');
+      res.render('setting');
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -40,7 +40,7 @@ exports.saveProfile = ( req, res ) => {
         //console.log("profile = "+ newProfile)
         profile.save()
           .then( () => {
-            res.redirect( '/profile' );
+            res.redirect( '/setting' );
           } )
           .catch( error => {
             res.send( error );
@@ -55,7 +55,7 @@ exports.saveProfile = ( req, res ) => {
            dob: req.body.dob})
           .exec()
           .then( () => {
-            res.redirect( '/profile' );
+            res.redirect( '/setting' );
           } )
           .catch( error => {
             res.send( error );
