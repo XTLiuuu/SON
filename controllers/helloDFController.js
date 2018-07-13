@@ -29,27 +29,29 @@ exports.process_request =  (req, res) => {
     }
   };
 
-  // some events not working
   // needs to figure out how to extract event
-  // duration is not working
   if(req.body.request.intent.name == "add_event"){
     console.log("in Add_Event");
     output_string = addEvent(req.body.request);
+    console.log("output_string1 = " + output_string)
     result.response.outputSpeech.text = output_string;
     res.json(result);
   }
-  // include time and date
+
+  // ask what event will happen at some time
   else if(req.body.request.intent.name == "ask_event"){
     console.log("in Ask_Event1");
     var time = req.body.request.intent.slots.time["value"];
     var date = req.body.request.intent.slots.date["value"];
+    var constraint = req.body.request.intent.slots.constraint["value"];
+    // if the user does not include time - e.g. What am I going to do before three p.m.
+    // the default time is today
     if(date == null){
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     }
-    if(date.charAt(5) == '0'){
-      date = date.replace('-0','-')
-    }
+
+    // when the user asks a certain time slot
     if(time){
       Schedule.find({
         time: time,
@@ -58,12 +60,16 @@ exports.process_request =  (req, res) => {
         if(err){
           console.log( error.message );
         } else {
+          // if the schedule_list is empty
           if(schedule_list.length == 0){
             output_string = "You have nothing scheduled for " + date + " at " + time
           } else {
+            // if the list contains only one event
             if(schedule_list.length == 1){
               output_string =  time + " on " + date + " : "+ schedule_list[0].schedule;
             }
+            // if the list contains more than one event
+            // do this only for format
             else{
               output_string = time + " on " + date + " : "+ schedule_list[0].schedule;
               for(var i = 1; i < schedule_list.length; i ++){
@@ -72,11 +78,13 @@ exports.process_request =  (req, res) => {
             }
           }
         }
-
         result.response.outputSpeech.text = output_string;
         res.json(result);
       })
     }
+
+    // when the user asks a certain date
+    // e.g. what am i going to do tomorrow
     else{
       Schedule.find({
         date: date,
@@ -105,6 +113,7 @@ exports.process_request =  (req, res) => {
     }
   }
 
+  // delete event
   else if(req.body.request.intent.name == "delete_event"){
     console.log("in delete_event");
     var time = req.body.request.intent.slots.time["value"];
@@ -115,22 +124,28 @@ exports.process_request =  (req, res) => {
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     }
-    var text = req.body.request.intent.slots.event["value"];
+    var text = req.body.request.intent.slots.eventText["value"];
+    if(text.slice(-2) == "at"){
+      text = text.slice(0, -2)
+    }
     console.log("text = " + text)
     Schedule.findOne({
       schedule: text,
-      time: time,
       date: date,
+      time: time
     }, function(err, schedule){
       if(err){
         console.log( error.message );
       } else {
+        console.log("schedule is " + schedule)
         if(schedule == null){
           output_string = text + " on " + date + " at " + time + " is not found"
         } else {
           console.log("schedule is " + schedule)
           output_string =  text + " on " + date + " at " + time + " is cancelled";
           Schedule.deleteOne({_id:schedule._id}).exec()
+          //.then(()=>{res.redirect('/test')})
+          //.catch((error)=>{res.send(error)})
         }
       }
 
@@ -141,52 +156,45 @@ exports.process_request =  (req, res) => {
 };
 
 
+// dialogflow
 function welcome(name) {
   console.log("in Welcome function")
   var response = "Hello, " + name + "." + " I'm your personal secretary, Pipi."
   return response;
 };
 
-
+// save event
 function addEvent(req){
   console.log("in addEvent1")
-  //var text = req.queryText;
   var response;
   var time = req.intent.slots.time["value"];
-  console.log("time is " + time);
+  console.log("time = " + time)
   var date = req.intent.slots.date["value"];
-  console.log("date is " + date);
+  console.log("date = " + date)
   var duration = req.intent.slots.duration["value"];
-  console.log("duration is " + duration);
-  var text = req.intent.slots.event["value"];
-  console.log("event is " + text);
-  // user's input include time and date
-  if(time == null){
-    var d = new Date();
-    var hour = d.getHours()
-    var minute = d.getMinutes()
-    if(minute.toString().length == 1){
-      time = hour + ":0" + minute
-    }
-    else{
-      time = hour + ":" + minute
-    }
-  }
+  console.log("duration = " + duration)
+  var text = req.intent.slots.eventText["value"];
+  console.log("text =" + text)
   if(time){
     console.log("add by time")
     if(date == null){
       var today = new Date();
-      date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    }
-    if(date.charAt(5) == '0'){
-      date = date.replace('-0','-')
+      if(today.getMonth().toString().length == 1){
+        console.log("here1")
+        date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
+      }
+      else{
+        date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      }
     }
     response = "Okay, I will remind you on " + date + " at " + time + "."
   }
+
   if(duration){
     console.log("in duration")
-    //var end = text.indexOf('in')
-    //text = text.slice(0, end) //sometimes there is no "in", end = 0 -> text.slice(0,-1)
+    if(text.slice(-2) == 'in'){
+      text = text.slice(0, -2)
+    }
     var type = duration.slice(-1);
     var end1 = duration.indexOf('T');
     var num = duration.slice(end1 + 1, -1);
@@ -236,8 +244,14 @@ function addEvent(req){
     }
     var hour = now.getHours()
     var minute = now.getMinutes()
-    if(minute.toString().length == 1){
+    if(minute.toString().length == 1 && hour.toString().length == 1){
+      time = "0" + hour + ":0" + minute
+    }
+    else if(minute.toString().length == 1){
       time = hour + ":0" + minute
+    }
+    else if(hour.toString().length == 1){
+      time = "0" + hour + ":" + minute
     }
     else{
       time = hour + ":" + minute
@@ -245,11 +259,19 @@ function addEvent(req){
     var day = now.getDate();
     var month = now.getMonth() + 1;
     var year = now.getFullYear();
-    date = year + "-" + month + "-" + day;
+    if(month.toString().length == 1 && day.toString().length == 1){
+      date = year + "-0" + month + "-0" + day;
+    }
+    else if(month.toString().length == 1){
+      date = year + "-0" + month + "-" + day;
+    }
+    else if(hour.toString().length == 1){
+      date = year + "-" + month + "-0" + day;
+    }
+    else{
+      date = year + "-" + month + "-" + day;
+    }
     response = "Okay, I will remind you in " + num + " " + type
-  }
-  if(date.charAt(5) == '0'){
-    date = date.replace('-0','-')
   }
   let newSchedule = new Schedule ({
     time: time,
@@ -261,6 +283,7 @@ function addEvent(req){
   console.log("time is " + newSchedule.time);
   console.log("date is " + newSchedule.date);
   console.log("schedule is " + newSchedule.schedule);
+  console.log(response)
   return response;
 }
 
