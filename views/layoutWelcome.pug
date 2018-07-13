@@ -1,0 +1,59 @@
+html(lang="en")
+  head
+    title= title
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css")
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+    block head
+    
+    body
+      .w3-display-topright
+        br
+        #myNavbar.w3-bar
+          a.w3-bar-item.w3-button.w3-hover-black.w3-hide-medium.w3-hide-large.w3-right(href='javascript:void(0);', onclick='toggleFunction()', title='Toggle Navigation Menu')
+            i.fa.fa-bars 
+          |
+          if loggedIn
+            a.w3-bar-item.w3-button(href='/') HOME 
+            |   
+            a.w3-bar-item.w3-button.w3-hide-small(href='/add')
+              i.fa.fa-calendar 
+              | Calendar  
+            |
+            a.w3-bar-item.w3-button.w3-hide-small(href='#')
+              i.fa.fa-group 
+              | Friends 
+            |
+            a.w3-bar-item.w3-button.w3-hide-small(href='#')
+              i.fa.fa-bullhorn 
+              | Notifications
+            |
+            a.w3-bar-item.w3-button.w3-hide-small(href='#')
+              i.fa.fa-cog 
+              | Settings    
+            |
+            .w3-dropdown-hover
+              button.w3-button
+                i.fa.fa-child 
+                | My Account
+              .w3-dropdown-content.w3-bar-block.w3-card-4
+                a.w3-bar-item.w3-button(href="/profile") My Profile
+                if status=='0211'
+                  a.w3-bar-item.w3-button(href="/users") Google Users
+                a.w3-bar-item.w3-button(href="/logout") Logout
+          
+          else
+            a.w3-bar-item.w3-button.w3-hide-small(href="/auth/google")
+              span.fa.fa-google-plus.text-monospace  Google Login
+          
+    br
+    br
+    hr
+    block content
+    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous")

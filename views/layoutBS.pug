@@ -17,6 +17,39 @@ html(lang="en")
           a.w3-bar-item.w3-button.w3-hover-black.w3-hide-medium.w3-hide-large.w3-right(href='javascript:void(0);', onclick='toggleFunction()', title='Toggle Navigation Menu')
             i.fa.fa-bars 
           |
+          a.w3-bar-item.w3-button(href='/') HOME 
+          |   
+          a.w3-bar-item.w3-button.w3-hide-small(href='/calendarM')
+            i.fa.fa-calendar 
+            |  Calendar  
+          |
+          a.w3-bar-item.w3-button.w3-hide-small(href='#')
+            i.fa.fa-group 
+            |  Friends 
+          |
+          a.w3-bar-item.w3-button.w3-hide-small(href='#')
+            i.fa.fa-bullhorn 
+            |  Notifications
+          |
+          a.w3-bar-item.w3-button.w3-hide-small(href='/setting')
+            i.fa.fa-cog 
+            | Settings    
+          |
+          .w3-dropdown-hover
+            button.w3-button
+              i.fa.fa-child 
+              | My Account
+            .w3-dropdown-content.w3-bar-block.w3-card-4
+              a.w3-bar-item.w3-button(href="/profile") My Profile
+              if loggedIn
+                if status=='0211'
+                  a.w3-bar-item.w3-button(href="/users") Google Users
+                a.w3-bar-item.w3-button(href="/logout") Logout
+              else 
+                a.w3-bar-item.w3-button.w3-hide-small(href="/auth/google")
+                  span.fa.fa-google-plus.text-monospace  Google Login
+            |  Settings    
+          
           if loggedIn
             a.w3-bar-item.w3-button(href='/') HOME 
             |   

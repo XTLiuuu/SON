@@ -21,7 +21,7 @@ var app = express();
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
-//const helloDFController = require('./controllers/helloDFController');
+const helloDFController = require('./controllers/helloDFController');
 const User = require( './models/user' )
 
 //friend function
@@ -142,10 +142,11 @@ app.use('/saveinput',isLoggedIn, inputController.saveInput);
 // friend function
 app.use('/friend',friend)
 app.use('/addfriend',addfriend)
-//app.get('/test', helloDFController.getAllSchedule);
-//app.post('/deleteSchedule', helloDFController.deleteSchedule);
-//app.get('/hook', helloDFController.getAllSchedule);
-//app.post('/hook', helloDFController.process_request);
+
+app.get('/test', helloDFController.getAllSchedule);
+app.post('/deleteSchedule', helloDFController.deleteSchedule);
+app.get('/hook', helloDFController.getAllSchedule);
+app.post('/hook', helloDFController.process_request);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
