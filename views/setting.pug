@@ -12,42 +12,42 @@ block content
         .col-8
           #nav-tabContent.tab-content
             #profileSetting.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
-              form(method="post" action="saveProfile")
-                .row
+              form.text-monospace(method="post" action="saveProfile")
+                .row.text-monospace
                   .formGroup.col-md-4
                     label Name
                   .formGroup.col-md-6
-                    input.form-control(name="name" type="text")
+                    input.form-control(name="name" type="text" value=user.googlename)
                 br
-                .row
+                .row.text-monospace
                   .formGroup.col-md-4
                     label Email
                   .formGroup.col-md-6
-                    input.form-control(name="email" type="email")
+                    input.form-control(name="email" type="email" value=user.googleemail)
                 br
-                .row
+                .row.text-monospace
                   .formGroup.col-md-4
                     label Phone Number
                   .formGroup.col-md-6
-                    input.form-control(name="phone" type="text")
+                    input.form-control(name="phone" type="text" value=profile.phone)
                 br
-                .row
+                .row.text-monospace
                   .formGroup.col-md-4
                     label Gender
                   .formGroup.col-md-6
-                    select(name="gender").form-control
-                      option(selected="")
+                    select.text-monospace(name="gender").form-control
+                      option(selected="") #{profile.gender}
                       option Male
                       option Female
                       option Other
                 br
-                .row
+                .row.text-monospace
                   .formGroup.col-md-4
                     label Date of Birth
                   .formGroup.col-md-6
-                    input.form-control(name="dob" type="date")
+                    input.form-control(name="dob" type="date" value=profile.dob)
                 br
-                input.btn.btn-secondary.btn-lg(type="submit" value="SAVE")
+                input.btn.btn-warning.btn-lg(type="submit" value="SAVE")
     
 
             #eventSetting.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
