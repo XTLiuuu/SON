@@ -43,9 +43,38 @@ exports.process_request =  (req, res) => {
     console.log("in Ask_Event1");
     var time = req.body.request.intent.slots.time["value"];
     var date = req.body.request.intent.slots.date["value"];
+<<<<<<< HEAD
     var constraint = req.body.request.intent.slots.constraint["value"];
     // if the user does not include time - e.g. What am I going to do before three p.m.
     // the default time is today
+=======
+    Schedule.find({
+      time: time,
+      date: date,
+    }, function(err, schedule_list){
+      if(err){
+        console.log( error.message );
+      } else {
+        if(schedule_list.length == 0){
+          output_string = "You have nothing scheduled for " + date + " at " + time
+        } else {
+          console.log("schedule is " + schedule_list)
+          if(schedule_list.length == 1){
+            output_string =  time + " on " + date + " : "+ schedule_list[0].schedule;
+          }
+          else{
+            output_string = time + " on " + date + " : "+ schedule_list[0].schedule;
+            for(var i = 1; i < schedule_list.length; i ++){
+              output_string = output_string + " , " + schedule_list[i].schedule;
+            }
+          }
+        }
+      }
+
+      result.response.outputSpeech.text = output_string;
+      res.json(result);
+    })
+>>>>>>> deb6593f81a69f20526800bd48f90f5f3e2ed61b
     if(date == null){
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -172,9 +201,55 @@ function addEvent(req){
   var date = req.intent.slots.date["value"];
   console.log("date = " + date)
   var duration = req.intent.slots.duration["value"];
+<<<<<<< HEAD
   console.log("duration = " + duration)
   var text = req.intent.slots.eventText["value"];
   console.log("text =" + text)
+=======
+  console.log("duration is " + duration);
+  var text = req.intent.slots.event["value"];
+  console.log("event is " + text);
+  if(date == null){
+    var today = new Date();
+    date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  }
+  // user's input include time and date
+  if(time){
+    response = "Okay, I will remind you on " + date + " at " + time + " ."
+  }
+  else if(duration){
+    console.log("in duration")
+    console.log("duration1 is " + duration)
+    var end = text.indexOf('in')
+    console.log('text')
+    text = text.slice(0, end)
+    response = "Okay, I will remind you in " + duration
+    console.log("type is " + duration.slice(-1));
+    var type = duration.slice(-1);
+    var end1 = duration.index('T');
+    var num = text.slice(end1, -1);
+    console.log("num = " + num)
+    /**
+    var d = new Date();
+    d.getHours();
+    d.getMinutes();
+    d.getSeconds();
+    //time =
+    //date =
+    */
+
+  if(time == null){
+    var d = new Date();
+    var hour = d.getHours()
+    var minute = d.getMinutes()
+    if(minute.toString().length == 1){
+      time = hour + ":0" + minute
+    }
+    else{
+      time = hour + ":" + minute
+    }
+  }
+>>>>>>> deb6593f81a69f20526800bd48f90f5f3e2ed61b
   if(time){
     console.log("add by time")
     if(date == null){
