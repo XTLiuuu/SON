@@ -24,6 +24,9 @@ const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
 const User = require( './models/user' )
 
+
+const friend =require('./routes/friend')
+
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
@@ -127,13 +130,15 @@ app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
-app.use('/setting', settingRouter);
+//app.use('/setting', settingRouter);
 
-app.get('/profile', isLoggedIn, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter,usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
+
+app.use('/friend',friend)
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
