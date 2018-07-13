@@ -97,12 +97,12 @@ exports.process_request =  (req, res) => {
           } else {
             console.log("schedule is " + schedule_list)
             if(schedule_list.length == 1){
-              output_string = date + " : "+ schedule_list[0].schedule;
+              output_string = date + " : "+ schedule_list[0].schedule + "(" + schedule_list[0].time + ") ";
             }
             else{
-              output_string = date + " : "+ schedule_list[0].schedule;
+              output_string = date + " : "+ schedule_list[0].schedule + "(" + schedule_list[0].time + ") ";
               for(var i = 1; i < schedule_list.length; i ++){
-                output_string = output_string + " , " + schedule_list[i].schedule;
+                output_string = output_string + " , " + schedule_list[i].schedule + "(" + schedule_list[i].time + ") ";
               }
             }
           }
