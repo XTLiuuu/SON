@@ -16,6 +16,7 @@ var calendarMRouter = require('./routes/calendarM');
 var calendarWRouter = require('./routes/calendarW');
 var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
+var notificationRouter = require('./routes/notification');
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -23,6 +24,7 @@ const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
 const calendarController = require( './controllers/calendarController' );
+const friendController = require('./controllers/friendController');
 const User = require( './models/user' )
 
 //friend function
@@ -133,7 +135,7 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
 //app.use('/setting', settingRouter);
 
-app.get('/setting', isLoggedIn, settingRouter,usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
@@ -144,7 +146,12 @@ app.get('/calendar', calendarController.getCalendar);
 
 // friend function
 app.use('/friend',friend)
-app.use('/addfriend',addfriend)
+app.use('/addfriend', isLoggedIn, addfriend);
+app.post('/searchProfile', isLoggedIn, friendController.searchProfile);
+
+
+
+app.use('/notification', notificationRouter);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

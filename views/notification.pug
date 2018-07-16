@@ -1,0 +1,26 @@
+extends layoutBS
+
+block content
+  body
+    .margin
+      h4.text-monospace Notifications
+      .row 
+        .col-4
+          #list-tab.list-group(role="tablist")
+            a#list-allNs-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#allNotifications" role="tab" aria-controls="allNs") All Notifications 
+            a#list-reminder-list.list-group-item.list-group-item-action(data-toggle="list" href="#scheduleReminder" role="tab" aria-controls="reminder") Schedule Reminder
+        .col-8
+          #nav-tabContent.tab-content
+            #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
+              .card.bg-light.mb-3(style="max-width: 50rem;")
+                .card-header 
+                  | Notification Type
+                  .alignright now
+                .card-body
+                  h5.font-weight-bold Meeting with James
+                  p.card-text
+                    | You have a meeting with James at 14:00
+    
+
+            #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
+    
