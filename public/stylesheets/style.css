@@ -50,3 +50,7 @@ body, html {
   padding-right: 5mm;
   margin-right: 15px;
 }
+
+.alignright {
+  float: right;
+}

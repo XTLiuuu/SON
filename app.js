@@ -16,6 +16,7 @@ var calendarMRouter = require('./routes/calendarM');
 var calendarWRouter = require('./routes/calendarW');
 var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
+var notificationRouter = require('./routes/notification');
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -146,6 +147,8 @@ app.use('/addfriend', isLoggedIn, addfriend);
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile);
 
 
+
+app.use('/notification', notificationRouter);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
