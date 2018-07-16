@@ -51,5 +51,11 @@ body, html {
   margin-right: 15px;
 }
 
+<<<<<<< HEAD
 ul {list-style-type: none;}
 body {font-family: Verdana, sans-serif;}
+=======
+.alignright {
+  float: right;
+}
+>>>>>>> ac76c1821460446572bb075d352ab8ef186db3a1
