@@ -22,6 +22,7 @@ exports.getAllInputs = ( req, res ) => {
     } );
 };
 
+
 exports.attachInputs = ( req, res, next ) => {
   console.log('in attachInputs')
   Input.find( {email:res.locals.user.googleemail} )

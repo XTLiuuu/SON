@@ -23,6 +23,7 @@ const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
+const notiController = require('./controllers/notiController');
 const User = require( './models/user' )
 
 //friend function
@@ -144,7 +145,8 @@ app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/friend',friend)
 app.use('/addfriend',addfriend)
 
-app.use('/notification', notificationRouter);
+app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs, usersController.getUser,notificationRouter);
+//app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
