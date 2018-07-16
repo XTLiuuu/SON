@@ -23,7 +23,12 @@ const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
+<<<<<<< HEAD
 const notiController = require('./controllers/notiController');
+=======
+const calendarController = require( './controllers/calendarController' );
+const friendController = require('./controllers/friendController');
+>>>>>>> 1fe239ca602a8e739dec386a5f15679b26c0c1a0
 const User = require( './models/user' )
 
 //friend function
@@ -129,21 +134,26 @@ app.use('/calendarW', isLoggedIn, calendarWRouter);
 app.use('/calendarD', isLoggedIn, calendarDRouter);
 app.use('/calendarY', isLoggedIn, calendarYRouter);
 
-app.use('/calendar', clndr)
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 
 //app.use('/setting', settingRouter);
 
-app.get('/setting', isLoggedIn, settingRouter,usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
+
+app.get('/calendar', calendarController.getCalendar);
+
 // friend function
 app.use('/friend',friend)
-app.use('/addfriend',addfriend)
+app.use('/addfriend', isLoggedIn, addfriend);
+app.post('/searchProfile', isLoggedIn, friendController.searchProfile);
+
+
 
 app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs, usersController.getUser,notificationRouter);
 //app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);

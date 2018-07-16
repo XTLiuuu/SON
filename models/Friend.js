@@ -10,3 +10,4 @@ var friendSchema = mongoose.Schema( {
 } );
 
 module.exports = mongoose.model( 'Friend', friendSchema );
+//Friend is the name of the colllection
