@@ -1,0 +1,29 @@
+extends layoutBS
+
+block content
+  .margin 
+    h1 Calendar: Month 
+    br
+    div.btn-group.pull-right
+      a.btn.btn-outline-secondary.btn-sm(href="/calendarY" role="button") Year
+      a.btn.btn-outline-secondary.btn-sm(href="/calendar" role="button") Month
+      a.btn.btn-outline-secondary.btn-sm(href="/calendarW" role="button") Week
+      a.btn.btn-outline-secondary.btn-sm(href="/calendarD" role="button") Day
+    br
+    br
+    br
+    br
+    .row
+      .col-md-5
+      .col-md-4
+        include clndr.html
+        br
+        br
+        br
+        br
+        a.btn.btn-outline-secondary(href="/add" role="button") Add New Schedule 
+    link(rel="stylesheet" href="/stylesheets/clndr.css")
+  
+
+      
+  

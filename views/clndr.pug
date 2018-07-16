@@ -1,29 +1,54 @@
 extends layoutBS
 
 block content
-  .margin 
-    h1 Calendar: Month 
-    br
-    div.btn-group.pull-right
-      a.btn.btn-outline-secondary.btn-sm(href="/calendarY" role="button") Year
-      a.btn.btn-outline-secondary.btn-sm(href="/calendar" role="button") Month
-      a.btn.btn-outline-secondary.btn-sm(href="/calendarW" role="button") Week
-      a.btn.btn-outline-secondary.btn-sm(href="/calendarD" role="button") Day
-    br
-    br
-    br
-    br
-    .row
-      .col-md-5
-      .col-md-4
-        include clndr.html
-        br
-        br
-        br
-        br
-        a.btn.btn-outline-secondary(href="/add" role="button") Add New Schedule 
-    link(rel="stylesheet" href="/stylesheets/clndr.css")
-  
-
-      
-  
+  .body
+    .margin
+      .month
+        ul
+          li.prev ❮
+          li.next ❯
+          li
+            | August
+            br
+            span(style="font-size:18px") 2017
+      ul.weekdays
+        li Mo
+        li Tu
+        li We
+        li Th
+        li Fr
+        li Sa
+        li Su
+      ul.days
+        li 1
+        li 2
+        li 3
+        li 4
+        li 5
+        li 6
+        li 7
+        li 8
+        li 9
+        li
+          span.active 10
+        li 11
+        li 12
+        li 13
+        li 14
+        li 15
+        li 16
+        li 17
+        li 18
+        li 19
+        li 20
+        li 21
+        li 22
+        li 23
+        li 24
+        li 25
+        li 26
+        li 27
+        li 28
+        li 29
+        li 30
+        li 31

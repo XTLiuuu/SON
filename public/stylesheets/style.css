@@ -50,3 +50,6 @@ body, html {
   padding-right: 5mm;
   margin-right: 15px;
 }
+
+ul {list-style-type: none;}
+body {font-family: Verdana, sans-serif;}
