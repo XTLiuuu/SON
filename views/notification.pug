@@ -14,15 +14,15 @@ block content
         .col-8
           #nav-tabContent.tab-content
             #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
-
+              each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
                     | Notification Type
                     .alignright now
                   .card-body
-                    h5.font-weight-bold Meeting with James
+                    h5.font-weight-bold #{input.content}
                     p.card-text
-                      | #{input.content}
+                      | Remind me to #{input.content}
       
 
             #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")

@@ -23,12 +23,11 @@ const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
-<<<<<<< HEAD
+
 const notiController = require('./controllers/notiController');
-=======
+
 const calendarController = require( './controllers/calendarController' );
 const friendController = require('./controllers/friendController');
->>>>>>> 1fe239ca602a8e739dec386a5f15679b26c0c1a0
 const User = require( './models/user' )
 
 //friend function
@@ -155,7 +154,7 @@ app.post('/searchProfile', isLoggedIn, friendController.searchProfile);
 
 
 
-app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs, usersController.getUser,notificationRouter);
+app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notificationRouter);
 //app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);
 
 app.get('/test', helloDFController.getAllSchedule);
