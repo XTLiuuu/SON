@@ -10,47 +10,43 @@ block content
       br
       .row
         .col-5
-          label New Event 
+          label Title 
           br
           form(method="post" action="saveInput")
-            textarea(name="content" rows="5" cols="50")
-            input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
-          br
-          br
-          br
-          form
-            .form-row
-              .formGroup.col-2
-                label Date 
-              .formGroup.col-10.text-right
-                input(type="date" name="Date")
+            textarea(name="title" rows="2" cols="50")
             br
-            .form-row
-              .formGroup.col-2
-                label Time 
-              .formGroup.col-10.text-right
-                input(type="time" name="time")
             br
-            .form-row
-              .formGroup.col-2
-                label Location  
-              .formGroup.col-10.text-right
-                input(type="text" name="location")      
-            br
-            .form-row
-              .formGroup.col-2
-                label People 
-              .formGroup.col-10.text-right
-                input(type="text" name="people")
-            hr
-            input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
+            form
+              .form-row
+                .formGroup.col-2
+                  label Start 
+                .formGroup.col-10.text-right
+                  input(type="date" name="start")
+              br
+              .form-row
+                .formGroup.col-2
+                  label End 
+                .formGroup.col-10.text-right
+                  input(type="date" name="end")
+              br
+              .form-row
+                .formGroup.col-2
+                  label Url 
+                .formGroup.col-10.text-right
+                  input(type="text" name="url")
+              hr
+              input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
         .col-1
         .col-4
-          .card(style="width: 35rem;")
-            .card-header
-              | Schedule for today
-            ul.list-group.list-group-flush
-              each input in inputs
-                li.list-group-item #{input.content}
+          form(method="post" action="deleteInput")
+            .card(style="width: 35rem;")
+              .card-header
+                | Schedule for today
+              ul.list-group.list-group-flush
+                each input in inputs
+                  input(name="deleteName" value=input.content type="checkbox")
+                  li.list-group-item #{input.title}, #{input.start}, #{input.end}, #{input.url}
+              input(type="submit" value="Delete checked items")
+                
                 
           

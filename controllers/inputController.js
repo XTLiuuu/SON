@@ -47,7 +47,10 @@ exports.saveInput = ( req, res ) => {
   console.dir(req)
   let newInput = new Input( {
     email: req.user.googleemail,
-    content: req.body.content
+    title: req.body.title,
+    start:req.body.start,
+    end:req.body.end,
+    url:req.body.url
   } )
 
   //console.log("input = "+newinput)
@@ -67,12 +70,12 @@ exports.deleteInput = (req, res) => {
   if (typeof(inputName)=='string') {
       Input.deleteOne({content:inputName})
            .exec()
-           .then(()=>{res.redirect('/newinput')})
+           .then(()=>{res.redirect('/add')})
            .catch((error)=>{res.send(error)})
   } else if (typeof(inputName)=='object'){
       Input.deleteMany({content:{$in:inputName}})
            .exec()
-           .then(()=>{res.redirect('/newinput')})
+           .then(()=>{res.redirect('/add')})
            .catch((error)=>{res.send(error)})
   } else if (typeof(inputName)=='undefined'){
       console.log("This is if they didn't select a input")

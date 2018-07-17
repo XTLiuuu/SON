@@ -147,6 +147,7 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
+app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 
 app.use('/calendar', calendarD);
 //app.get('/calendar', calendarController.getCalendar);
