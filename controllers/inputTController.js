@@ -1,5 +1,5 @@
 'use strict';
-const Input = require( '../models/Input' );
+const InputT = require( '../models/InputT' );
 console.log("loading the input Controller")
 
 
@@ -45,17 +45,15 @@ exports.attachInputs = ( req, res, next ) => {
 exports.saveInput = ( req, res ) => {
   console.log("in save input!")//after user save the input
   console.dir(req)
-  let newInput = new Input( {
+  let newInputT = new InputT( {
     email: req.user.googleemail,
-    title: req.body.title,
-    start:req.body.start,
-    end:req.body.end,
-    url:req.body.url
+    title: req.body.content,
+    startTime: "2018-08-01"
   } )
 
   //console.log("input = "+newinput)
 
-  newInput.save()
+  newInputT.save()
     .then( () => {
       res.redirect( '/add' );
     } )
@@ -70,12 +68,12 @@ exports.deleteInput = (req, res) => {
   if (typeof(inputName)=='string') {
       Input.deleteOne({content:inputName})
            .exec()
-           .then(()=>{res.redirect('/add')})
+           .then(()=>{res.redirect('/newinput')})
            .catch((error)=>{res.send(error)})
   } else if (typeof(inputName)=='object'){
       Input.deleteMany({content:{$in:inputName}})
            .exec()
-           .then(()=>{res.redirect('/add')})
+           .then(()=>{res.redirect('/newinput')})
            .catch((error)=>{res.send(error)})
   } else if (typeof(inputName)=='undefined'){
       console.log("This is if they didn't select a input")

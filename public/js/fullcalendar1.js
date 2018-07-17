@@ -2,6 +2,17 @@ console.log('in full calendar 1')
 $(function() {
   var containerEl = $('#calendar');
 
+  var allEvents = new Array();
+
+  // function loadQuestions() {
+  //     $.getJSON('events.json', function (data) {
+  //         allQuestions = data.events;
+  //     }).error(function(){
+  //             console.log('error: json not loaded');
+  //         });
+  //     });
+  // }
+
   containerEl.fullCalendar({
     header: {
       left: 'prev,next today',

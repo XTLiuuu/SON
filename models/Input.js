@@ -3,7 +3,10 @@ const mongoose = require( 'mongoose' );
 
 var inputSchema = mongoose.Schema( {
   email: String,
-  content: String
+  title: String,
+  start: Date,
+  end: Date,
+  url: String,
 } );
 
 module.exports = mongoose.model( 'Input', inputSchema );
