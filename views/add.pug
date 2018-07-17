@@ -8,45 +8,53 @@ block content
           h1.text-center SON
           input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
       br
-      .row
-        .col-5
-          label Title 
-          br
-          form(method="post" action="saveInput")
-            textarea(name="title" rows="2" cols="50")
-            br
-            br
-            form
-              .form-row
-                .formGroup.col-2
-                  label Start 
-                .formGroup.col-10.text-right
-                  input(type="date" name="start")
-              br
-              .form-row
-                .formGroup.col-2
-                  label End 
-                .formGroup.col-10.text-right
-                  input(type="date" name="end")
-              br
-              .form-row
-                .formGroup.col-2
-                  label Url 
-                .formGroup.col-10.text-right
-                  input(type="text" name="url")
-              hr
-              input.text-center.btn.btn-success(type="submit" style="background-color: #3c7045;")
-        .col-1
-        .col-4
-          form(method="post" action="deleteInput")
-            .card(style="width: 35rem;")
-              .card-header
-                | Schedule for today
-              ul.list-group.list-group-flush
-                each input in inputs
-                  input(name="deleteName" value=input.content type="checkbox")
-                  li.list-group-item #{input.email}, #{input.title}, #{input.start}, #{input.end}, #{input.url}
-              input(type="submit" value="Delete checked items")
-                
-                
+      br
+      form(method="post" action="saveInput")
+        .row
+          .col-8
+            .input-group.md-3
+              input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%')
+          .col-4
+            input.text-center.btn.btn-warning(type="submit")
+        br
+        .form-row
+          .formGroup.col-2
+            label Start Time 
+          .formGroup.col-3
+            input.form-control(type="date" name="startDate")
+          .formGroup.col-2
+            input.form-control(type="text" name="startTime" placeholder="e.g. 10:00")
+        br
+        .form-row
+          .formGroup.col-2
+            label End Time 
+          .formGroup.col-3
+            input.form-control(type="date" name="endDate")
+          .formGroup.col-2
+            input.form-control(type="text" name="endTime" placeholder="e.g. 13:00")
+        br
+        br
+        .form-row
+          .formGroup.col-2
+            label Url 
+          .formGroup.col-10.text-right
+            input(type="text" name="url")
+        hr
+      br
+      br
+      br
+      br
+      form(method="post" action="deleteInput")
+        .card(style="width: 35rem;")
+          .card-header
+            | All events 
+          ul.list-group.list-group-flush
+            each input in inputs
+              input(name="deleteName" value=input.email type="checkbox")
+              li.list-group-item #{input.email}, #{input.title}, #{input.start}, #{input.end}, #{input.url}
+        br
+        br
+        input(type="submit" value="Delete checked items")
+            
+            
           

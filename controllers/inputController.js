@@ -45,19 +45,34 @@ exports.attachInputs = ( req, res, next ) => {
 exports.saveInput = ( req, res ) => {
   console.log("in save input!")//after user save the input
   console.dir(req)
+  var sd = req.body.startDate;
+  var sd1 = sd.toString();
+  var st = req.body.startTime
+  var start = sd1 + " " + st + " "
+  console.log("start = " + start)
+  var ed = req.body.endDate;
+  var ed1 = ed.toString();
+  var et = req.body.endTime
+  var end = ed1 + " " + et
+  console.log("end = " + end)
   let newInput = new Input( {
     email: req.user.googleemail,
+    id: req.body.id,
     title: req.body.title,
-    start:req.body.start,
-    end:req.body.end,
-    url:req.body.url
+    allDay: req.body.allDay,
+    start: start,
+    end:end,
+    url:req.body.url,
+    editable: true,
+    overlap: true,
+    color: req.body.color,
   } )
 
   //console.log("input = "+newinput)
 
   newInput.save()
     .then( () => {
-      res.redirect( '/add' );
+      res.redirect( '/calendar/calendarD' );
     } )
     .catch( error => {
       res.send( error );
@@ -68,7 +83,7 @@ exports.deleteInput = (req, res) => {
   console.log("in deleteInput")
   let inputName = req.body.deleteName
   if (typeof(inputName)=='string') {
-      Input.deleteOne({content:inputName})
+      Input.deleteOne({email:inputName})
            .exec()
            .then(()=>{res.redirect('/add')})
            .catch((error)=>{res.send(error)})

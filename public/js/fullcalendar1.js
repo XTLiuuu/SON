@@ -13,7 +13,7 @@ $(function() {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     eventLimit: true, // allow "more" link when too many events
-    eventSources: [
+    eventSources:[
       {
       url: '/calendar/get_events',
       type: 'POST',
@@ -28,7 +28,6 @@ $(function() {
     }
     ],
   })
-
   var calendar = $('#calendar').fullCalendar('getCalendar');
   calendar.on('dayClick', function(date, jsEvent, view){
         console.log('Clicked on: ' + date.format());
