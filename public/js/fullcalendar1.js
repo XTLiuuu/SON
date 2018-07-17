@@ -1,17 +1,6 @@
-var events =   [{
-    title: 'Lunch',
-    start: '2018-07-12T12:00:00'
-  }]
-var events1 =   [{
-    title: 'Dinner',
-    start: '2018-07-18T18:00:00'
-  }]
-
 console.log('in full calendar 1')
 $(function() {
   var containerEl = $('#calendar');
-
-  //loading
   containerEl.fullCalendar({
     //themeSystem: 'bootstrap4',
     nowIndicator: true,

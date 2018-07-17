@@ -1,5 +1,4 @@
 'use strict';
-const vm = require('../models/Calendar');
 console.log("in calendar controller")
 
 exports.getCalendar = (req, res) => {
