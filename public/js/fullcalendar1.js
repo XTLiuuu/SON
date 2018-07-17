@@ -1,8 +1,20 @@
+var events =   [{
+    title: 'Lunch',
+    start: '2018-07-12T12:00:00'
+  }]
+var events1 =   [{
+    title: 'Dinner',
+    start: '2018-07-18T18:00:00'
+  }]
+
 console.log('in full calendar 1')
 $(function() {
   var containerEl = $('#calendar');
 
+  //loading
   containerEl.fullCalendar({
+    //themeSystem: 'bootstrap4',
+    nowIndicator: true,
     header: {
       left: 'prev,next today',
       center: 'title',
@@ -12,61 +24,27 @@ $(function() {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     eventLimit: true, // allow "more" link when too many events
-    events: [
+    eventSources: [
       {
-        title: 'All Day Event',
-        start: '2018-01-01',
+      url: '/calendar/get_events',
+      type: 'POST',
+      data: {
+        //date: "today"
       },
-      {
-        title: 'Long Event',
-        start: '2018-01-07',
-        end: '2018-01-10'
+      error: function() {
+        alert('there was an error while fetching events!');
       },
-      {
-        id: 999,
-        title: 'Repeating Event',
-        start: '2018-01-09T16:00:00'
-      },
-      {
-        id: 999,
-        title: 'Repeating Event',
-        start: '2018-01-16T16:00:00'
-      },
-      {
-        title: 'Conference',
-        start: '2018-01-11',
-        end: '2018-01-13'
-      },
-      {
-        title: 'Meeting',
-        start: '2018-01-12T10:30:00',
-        end: '2018-01-12T12:30:00'
-      },
-      {
-        title: 'Lunch',
-        start: '2018-01-12T12:00:00'
-      },
-      {
-        title: 'Meeting',
-        start: '2018-01-12T14:30:00'
-      },
-      {
-        title: 'Happy Hour',
-        start: '2018-01-12T17:30:00'
-      },
-      {
-        title: 'Dinner',
-        start: '2018-01-12T20:00:00'
-      },
-      {
-        title: 'Birthday Party',
-        start: '2018-01-13T07:00:00'
-      },
-      {
-        title: 'Click for Google',
-        url: 'http://google.com/',
-        start: '2018-01-28'
-      }
-    ]
+      //color: 'yellow',   // a non-ajax option
+      textColor: 'black' // a non-ajax option
+    }
+    ],
   })
+
+  var calendar = $('#calendar').fullCalendar('getCalendar');
+  calendar.on('dayClick', function(date, jsEvent, view){
+        console.log('Clicked on: ' + date.format());
+        console.log('Current view: ' + view.name);
+        //$(this).css('background-color', 'red')
+      });
+
 });

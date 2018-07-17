@@ -12,7 +12,12 @@ var event1Schema = mongoose.Schema( {
   incrementBadgeTotal: Boolean,
   recursOn: String,
   cssClass: String,
-  allDay: Boolean
+  allDay: Boolean,
+  // user: {
+  //   type: Schema.ObjectId,
+  //   ref: 'user',
+  //   required: true,
+  // }
 } );
 
 module.exports = mongoose.model( 'Event1', event1Schema );

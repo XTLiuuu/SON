@@ -41,6 +41,9 @@ const passport = require('passport')
 const configPassport = require('./config/passport')
 configPassport(passport)
 
+//routes
+const calendarD = require('./routes/calendarD');
+
 // here is where we connect to the database!
 mongoose.connect( 'mongodb://localhost:27017/SON', {useNewUrlParser: true});
 const db = mongoose.connection;
@@ -145,8 +148,8 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
-app.get('/calendarD', fullcalenController.getCalendar)
-app.get('/calendar', calendarController.getCalendar);
+app.use('/calendar', calendarD);
+//app.get('/calendar', calendarController.getCalendar);
 
 // friend function
 app.use('/friend',friend)
