@@ -27,6 +27,7 @@ const helloDFController = require('./controllers/helloDFController');
 const notiController = require('./controllers/notiController');
 
 const calendarController = require( './controllers/calendarController' );
+const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
 const User = require( './models/user' )
 
@@ -130,7 +131,7 @@ console.dir(usersController)
 app.use('/', welcomeRouter);
 app.use('/calendarM', isLoggedIn, calendarMRouter);
 app.use('/calendarW', isLoggedIn, calendarWRouter);
-app.use('/calendarD', isLoggedIn, calendarDRouter);
+//app.use('/calendarD', isLoggedIn, calendarDRouter);
 app.use('/calendarY', isLoggedIn, calendarYRouter);
 
 app.get('/users', isLoggedIn, usersController.getAllUsers );
@@ -144,7 +145,7 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 
-
+app.get('/calendarD', fullcalenController.getCalendar)
 app.get('/calendar', calendarController.getCalendar);
 
 // friend function
