@@ -2,10 +2,7 @@
 const Friend = require( '../models/Friend' );
 const Profile = require('../models/Profile');
 const mongo = require('mongodb');
-console.log("loading the profile Controller")
-
-
-
+console.log("loading the friend Controller")
 
 exports.searchProfile = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)

@@ -45,7 +45,7 @@ block content
               ul.list-group.list-group-flush
                 each input in inputs
                   input(name="deleteName" value=input.content type="checkbox")
-                  li.list-group-item #{input.title}, #{input.start}, #{input.end}, #{input.url}
+                  li.list-group-item #{input.email}, #{input.title}, #{input.start}, #{input.end}, #{input.url}
               input(type="submit" value="Delete checked items")
                 
                 
