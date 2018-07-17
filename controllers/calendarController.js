@@ -4,22 +4,27 @@ console.log("in calendar controller")
 
 exports.getCalendar = (req, res) => {
   /**
-  const days = [
-    {
-      day: 1,
-      events: [],
-      classes: "day",
-      date: new Date("2015-12-31")
-    },
-    {
-      day: 2,
-      events: [],
-      classes: "day",
-      date: new Date("2016-1-1")
-    },
+  events = [
+    { date: '2013-09-09', title: 'CLNDR GitHub Page Finished', url: 'http://github.com/kylestetz/CLNDR' },
+    { date: '2018-07-09', title: 'This is just a test', url: 'http://github.com/kylestetz/CLNDR' }
   ]
-  const daysOfTheWeek = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  //console.log("events = " + events[0].date)
   */
-  res.render('calendar');
+  var aLongEvent = [
+    {
+      end: '2018-07-20',
+      start: '2018-07-16',
+      title: 'lose weight',
+    }, {
+      end: '2018-06-20',
+      start: '2018-06-15',
+      title: 'buy makeups'
+    },
+    {
+      date: '2018-07-02',
+      title: 'this is a secret'
+    }
+  ]
+  res.render('calendar', {aLongEvent: aLongEvent});
   //res.render('calendar', {days: days, daysOfTheWeek: daysOfTheWeek});
 };
