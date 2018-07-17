@@ -50,18 +50,26 @@ exports.saveInput = ( req, res ) => {
   var st = req.body.startTime
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
-  var ed = req.body.endDate;
-  var ed1 = ed.toString();
-  var et = req.body.endTime
-  var end = ed1 + " " + et
-  console.log("end = " + end)
+  // var ed = req.body.endDate;
+  // var ed1 = ed.toString();
+  // var et = req.body.endTime
+  // var end = ed1 + " " + et
+  // console.log("end = " + end)
+  var ad = req.body.allDay
+  var allDay;
+  if(ad == 'on'){
+    allDay = true;
+  }
+  else{
+    allDay = false;
+  }
   let newInput = new Input( {
     email: req.user.googleemail,
     id: req.body.id,
     title: req.body.title,
-    allDay: req.body.allDay,
+    allDay: allDay,
     start: start,
-    end:end,
+    //end:end,
     url:req.body.url,
     editable: true,
     overlap: true,
