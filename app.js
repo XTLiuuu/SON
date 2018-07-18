@@ -27,6 +27,7 @@ const helloDFController = require('./controllers/helloDFController');
 const notiController = require('./controllers/notiController');
 
 const calendarController = require( './controllers/calendarController' );
+const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
 const User = require( './models/user' )
 
@@ -39,6 +40,9 @@ const bodyParser = require("body-parser");
 const passport = require('passport')
 const configPassport = require('./config/passport')
 configPassport(passport)
+
+//routes
+const calendarD = require('./routes/calendarD');
 
 // here is where we connect to the database!
 mongoose.connect( 'mongodb://localhost:27017/SON', {useNewUrlParser: true});
@@ -111,26 +115,26 @@ app.get('/login/authorized',
         passport.authenticate('google', {
                 successRedirect : '/',
                 failureRedirect : '/loginerror'
-        }));
-        // route middleware to make sure a user is logged in
-        function isLoggedIn(req, res, next) {
-            console.log("checking to see if they are authenticated!")
-            // if user is authenticated in the session, carry on
-            if (req.isAuthenticated()){
-              console.log("user has been Authenticated")
-              return next();
-            }
-            console.log("user has not been authenticated...")
-            // if they aren't redirect them to the home page
-            res.redirect('/auth/google');
-        }
+}));
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+    console.log("checking to see if they are authenticated!")
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated()){
+      console.log("user has been Authenticated")
+      return next();
+    }
+    console.log("user has not been authenticated...")
+    // if they aren't redirect them to the home page
+    res.redirect('/auth/google');
+}
 
 console.log("before the users routes...")
 console.dir(usersController)
 app.use('/', welcomeRouter);
 app.use('/calendarM', isLoggedIn, calendarMRouter);
 app.use('/calendarW', isLoggedIn, calendarWRouter);
-app.use('/calendarD', isLoggedIn, calendarDRouter);
+//app.use('/calendarD', isLoggedIn, calendarDRouter);
 app.use('/calendarY', isLoggedIn, calendarYRouter);
 
 app.get('/users', isLoggedIn, usersController.getAllUsers );
@@ -143,9 +147,10 @@ app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
+app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 
-
-app.get('/calendar', calendarController.getCalendar);
+app.use('/calendar', calendarD);
+//app.get('/calendar', calendarController.getCalendar);
 
 // friend function
 app.use('/friend',friend)
