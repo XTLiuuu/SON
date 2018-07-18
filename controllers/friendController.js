@@ -5,7 +5,8 @@ const Input = require('../models/Input')
 const mongo = require('mongodb');
 console.log("loading the friend Controller")
 
-exports.searchProfile = ( req, res, next ) => {
+
+exports.searchProfile = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
