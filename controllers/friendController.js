@@ -1,8 +1,10 @@
 'use strict';
 const Friend = require( '../models/Friend' );
 const Profile = require('../models/Profile');
+const Input = require('../models/Input')
 const mongo = require('mongodb');
 console.log("loading the friend Controller")
+
 
 exports.searchProfile = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)
@@ -10,7 +12,7 @@ exports.searchProfile = ( req, res ) => {
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( friend ) => {
-      console.log("friend"+friend);
+      //console.log("friend"+friend);
       res.render('searchProfile', {friend: friend});
     } )
     .catch( ( error ) => {
@@ -20,4 +22,20 @@ exports.searchProfile = ( req, res ) => {
     .then( () => {
       console.log( 'profile promise complete' );
     } );
+};
+
+exports.sendFrequest = ( req, res ) =>{
+  console.log("send friend request");
+  //if req.body.searchfriend = null
+
+  let request = new Input({email:friend.email,
+                  content: "You have a friend request from"})
+  request.save()
+    .then( () => {
+      res.redirect( '/searchProfile' );
+    } )
+    .catch( error => {
+      res.send( error );
+    } );
+
 };

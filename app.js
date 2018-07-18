@@ -155,7 +155,7 @@ app.use('/calendar', calendarD);
 // friend function
 app.use('/friend',friend)
 app.use('/addfriend', isLoggedIn, addfriend);
-app.post('/searchProfile', isLoggedIn, friendController.searchProfile);
+app.post('/searchProfile', isLoggedIn, friendController.searchProfile,friendController.sendFrequest);
 
 
 

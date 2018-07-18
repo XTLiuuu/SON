@@ -17,3 +17,8 @@ block content
       | #{friend.gender}
       br
       | #{friend.dob}
+      br
+    .container
+      form.form-inline.mr-auto(method="post" action="sendFrequest")
+        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
+        button.btn.btn-primary(type='submit') Send invitation
