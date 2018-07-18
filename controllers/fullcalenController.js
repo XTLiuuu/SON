@@ -16,7 +16,7 @@ exports.get_events_post = function(req, res){
    .then(() => {
      console.log('get event post early');
    })
-  }
+  } 
 //
 //   var events = [
 //         {

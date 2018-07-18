@@ -50,11 +50,14 @@ exports.saveInput = ( req, res ) => {
   var st = req.body.startTime
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
-  // var ed = req.body.endDate;
-  // var ed1 = ed.toString();
-  // var et = req.body.endTime
-  // var end = ed1 + " " + et
-  // console.log("end = " + end)
+  var ed = req.body.endDate;
+  var ed1 = ed.toString();
+  if(ed1 == ""){
+    ed1 = sd1;
+  }
+  var et = req.body.endTime
+  var end = ed1 + " " + et
+  console.log("end = " + end)
   var ad = req.body.allDay
   var allDay;
   if(ad == 'on'){
@@ -69,7 +72,7 @@ exports.saveInput = ( req, res ) => {
     title: req.body.title,
     allDay: allDay,
     start: start,
-    //end:end,
+    end:end,
     url:req.body.url,
     editable: true,
     overlap: true,
@@ -89,17 +92,19 @@ exports.saveInput = ( req, res ) => {
 
 exports.deleteInput = (req, res) => {
   console.log("in deleteInput")
-  let inputName = req.body.deleteName
-  if (typeof(inputName)=='string') {
-      Input.deleteOne({email:inputName})
-           .exec()
-           .then(()=>{res.redirect('/add')})
-           .catch((error)=>{res.send(error)})
-  } else if (typeof(inputName)=='object'){
-      Input.deleteMany({content:{$in:inputName}})
-           .exec()
-           .then(()=>{res.redirect('/add')})
-           .catch((error)=>{res.send(error)})
+  let input = req.body.deleteInput
+  if (typeof(input)=='string') {
+    console.log("in delete one")
+    Input.deleteOne({_id:input})
+         .exec()
+         .then(()=>{res.redirect('/add')})
+         .catch((error)=>{res.send(error)})
+  } else if(typeof(input)=='object'){
+    console.log("in delete many")
+    Input.deleteMany({_id:{$in:input}})
+         .exec()
+         .then(()=>{res.redirect('/add')})
+         .catch((error)=>{res.send(error)})
   } else if (typeof(inputName)=='undefined'){
       console.log("This is if they didn't select a input")
       res.redirect('/add')

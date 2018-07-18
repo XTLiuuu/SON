@@ -13,7 +13,7 @@ block content
             a#list-invitation-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventInvitation" role="tab" aria-controls="invitation") Event Invitation
         .col-8
           #nav-tabContent.tab-content
-            #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
+            #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-allNs-list")
               each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
@@ -23,11 +23,10 @@ block content
                     h5.font-weight-bold #{input.content}
                     p.card-text
                       | Remind me to #{input.content}
-      
-
-            #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
-              | lol
-              
+            #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-reminder-list")
+                | lol
+                | something
+                
             #friendRequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
               | lolll
     
