@@ -31,11 +31,11 @@ exports.sendFrequest = ( req, res ) =>{
   //if req.body.searchfriend = null
 
   let request = new Notification({email:req.body.searchfriend,
-                  content: "You have a friend request from"})
+                  content: "You have a friend request from "+ res.locals.user.googleemail})
   request.save()
     .then( () => {
       console.log("The invitation has been sent")
-      //res.redirect( '/sendFrequest' );
+      //res.redirect( '/searchProfile' );
     } )
     .catch( error => {
       res.send( error );

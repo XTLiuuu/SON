@@ -21,4 +21,18 @@ block content
     .container
       form.form-inline.mr-auto(method="post" action="sendFrequest")
         input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
-        button.btn.btn-primary(type='submit') Send invitation
+        button.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
+        
+        
+        #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+          .modal-dialog(role='document')
+            .modal-content
+              .modal-header
+                h5#exampleModalLabel.modal-title Modal title
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  span(aria-hidden='true') ×
+              .modal-body
+                | ...
+              .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='button') Save changes
