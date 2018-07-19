@@ -74,6 +74,8 @@ exports.saveInput = ( req, res ) => {
     editable: true,
     overlap: true,
     color: req.body.color,
+    //var date = start.toString(),
+    //var dateDisplay = date
   } )
 
   //console.log("input = "+newinput)

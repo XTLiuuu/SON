@@ -7,29 +7,25 @@ block content
       .row 
         .col-4
           #list-tab.list-group(role="tablist")
-            a#list-allNs-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#allNotifications" role="tab" aria-controls="allNs") All Notifications 
-            a#list-reminder-list.list-group-item.list-group-item-action(data-toggle="list" href="#scheduleReminder" role="tab" aria-controls="reminder") Schedule Reminder
-            a#list-request-list.list-group-item.list-group-item-action(data-toggle="list" href="#friendRequest" role="tab" aria-controls="request") Friend Request
-            a#list-invitation-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventInvitation" role="tab" aria-controls="invitation") Event Invitation
+            a#list-reminder-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#schedulereminder" role="tab" aria-controls="reminder") Schedule Reminder
+            a#list-request-list.list-group-item.list-group-item-action(data-toggle="list" href="#friendrequest" role="tab" aria-controls="request") Friend Request
+            a#list-invitation-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventinvitation" role="tab" aria-controls="invitation") Event Invitation
         .col-8
           #nav-tabContent.tab-content
-            #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
+            #schedulereminder.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-event-list")
               each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
-                    | Notification Type
-                    .alignright now
+                    | Reminder
+                    .alignright.text-monospace now
                   .card-body
-                    h5.font-weight-bold #{input.content}
+                    h5.font-weight-bold #{input.title}
                     p.card-text
-                      | Remind me to #{input.content}
+                      | Remind me to #{input.title} at #{input.start}
       
-
-            #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
-              | lol
               
-            #friendRequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
+            #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
               | lolll
     
-            #eventInvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
+            #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll
