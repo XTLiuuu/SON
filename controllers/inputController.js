@@ -77,9 +77,9 @@ exports.saveInput = ( req, res ) => {
     editable: true,
     overlap: true,
     color: req.body.color,
+    timezone: "America/Chicago"
   } )
 
-  //console.log("input = "+newinput)
 
   newInput.save()
     .then( () => {

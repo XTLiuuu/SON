@@ -36,11 +36,17 @@ block content
           .formGroup.col-2
             input.form-control(type="text" name="endTime" placeholder="e.g. 13:00")
         br
+        br
+        .form-row
+          .formGroup.col-2
+            label Content 
+          .formGroup.col-3
+            input.form-control(type="text" name="content")
         .form-row
           .formGroup.col-2
             label Event ID 
           .formGroup.col-3
-            input.form-control(type="text" name="ID" placeholder = "give your event an ID")
+            input.form-control(type="text" name="id" placeholder = "give your event an ID")
         br
         .form-row
           .formGroup.col-2
@@ -72,7 +78,9 @@ block content
                 br
                 | end = #{input.end}
                 br
-                | id = #{input.ID}, color = #{input.color}
+                | content = #{input.description}
+                br
+                | id = #{input.id}, color = #{input.color}
               br
         br
         br
