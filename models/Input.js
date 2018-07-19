@@ -7,10 +7,14 @@ var inputSchema = mongoose.Schema( {
   allDay: Boolean,
   start: Date, // include date and time
   end: Date,
+  startDate: String,
+  startTime: String,
+  endDate: String,
+  endTime: String,
   editable: Boolean, //drag
   overlap: Boolean,
   color: String,
-  timezone: String
+  adCheck: String
 } );
 
 module.exports = mongoose.model( 'Input', inputSchema );

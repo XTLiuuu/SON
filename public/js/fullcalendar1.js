@@ -33,11 +33,6 @@ $(function() {
     timezone: 'local',
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
-  // calendar.on('dayClick', function(date, jsEvent, view){
-  //       console.log('Clicked on: ' + date.format());
-  //       console.log('Current view: ' + view.name);
-  //       //$(this).css('background-color', 'red')
-  //     });
   /**
   calendar.on('eventMouseover', function(callEvent, jsEvent, view){
     if(callEvent.end == null){
@@ -49,6 +44,7 @@ $(function() {
   });
   */
   calendar.on('eventClick', function(callEvent, jsEvent, view){
-    window.location = "/calendar/update_event/" + callEvent._id;
+    console.log(callEvent)
+    window.open("/calendar/update_event/" + callEvent._id);
   });
 });

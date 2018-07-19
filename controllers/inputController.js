@@ -47,6 +47,7 @@ exports.saveInput = ( req, res ) => {
   console.dir(req)
   var sd = req.body.startDate;
   var sd1 = sd.toString();
+  var sd2 = sd.slice(0,10);
   var st = req.body.startTime
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
@@ -55,6 +56,7 @@ exports.saveInput = ( req, res ) => {
   if(ed1 == ""){
     ed1 = sd1;
   }
+  var ed2 = ed.slice(0,10);
   var et = req.body.endTime
   var end = ed1 + " " + et
   console.log("end = " + end)
@@ -73,16 +75,15 @@ exports.saveInput = ( req, res ) => {
     allDay: allDay,
     start: start,
     end:end,
+    startDate: sd2,
+    startTime: req.body.startTime,
+    endDate: ed2,
+    endTime: req.body.endTime,
     url:req.body.url,
     editable: true,
     overlap: true,
     color: req.body.color,
-<<<<<<< HEAD
-    //var date = start.toString(),
-    //var dateDisplay = date
-=======
-    timezone: "America/Chicago"
->>>>>>> f2fd91670bda510132cc02da14a276e6cf6c1927
+    adCheck: req.body.allDay
   } )
 
 

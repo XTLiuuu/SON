@@ -11,11 +11,11 @@ block content
       br
       form(method="post" action="saveInput")
         .row
-          .col-8
+          .col-2
+            label Title
+          .col-6
             .input-group.md-3
               input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%')
-          .col-4
-            input.text-center.btn.btn-warning(type="submit")
         br
         .form-row
           .formGroup.col-2
@@ -39,11 +39,6 @@ block content
         br
         .form-row
           .formGroup.col-2
-            label Content 
-          .formGroup.col-3
-            input.form-control(type="text" name="content")
-        .form-row
-          .formGroup.col-2
             label Event ID 
           .formGroup.col-3
             input.form-control(type="text" name="id" placeholder = "give your event an ID")
@@ -59,8 +54,17 @@ block content
               option Pink
               option Green
               option Grey
+          .col-2
+          .col-1
+            input.text-center.btn.btn-danger(type="submit" value="Add")
+          .col-1
+            a.text-center.btn.btn-secondary(href="/calendar/calendarD") Back
         hr
       br 
+      br
+      br
+      br
+      br
       br
       br
       form(method="post" action="deleteInput")
