@@ -1,0 +1,119 @@
+extends layoutBS
+
+block content
+    .body
+      .margin
+        h2.text-monospace Potato
+          .margin2
+        hr
+        br
+        h3.text-monospace.font-weight-bold Hotels
+        br
+        .jumbotron
+          form.text-monospace(method="post")
+            .form-row
+              .form-group.col-md-4
+                label Destination
+                input.text-monospace.form-control(name="destination" type="text" placeholder="e.g. Boston")
+              .form-group.col-md-4
+                label Visitors
+                input.text-monospace.form-control(name="visitor" type="number" placeholder="e.g. 2")
+              .form-group.col-md-4
+                label Date
+                input.text-monospace.form-control(name="date" type="date" placeholder="06.10.2018")
+            .form-row
+              .form-group.col-md-6
+                label Brand
+                select#hotel(name="brand").form-control
+                  option(selected="") Choose...
+                  option Conrad
+                  option Embassy Suites
+                  option Fairmont
+                  option Four Seasons
+                  option Grant Hyatt
+                  option Hilton
+                  option Hyatt
+                  option Hyatt Regency
+                  option InterContinental
+                  option JetBlue
+                  option JW Marriot
+                  option Loews
+                  option Mandarin Oriental
+                  option Peninsula
+                  option Renaissance
+                  option Ritz-Carlton
+                  option Shangri-La
+                  option Sheraton
+                  option Sofitel
+                  option Westin
+                  option Wyndham
+                  option Other
+              .form-group.col-md-6
+                label Travel Purpose
+                input.form-control(name="purpose" type="text" placeholder="e.g. business")
+            .form-row
+              .form-group.col-md-6
+                label Service
+                select.text-monospace(name="service").form-control
+                  option(selected="") Choose...
+                  option Free beakfast
+                  option Pool
+                  option Family Friendly
+                  option Great View
+                  option Quiet Area
+                  option Gym
+              .form-group.col-md-6
+                label Star
+                select(name="star").form-control
+                  option(selected="") Choose...
+                  option 5+ stars
+                  option 5 stars
+                  option 4 stars
+                  option 3 stars
+                  option 2 stars
+                  option 1 star
+            button.btn.btn-warning.btn-lg.text-center(type="submit") Go
+        br
+        hr
+        h5.font-weight-bold.text-monospace Best Hotels
+        .row
+          .col-4
+            #list-tab.list-group.text-monospace(role="tablist")
+              a#list-home-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#list-1" role="tab" aria-controls="home") Nihi Sumba Island, Indonesia
+              a#list-profile-list.list-group-item.list-group-item-action(data-toggle="list" href="#list-2" role="tab" aria-controls="profile") The Brando, Tetiatoa, French Polynesia
+              a#list-messages-list.list-group-item.list-group-item-action(data-toggle="list" href="#list-3" role="tab" aria-controls="messages") Lodge&Spa at Brush Creek Ranch, Saratoga, Wyoming
+              a#list-settings-list.list-group-item.list-group-item-action(data-toggle="list" href="#list-4" role="tab" aria-controls="settings") Lodge at Kauri Cliffs, Matauri Bay, New Zealand
+              a#list-settings-list.list-group-item.list-group-item-action(data-toggle="list" href="#list-5" role="tab" aria-controls="settings") Gibb's Farm, Karatu, Tanzania
+              a#list-settings-list.list-group-item.list-group-item-action(data-toggle="list" href="#list-5" role="tab" aria-controls="settings") More
+          .col-8
+            #nav-tabContent.tab-content.text-monospace
+              #list-1.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-home-list")
+                |A cluster of rustic-luxe villas perched above a stretch of unspoilt Sumbanese coast, Nihi Sumba hotel feels perched on the edge of the world.
+                |Preserved from urban development, this off-the-beaten-path Indonesian island is an idyllic setting for once-in-a-lifetime romance.
+                br
+                br
+                img.card-img-topimg(src='/images/nihi.jpg' width='60%')
+              #list-2.tab-pane.fade(role="tabpanel" aria-labelledby="list-profile-list")
+                |The Brando is a unique luxury resort on French Polynesia’s breathtakingly beautiful private island of Tetiaroa – an atoll composed of a dozen small islands surrounding a sparkling lagoon 30 miles northeast of Tahiti.
+                br
+                br
+                img.card-img-topimg(src='/images/brando.jpg' width='60%')
+              #list-3.tab-pane.fade(role="tabpanel" aria-labelledby="list-messages-list")
+                |The Lodge & Spa at Brush Creek Ranch, a luxury boutique guest ranch in Saratoga, Wyoming, is the perfect place to unwind and experience life on true working ranch in the Great American West.
+                |From log-hewn buildings to stone fireplaces to plenty of outdoor activities, this Saratoga guest ranch makes every guest feel at home on 30,000 private acres.
+                br
+                br
+                img.card-img-topimg(src='/images/lodgebrush.png' width='50%')
+              #list-4.tab-pane.fade(role="tabpanel" aria-labelledby="list-settings-list")
+                |With sweeping views of the Pacific Ocean, The Lodge at Kauri Cliffs hotel on the North Island of New Zealand entices at every turn.
+                |A four hour drive from Auckland, this hideaway is set in the middle of 6,000 acres near Matauri Bay – overlooking Cape Brett and the Cavalli Islands.
+                br
+                br
+                img.card-img-topimg(src='/images/kauricliff.jpg' width='50%')
+              #list-5.tab-pane.fade(role="tabpanel" aria-labelledby="list-settings-list")
+                |Gibbs farm is not just a stop off point for the Ngorongoro Crater and other nearby safari delights.  It’s a hotel that offers peace, tranquillity and a return to a different way of life!
+                |The guests are actively encouraged to become at one with their surroundings and emerge themselves into the ‘rhythm of the farm’.
+                br
+                br
+                img.card-img-topimg(src='/images/gibbsfarm.jpg' width='50%')
+      
