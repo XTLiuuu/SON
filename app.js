@@ -4,17 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
-const clndr = require( './routes/clndr' );
+//const clndr = require( './routes/clndr' );
 var moment = require('moment');
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
-var calendarYRouter = require('./routes/calendarY');
-var calendarMRouter = require('./routes/calendarM');
-var calendarWRouter = require('./routes/calendarW');
-var calendarDRouter = require('./routes/calendarD');
+//var calendarYRouter = require('./routes/calendarY');
+//var calendarMRouter = require('./routes/calendarM');
+//var calendarWRouter = require('./routes/calendarW');
+//var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
@@ -132,10 +132,10 @@ function isLoggedIn(req, res, next) {
 console.log("before the users routes...")
 console.dir(usersController)
 app.use('/', welcomeRouter);
-app.use('/calendarM', isLoggedIn, calendarMRouter);
-app.use('/calendarW', isLoggedIn, calendarWRouter);
+//app.use('/calendarM', isLoggedIn, calendarMRouter);
+//app.use('/calendarW', isLoggedIn, calendarWRouter);
 //app.use('/calendarD', isLoggedIn, calendarDRouter);
-app.use('/calendarY', isLoggedIn, calendarYRouter);
+//app.use('/calendarY', isLoggedIn, calendarYRouter);
 
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
