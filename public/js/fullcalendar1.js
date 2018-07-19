@@ -30,19 +30,25 @@ $(function() {
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
+    timezone: 'local',
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
-  calendar.on('dayClick', function(date, jsEvent, view){
-        console.log('Clicked on: ' + date.format());
-        console.log('Current view: ' + view.name);
-        //$(this).css('background-color', 'red')
-      });
-  calendar.on('eventClick', function(callEvent, jsEvent, view){
+  // calendar.on('dayClick', function(date, jsEvent, view){
+  //       console.log('Clicked on: ' + date.format());
+  //       console.log('Current view: ' + view.name);
+  //       //$(this).css('background-color', 'red')
+  //     });
+  /**
+  calendar.on('eventMouseover', function(callEvent, jsEvent, view){
     if(callEvent.end == null){
       alert(callEvent.start.format("hh:mm a") + ": " + callEvent.title)
     }
     else{
       alert(callEvent.start.format("hh:mm a") + " - " + callEvent.end.format("hh:mm a") + ": " + callEvent.title)
     }
+  });
+  */
+  calendar.on('eventClick', function(callEvent, jsEvent, view){
+    window.location = "/calendar/update_event/" + callEvent._id;
   });
 });

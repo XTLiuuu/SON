@@ -17,8 +17,10 @@ var isLoggedIn = function (req, res, next) {
 /* GET home page. */
 router.get('/calendarD', isLoggedIn, fullcalenController.getCalendar);
 //   /calendar/calendarD
-
 router.post('/get_events', isLoggedIn, fullcalenController.get_events_post);
 //  /calendar/get_events
 
+//router.post('/update_events', isLoggedIn, fullcalenController.updateEvent);
+router.get('/update_event/:event_id', isLoggedIn, fullcalenController.update_event_get);
+router.post('/update_event/:event_id', isLoggedIn, fullcalenController.update_event_post);
 module.exports = router;
