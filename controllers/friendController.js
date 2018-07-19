@@ -7,7 +7,7 @@ const mongo = require('mongodb');
 console.log("loading the friend Controller")
 
 
-exports.searchProfile = ( req, res ,next ) => {
+exports.searchProfile_post = ( req, res ,next ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
@@ -26,6 +26,10 @@ exports.searchProfile = ( req, res ,next ) => {
     } );
 };
 
+exports.searchProfile_get = ( req, res ,next ) => {
+  res.render('searchProfile', {message: "Success."})
+};
+
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
@@ -33,13 +37,17 @@ exports.sendFrequest = ( req, res ) =>{
   let request = new Notification({email:req.body.searchfriend,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
                   from: res.locals.user.googleemail})
-  request.save()
-    .then( () => {
+  request.save(function(err, doc){
+    if(err){
+      res.json(err);
+    } else {
       console.log("The invitation has been sent")
-      //res.redirect( '/searchProfile' );
-    } )
-    .catch( error => {
-      res.send( error );
-    } );
+      res.redirect( '/searchProfile' );
+    }
+  })
+};
+
+exports.deleteRequest = ( req, res) =>{
+  console.log("deleteRequest");
 
 };
