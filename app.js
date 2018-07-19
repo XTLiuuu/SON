@@ -157,7 +157,7 @@ app.use('/friend',isLoggedIn, friend);
 app.use('/addfriend', isLoggedIn, addfriend);
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile, friendController.sendFrequest);
 
-app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notificationRouter);
+app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notiController.getAllNotis);
 //app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);
 
 app.get('/test', helloDFController.getAllSchedule);

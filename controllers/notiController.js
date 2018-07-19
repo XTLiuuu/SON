@@ -1,6 +1,7 @@
 'use strict';
 const Noti = require( '../models/Notification' );
 const mongo = require('mongodb');
+const Input = require('../models/Input');
 console.log("loading the notification Controller")
 
 // this displays all of the skills
@@ -45,17 +46,10 @@ exports.getNoti = ( req, res ) => {
 exports.attachNoti = ( req, res, next ) => {
   console.log('in attachNoti')
   //const objId = new mongo.ObjectId(req.params.id)
-  Noti.find({}) //{"_id": objId})
+  Input.find({}) //{"_id": objId})
     .exec()
     .then( ( noti ) => {
-      if(noti == null){
-
-      }
-      noti = new Noti({
-        type: "default",
-        title: "default",
-        content: res.locals.input.content
-      })
+      
       res.locals.noti = noti
       next()
     } )
