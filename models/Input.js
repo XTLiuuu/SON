@@ -7,7 +7,6 @@ var inputSchema = mongoose.Schema( {
   allDay: Boolean,
   start: Date, // include date and time
   end: Date,
-  url: String,
   editable: Boolean, //drag
   overlap: Boolean,
   color: String,

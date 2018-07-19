@@ -1,5 +1,8 @@
 extends layoutBS
 
+block head
+  script(src="/js/update.js")
+
 block content
   .body
     .margin
@@ -9,11 +12,11 @@ block content
           input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
       br
       br
-      form(method="post" action="saveInput")
+      form(method="post" action="" onsubmit="return validateForm()")
         .row
           .col-8
             .input-group.md-3
-              input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%')
+              input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%' value=event_doc.title)
           .col-4
             input.text-center.btn.btn-warning(type="submit")
         br
@@ -63,28 +66,4 @@ block content
       br 
       br
       br
-      form(method="post" action="deleteInput")
-        br
-        .card(style="width: 35rem;") 
-          .card-header 
-          | All events
-          ol
-            each input in inputs
-              li
-                input(name="deleteInput" value=input._id type="checkbox")
-                list-group-item title = #{input.title}
-                br
-                | start = #{input.start}
-                br
-                | end = #{input.end}
-                br
-                | content = #{input.description}
-                br
-                | id = #{input.id}, color = #{input.color}
-              br
-        br
-        br
-        input(type="submit" value="Delete checked items")
-            
-            
-          
+    
