@@ -1,12 +1,13 @@
 'use strict';
 const Friend = require( '../models/Friend' );
 const Profile = require('../models/Profile');
-const Input = require('../models/Input')
+const Input = require('../models/Input');
+const Notification = require('../models/Notification');
 const mongo = require('mongodb');
 console.log("loading the friend Controller")
 
 
-exports.searchProfile = ( req, res ) => {
+exports.searchProfile = ( req, res ,next ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
@@ -14,6 +15,7 @@ exports.searchProfile = ( req, res ) => {
     .then( ( friend ) => {
       //console.log("friend"+friend);
       res.render('searchProfile', {friend: friend});
+      next()
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -28,11 +30,12 @@ exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
 
-  let request = new Input({email:friend.email,
+  let request = new Notification({email:req.body.searchfriend,
                   content: "You have a friend request from"})
   request.save()
     .then( () => {
-      res.redirect( '/searchProfile' );
+      console.log("The invitation has been sent")
+      //res.redirect( '/sendFrequest' );
     } )
     .catch( error => {
       res.send( error );

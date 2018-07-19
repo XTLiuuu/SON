@@ -153,11 +153,9 @@ app.use('/calendar', calendarD);
 //app.get('/calendar', calendarController.getCalendar);
 
 // friend function
-app.use('/friend',friend)
+app.use('/friend',isLoggedIn, friend);
 app.use('/addfriend', isLoggedIn, addfriend);
-app.post('/searchProfile', isLoggedIn, friendController.searchProfile,friendController.sendFrequest);
-
-
+app.post('/searchProfile', isLoggedIn, friendController.searchProfile, friendController.sendFrequest);
 
 app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notificationRouter);
 //app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);

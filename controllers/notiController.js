@@ -41,7 +41,7 @@ exports.getNoti = ( req, res ) => {
     } );
 };
 
-/**
+
 exports.attachNoti = ( req, res, next ) => {
   console.log('in attachNoti')
   //const objId = new mongo.ObjectId(req.params.id)
@@ -68,7 +68,7 @@ exports.attachNoti = ( req, res, next ) => {
       console.log( 'attach notification promise complete' );
     } );
 };
-*/
+
 
 // exports.saveNoti = ( req, res ) => {
 //   console.log("in save noti!")//after user save the input
