@@ -42,7 +42,7 @@ exports.sendFrequest = ( req, res ) =>{
       res.json(err);
     } else {
       console.log("The invitation has been sent")
-      res.redirect( '/searchProfile' );
+      res.redirect( '/friend' );
     }
   })
 };
