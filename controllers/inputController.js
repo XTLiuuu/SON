@@ -83,15 +83,7 @@ exports.saveInput = ( req, res ) => {
     editable: true,
     overlap: true,
     color: req.body.color,
-<<<<<<< HEAD
-    adCheck: req.body.allDay,
-    timezone: "America/Chicago",
-=======
     adCheck: req.body.allDay
-    //var date = start.toString(),
-    //var dateDisplay = date
-    //timezone: "America/Chicago"
->>>>>>> 854f8c1b51d3d0208803bb5f888922dae04b131d
   } )
 
 
