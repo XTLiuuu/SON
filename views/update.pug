@@ -1,0 +1,71 @@
+extends layoutBS
+
+block head
+  script(src="/js/update.js")
+
+block content
+  .body
+    .margin
+      .row
+        .col-12.text-center
+          h1.text-center SON
+          input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
+      br
+      br
+      form(method="post" action="" onsubmit="return validateForm()")
+        .row
+          .col-2
+            label Title
+          .col-6
+            .input-group.md-3
+              input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%' value=event_doc.title)
+        br
+        .form-row
+          .formGroup.col-2
+            label Start Time 
+          .formGroup.col-3
+            input.form-control(type="date" name="startDate" value=event_doc.startDate)
+          .formGroup.col-2
+            input.form-control(type="text" name="startTime" placeholder="e.g. 10:00" value=event_doc.startTime)
+          .formGroup.col-2
+            input(type="checkbox" class = "all-day-check" name = "allDay" checked=event_doc.allDay) 
+            label.all-day-check All day 
+        br
+        .form-row
+          .formGroup.col-2
+            label End Time 
+          .formGroup.col-3
+            input.form-control(type="date" name="endDate" value=event_doc.endDate)
+          .formGroup.col-2
+            input.form-control(type="text" name="endTime" placeholder="e.g. 13:00" value=event_doc.endTime)
+        br
+        br
+        .form-row
+          .formGroup.col-2
+            label People
+          .formGroup.col-3
+            input.form-control(type="text" name="id" placeholder = "Add participants here" value=event_doc.id)
+        br
+        .form-row
+          .formGroup.col-2
+            label Color 
+          .formGroup.col-3
+            select(name="color" ).form-control
+              option(selected="") #{event_doc.color}
+              option(name = "...") ...
+              option(name = "red") Red
+              option(name = "yellow") Yellow
+              option(name = "pink") Pink
+              option(name = "green") Green
+              option(name = "grey") Grey
+          .col-2
+          .col-1
+            input.text-center.btn.btn-danger(type="submit" name = "update" value="Update")
+          .col-1
+            input.text-center.btn.btn-danger(type="submit" name = "delete" value="Delete")        
+          .col-1
+            a.text-center.btn.btn-secondary(href="/calendar/calendarD") Back
+        hr 
+      br
+      br
+    

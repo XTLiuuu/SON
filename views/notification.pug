@@ -29,7 +29,21 @@ block content
       
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
+<<<<<<< HEAD
               | lollll
+=======
+              each noti in notis
+                .card.bg-light.mb-3(style="max-width: 50rem;")
+                  .card-header 
+                    | Friend request
+                    .alignright.text-monospace now
+                  .card-body
+                    h5.font-weight-bold #{noti.content}
+                    h5.font-weight-bold #{noti.email}
+                    h5.font-weight-bold #{noti.from}
+                    button() accept
+                    button() cancel
+>>>>>>> 7c088e236d3cdcd61521d00e5d21b5ef8d4d0357
 
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll

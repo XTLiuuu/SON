@@ -3,8 +3,16 @@ extends layoutBS
 block content
 
   h1 SON
+  br
+  form(method="post" action="deleteUser")
+    ol
+      each u in users
+        li
+          input(name="deleteName" value=u._id type="checkbox")
+          e #{u.googlename}
+          br
+      br
+      input.btn.btn-info(type="submit" value="Delete checked items")
+      hr
 
-  ul
-    each u in users
-      li
-        a(href="/users/"+u._id) #{u.googlename}
+      

@@ -4,16 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
-const clndr = require( './routes/clndr' );
 var moment = require('moment');
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
 var welcomeRouter = require('./routes/welcome');
-var calendarYRouter = require('./routes/calendarY');
-var calendarMRouter = require('./routes/calendarM');
-var calendarWRouter = require('./routes/calendarW');
 var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
@@ -132,13 +128,10 @@ function isLoggedIn(req, res, next) {
 console.log("before the users routes...")
 console.dir(usersController)
 app.use('/', welcomeRouter);
-app.use('/calendarM', isLoggedIn, calendarMRouter);
-app.use('/calendarW', isLoggedIn, calendarWRouter);
-//app.use('/calendarD', isLoggedIn, calendarDRouter);
-app.use('/calendarY', isLoggedIn, calendarYRouter);
 
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
+app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 
 //app.use('/setting', settingRouter);
 
@@ -150,21 +143,20 @@ app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 
 app.use('/calendar', calendarD);
-//app.get('/calendar', calendarController.getCalendar);
 
 // friend function
-app.use('/friend',friend)
+app.use('/friend',isLoggedIn, friend);
 app.use('/addfriend', isLoggedIn, addfriend);
-app.post('/searchProfile', isLoggedIn, friendController.searchProfile,friendController.sendFrequest);
+app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
+app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
+app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 
-
-
-app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notificationRouter);
-//app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);
+app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notiController.getAllNotis);
+//app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
-app.get('/hook', helloDFController.getAllSchedule);
+app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
 // catch 404 and forward to error handler
