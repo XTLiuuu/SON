@@ -42,28 +42,30 @@ block content
         br
         .form-row
           .formGroup.col-2
-            label Event ID 
+            label People
           .formGroup.col-3
-            input.form-control(type="text" name="id" placeholder = "give your event an ID" value=event_doc.id)
+            input.form-control(type="text" name="id" placeholder = "Add participants here" value=event_doc.id)
         br
         .form-row
           .formGroup.col-2
             label Color 
           .formGroup.col-3
-            select(name="color" value=event_doc.color).form-control
-              option(selected="") Choose...
-              option Red
-              option Yellow
-              option Pink
-              option Green
-              option Grey
+            select(name="color" ).form-control
+              option(selected="") #{event_doc.color}
+              option(name = "...") ...
+              option(name = "red") Red
+              option(name = "yellow") Yellow
+              option(name = "pink") Pink
+              option(name = "green") Green
+              option(name = "grey") Grey
           .col-2
           .col-1
-            input.text-center.btn.btn-danger(type="submit" value="Update")
+            input.text-center.btn.btn-danger(type="submit" name = "update" value="Update")
+          .col-1
+            input.text-center.btn.btn-danger(type="submit" name = "delete" value="Delete")        
           .col-1
             a.text-center.btn.btn-secondary(href="/calendar/calendarD") Back
-        hr
-      br 
+        hr 
       br
       br
     

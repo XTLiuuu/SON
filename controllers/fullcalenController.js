@@ -42,57 +42,65 @@ exports.update_event_get = function(req, res){
 
 exports.update_event_post = function(req, res){
   console.log('in update_event_post1')
+  console.log("test123 = " + req.body.update)
+  console.log("test 456 = " + req.body.delete)
+  console.log(req.body.update == 'Update')
+  console.log(req.body.delete == 'Delete')
   const event_id = req.params.event_id;
-  var sd = req.body.startDate;
-  var sd1 = sd.toString();
-  var sd2 = sd.slice(0,10);
-  var st = req.body.startTime
-  var start = sd1 + " " + st + " "
-  console.log("start = " + start)
-  var ed = req.body.endDate;
-  var ed1 = ed.toString();
-  if(ed1 == ""){
-    ed1 = sd1;
+  if(req.body.update == 'Update'){
+    var sd = req.body.startDate;
+    var sd1 = sd.toString();
+    var sd2 = sd.slice(0,10);
+    var st = req.body.startTime
+    var start = sd1 + " " + st + " "
+    console.log("start = " + start)
+    var ed = req.body.endDate;
+    var ed1 = ed.toString();
+    if(ed1 == ""){
+      ed1 = sd1;
+    }
+    var ed2 = ed.slice(0,10);
+    var et = req.body.endTime
+    var end = ed1 + " " + et
+    console.log("end = " + end)
+    var ad = req.body.allDay
+    var allDay;
+    if(ad == 'on'){
+      allDay = true;
+    }
+    else{
+      allDay = false;
+    }
+    var curr = Input.findOne({_id: event_id})
+    console.log("curr title " + curr.title)
+    console.log("curr title " + curr.startTime)
+    curr.update({_id: event_id}, {
+      email: req.user.googleemail,
+      id: req.body.id,
+      title: req.body.title,
+      allDay: allDay,
+      start: start,
+      end:end,
+      startDate: sd2,
+      startTime: req.body.startTime,
+      endDate: ed2,
+      endTime: req.body.endTime,
+      url:req.body.url,
+      editable: true,
+      overlap: true,
+      color: req.body.color,
+      adCheck: req.body.allDay
+    }).exec()
+    .then( () => {
+      res.redirect( '/calendar/calendarD' );
+    } )
   }
-  var ed2 = ed.slice(0,10);
-  var et = req.body.endTime
-  var end = ed1 + " " + et
-  console.log("end = " + end)
-  var ad = req.body.allDay
-  var allDay;
-  if(ad == 'on'){
-    allDay = true;
+  else if(req.body.delete == 'Delete'){
+    console.log("in delete event")
+    Input.deleteOne({_id:event_id})
+         .exec()
+         .then(()=>{res.redirect('/calendar/calendarD')})
+         .catch((error)=>{res.send(error)})
   }
-  else{
-    allDay = false;
-  }
-  var curr = Input.findOne({_id: event_id})
-  console.log("curr title " + curr.title)
-  console.log("curr title " + curr.startTime)
-  curr.update({_id: event_id}, {
-    email: req.user.googleemail,
-    id: req.body.id,
-    title: req.body.title,
-    allDay: allDay,
-    start: start,
-    end:end,
-    startDate: sd2,
-    startTime: req.body.startTime,
-    endDate: ed2,
-    endTime: req.body.endTime,
-    url:req.body.url,
-    editable: true,
-    overlap: true,
-    color: req.body.color,
-    adCheck: req.body.allDay
-  }).exec()
-  .then( () => {
-    console.log("curr title1 " + curr.title)
-    console.log("curr st1 " + curr.startTime)
-    res.redirect( '/calendar/calendarD' );
-  } )
-}
-
-exports.deleteCalendar = function(req, res){
 
 }
