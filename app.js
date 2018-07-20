@@ -161,7 +161,7 @@ app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 */
 app.use('/friend',isLoggedIn, friend);
 app.post('/searchProfile',isLoggedIn, friendController.searchProfile_post);
-//app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get);
+app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get);
 app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 
 
