@@ -152,7 +152,7 @@ app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 
 app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notiController.getAllNotis);
-//app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);
+//app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

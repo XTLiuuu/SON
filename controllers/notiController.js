@@ -7,7 +7,7 @@ console.log("loading the notification Controller")
 // this displays all of the skills
 exports.getAllNotis = ( req, res ) => {
   console.log('in getAllNoti')
-  Noti.find( {} )
+  Noti.find( {email:res.locals.user.googleemail} )
     .exec()
     .then( ( notis ) => {
       res.render( 'notification', {
@@ -49,7 +49,7 @@ exports.attachNoti = ( req, res, next ) => {
   Input.find({}) //{"_id": objId})
     .exec()
     .then( ( noti ) => {
-      
+
       res.locals.noti = noti
       next()
     } )

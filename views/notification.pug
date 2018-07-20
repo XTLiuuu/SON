@@ -30,17 +30,16 @@ block content
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
               each noti in notis
-                if user.googleemail = noti.email
-                  .card.bg-light.mb-3(style="max-width: 50rem;")
-                    .card-header 
-                      | Friend request
-                      .alignright.text-monospace now
-                    .card-body
-                      h5.font-weight-bold #{noti.content}
-                      h5.font-weight-bold #{noti.email}
-                      h5.font-weight-bold #{noti.from}
-                      button() accept
-                      button() cancel
+                .card.bg-light.mb-3(style="max-width: 50rem;")
+                  .card-header 
+                    | Friend request
+                    .alignright.text-monospace now
+                  .card-body
+                    h5.font-weight-bold #{noti.content}
+                    h5.font-weight-bold #{noti.email}
+                    h5.font-weight-bold #{noti.from}
+                    button() accept
+                    button() cancel
 
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll
