@@ -132,13 +132,13 @@ exports.process_request =  (req, res) => {
     }
     console.log("text = " + text)
     console.log("["+text.trim()+"]");
-    var searchTime = new moment(date + " " + time)
-    console.log("searchTime = " + searchTime)
+    var start1 = date + " " + time
     Input.findOne({
       title: text.trim(),
+      start: start1
     }, function(err, input){
       if(err){
-        console.log( error.message );
+        console.log( err.message );
       } else {
         console.log("Input is " + input)
         if(input == null){
@@ -281,7 +281,7 @@ function addEvent(req, user){
   var sd = date.toString().slice(0,10);
   let newInput = new Input ({
     email: "liuxuantong0611@gmail.com",
-    title: text,
+    title: text.trim(),
     start: start1,
     startDate: sd,
     startTime: time
