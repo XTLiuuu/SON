@@ -156,7 +156,7 @@ app.use('/notification', isLoggedIn, usersController.attachUser,inputController.
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
-app.get('/hook', helloDFController.getAllSchedule);
+app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
 // catch 404 and forward to error handler

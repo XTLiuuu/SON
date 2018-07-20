@@ -1,10 +1,12 @@
 'use strict';
 const Schedule = require( '../models/Schedule' );
-console.log("loading the schedule Controller")
+const Input = require( '../models/Input' );
+console.log("loading the ipnut Controller")
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
+  //console.log("req.user.goo = " + req.locals.user)
   var output_string;
   var name;
  // this is how we define the result
@@ -32,7 +34,7 @@ exports.process_request =  (req, res) => {
   // needs to figure out how to extract event
   if(req.body.request.intent.name == "add_event"){
     console.log("in Add_Event");
-    output_string = addEvent(req.body.request);
+    output_string = addEvent(req.body.request, req.user);
     console.log("output_string1 = " + output_string)
     result.response.outputSpeech.text = output_string;
     res.json(result);
@@ -53,9 +55,9 @@ exports.process_request =  (req, res) => {
 
     // when the user asks a certain time slot
     if(time){
-      Schedule.find({
-        time: time,
-        date: date,
+      var start1 = date + " " + time
+      Input.find({
+        start: start1
       }, function(err, schedule_list){
         if(err){
           console.log( error.message );
@@ -66,14 +68,14 @@ exports.process_request =  (req, res) => {
           } else {
             // if the list contains only one event
             if(schedule_list.length == 1){
-              output_string =  time + " on " + date + " : Pipi, you will "+ schedule_list[0].schedule;
+              output_string =  time + " on " + date + ", Pipi: "+ schedule_list[0].title + "; ";
             }
             // if the list contains more than one event
             // do this only for format
             else{
-              output_string = time + " on " + date + " : Pipi, you will "+ schedule_list[0].schedule;
+              output_string = time + " on " + date + ", Pipi: "+ schedule_list[0].title + "; ";
               for(var i = 1; i < schedule_list.length; i ++){
-                output_string = output_string + " , " + schedule_list[i].schedule;
+                output_string = output_string + schedule_list[i].title + "; ";
               }
             }
           }
@@ -86,8 +88,8 @@ exports.process_request =  (req, res) => {
     // when the user asks a certain date
     // e.g. what am i going to do tomorrow
     else{
-      Schedule.find({
-        date: date,
+      Input.find({
+        startDate: date,
       }, function(err, schedule_list){
         if(err){
           console.log( error.message );
@@ -97,12 +99,12 @@ exports.process_request =  (req, res) => {
           } else {
             console.log("schedule is " + schedule_list)
             if(schedule_list.length == 1){
-              output_string = date + " : Pipi, you will "+ schedule_list[0].schedule + "at" + schedule_list[0].time + "; ";
+              output_string = date + ", Pipi: "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
             }
             else{
-              output_string = date + " : Pipi, you will "+ schedule_list[0].schedule + "at" + schedule_list[0].time + "; ";
+              output_string = date + ", Pipi: "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
               for(var i = 1; i < schedule_list.length; i ++){
-                output_string = output_string + " , " + schedule_list[i].schedule + "at" + schedule_list[i].time + "; ";
+                output_string = output_string + schedule_list[i].title + " at " + schedule_list[i].startTime + "; ";
               }
             }
           }
@@ -130,23 +132,21 @@ exports.process_request =  (req, res) => {
     }
     console.log("text = " + text)
     console.log("["+text.trim()+"]");
-    console.log(text.length);
-
-    Schedule.findOne({
-      schedule: text.trim(),
-      date: date,
-      time: time
-    }, function(err, schedule){
+    var searchTime = new moment(date + " " + time)
+    console.log("searchTime = " + searchTime)
+    Input.findOne({
+      title: text.trim(),
+    }, function(err, input){
       if(err){
         console.log( error.message );
       } else {
-        console.log("schedule is " + schedule)
-        if(schedule == null){
+        console.log("Input is " + input)
+        if(input == null){
           output_string = text + " on " + date + " at " + time + " is not found, pipi"
         } else {
-          console.log("schedule is " + schedule)
+          console.log("Input is " + input)
           output_string =  text + " on " + date + " at " + time + " is cancelled, pipi";
-          Schedule.deleteOne({_id:schedule._id}).exec()
+          Input.deleteOne({_id:input._id}).exec()
         }
       }
 
@@ -165,7 +165,7 @@ function welcome(name) {
 };
 
 // save event
-function addEvent(req){
+function addEvent(req, user){
   console.log("in addEvent1")
   var response;
   var time = req.intent.slots.time["value"];
@@ -277,16 +277,17 @@ function addEvent(req){
   if(text.slice(-2) == "at"){
     text = text.slice(0, -2)
   }
-  let newSchedule = new Schedule ({
-    time: time,
-    date: date,
-    schedule: text,
-    date1: date,
+  var start1 = date + " " + time + " "
+  var sd = date.toString().slice(0,10);
+  let newInput = new Input ({
+    email: "liuxuantong0611@gmail.com",
+    title: text,
+    start: start1,
+    startDate: sd,
+    startTime: time
   })
-  newSchedule.save()
-  console.log("time is " + newSchedule.time);
-  console.log("date is " + newSchedule.date);
-  console.log("schedule is " + newSchedule.schedule);
+  newInput.save()
+  console.log(newInput);
   console.log(response)
   return response;
 }
