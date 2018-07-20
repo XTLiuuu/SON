@@ -12,11 +12,10 @@ block content
             a#list-invitation-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventinvitation" role="tab" aria-controls="invitation") Event Invitation
         .col-8
           #nav-tabContent.tab-content
-<<<<<<< HEAD
+
             #schedulereminder.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-event-list")
-=======
-            #allNotifications.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-allNs-list")
->>>>>>> f2fd91670bda510132cc02da14a276e6cf6c1927
+
+
               each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
@@ -25,20 +24,12 @@ block content
                   .card-body
                     h5.font-weight-bold #{input.title}
                     p.card-text
-<<<<<<< HEAD
+
                       | Remind me to #{input.title} at #{input.start}
       
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
-=======
-                      | Remind me to #{input.content}
-            #scheduleReminder.tab-pane.fade(role="tabpanel" aria-labelledby="list-reminder-list")
-                | lol
-                | something
-                
-            #friendRequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
->>>>>>> f2fd91670bda510132cc02da14a276e6cf6c1927
-              | lolll
-    
+              | lollll
+
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll

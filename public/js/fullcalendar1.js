@@ -30,6 +30,7 @@ $(function() {
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
+    timezone: 'local'
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
   calendar.on('dayClick', function(date, jsEvent, view){
