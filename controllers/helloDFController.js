@@ -62,16 +62,16 @@ exports.process_request =  (req, res) => {
         } else {
           // if the schedule_list is empty
           if(schedule_list.length == 0){
-            output_string = "You have nothing scheduled for " + date + " at " + time
+            output_string = "Pipi, you have nothing scheduled for " + date + " at " + time
           } else {
             // if the list contains only one event
             if(schedule_list.length == 1){
-              output_string =  time + " on " + date + " : "+ schedule_list[0].schedule;
+              output_string =  time + " on " + date + " : Pipi, you will "+ schedule_list[0].schedule;
             }
             // if the list contains more than one event
             // do this only for format
             else{
-              output_string = time + " on " + date + " : "+ schedule_list[0].schedule;
+              output_string = time + " on " + date + " : Pipi, you will "+ schedule_list[0].schedule;
               for(var i = 1; i < schedule_list.length; i ++){
                 output_string = output_string + " , " + schedule_list[i].schedule;
               }
@@ -93,16 +93,16 @@ exports.process_request =  (req, res) => {
           console.log( error.message );
         } else {
           if(schedule_list.length == 0){
-            output_string = "You have nothing scheduled for " + date
+            output_string = "Pipi, you have nothing scheduled for " + date
           } else {
             console.log("schedule is " + schedule_list)
             if(schedule_list.length == 1){
-              output_string = date + " : "+ schedule_list[0].schedule + "(" + schedule_list[0].time + ") ";
+              output_string = date + " : Pipi, you will "+ schedule_list[0].schedule + "at" + schedule_list[0].time + "; ";
             }
             else{
-              output_string = date + " : "+ schedule_list[0].schedule + "(" + schedule_list[0].time + ") ";
+              output_string = date + " : Pipi, you will "+ schedule_list[0].schedule + "at" + schedule_list[0].time + "; ";
               for(var i = 1; i < schedule_list.length; i ++){
-                output_string = output_string + " , " + schedule_list[i].schedule + "(" + schedule_list[i].time + ") ";
+                output_string = output_string + " , " + schedule_list[i].schedule + "at" + schedule_list[i].time + "; ";
               }
             }
           }
@@ -142,10 +142,10 @@ exports.process_request =  (req, res) => {
       } else {
         console.log("schedule is " + schedule)
         if(schedule == null){
-          output_string = text + " on " + date + " at " + time + " is not found"
+          output_string = text + " on " + date + " at " + time + " is not found, pipi"
         } else {
           console.log("schedule is " + schedule)
-          output_string =  text + " on " + date + " at " + time + " is cancelled";
+          output_string =  text + " on " + date + " at " + time + " is cancelled, pipi";
           Schedule.deleteOne({_id:schedule._id}).exec()
         }
       }
@@ -188,7 +188,7 @@ function addEvent(req){
         date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       }
     }
-    response = "Okay, I will remind you on " + date + " at " + time + "."
+    response = "Okay, pipi, I will remind you on " + date + " at " + time + "."
   }
 
   if(duration){
@@ -272,7 +272,7 @@ function addEvent(req){
     else{
       date = year + "-" + month + "-" + day;
     }
-    response = "Okay, I will remind you in " + num + " " + type
+    response = "Okay, pipi, I will remind you in " + num + " " + type
   }
   if(text.slice(-2) == "at"){
     text = text.slice(0, -2)
