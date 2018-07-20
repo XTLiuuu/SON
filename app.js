@@ -33,8 +33,7 @@ const User = require( './models/user' )
 
 //friend function
 const friend = require('./routes/friend')
-const addfriend = require('./routes/addfriend')
-
+//const addfriend = require('./routes/addfriend')
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
@@ -153,11 +152,18 @@ app.use('/calendar', calendarD);
 //app.get('/calendar', calendarController.getCalendar);
 
 // friend function
+/*
 app.use('/friend',isLoggedIn, friend);
 app.use('/addfriend', isLoggedIn, addfriend);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
+*/
+app.use('/friend',isLoggedIn, friend);
+app.post('/searchProfile',isLoggedIn, friendController.searchProfile_post);
+//app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get);
+app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
+
 
 app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notiController.getAllNotis);
 //app.use('/notification', isLoggedIn, notiController.attachNoti, notiController.getAllNotis);

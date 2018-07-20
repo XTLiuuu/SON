@@ -2,7 +2,9 @@ extends layoutBS
 
 block content
   .container
-    a.btn.btn-outline-secondary(href='/addfriend', role='button') Add New Friend
+    form.form-inline.mr-auto(method="post" action="searchProfile")
+      input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
+      button.btn.btn-primary(type='submit') Search
     br
     br
     .row

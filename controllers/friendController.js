@@ -34,7 +34,7 @@ exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
 
-  let request = new Notification({email:req.body.searchfriend,
+  let request = new Notification({email:res.friend.email,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
                   from: res.locals.user.googleemail})
   request.save(function(err, doc){
@@ -42,7 +42,7 @@ exports.sendFrequest = ( req, res ) =>{
       res.json(err);
     } else {
       console.log("The invitation has been sent")
-      res.redirect( '/searchProfile' );
+      res.redirect( '/friend' );
     }
   })
 };
