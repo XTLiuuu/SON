@@ -2,6 +2,10 @@ extends layoutBS
 
 block content
   body
+    br
+    br
+    br
+    br
     .margin
       h4.text-monospace Notifications
       .row 
@@ -29,6 +33,7 @@ block content
       
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
+
               each noti in notis
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 

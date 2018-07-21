@@ -5,6 +5,9 @@ body, html {
     line-height: 1.8;
 }
 
+.w3-myfont{
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
 
 /* Create a Parallax Effect */
 .bgimg-1, .bgimg-2, .bgimg-3 {
