@@ -44,11 +44,15 @@ exports.attachInputs = ( req, res, next ) => {
 
 exports.saveInput = ( req, res ) => {
   console.log("in save input!")//after user save the input
-  console.dir(req)
+  //console.dir(req)
   var sd = req.body.startDate;
   var sd1 = sd.toString();
+<<<<<<< HEAD
+  var st = req.body.startTime;
+=======
   var sd2 = sd.slice(0,10);
   var st = req.body.startTime
+>>>>>>> 7c088e236d3cdcd61521d00e5d21b5ef8d4d0357
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
   var ed = req.body.endDate;
@@ -83,7 +87,16 @@ exports.saveInput = ( req, res ) => {
     editable: true,
     overlap: true,
     color: req.body.color,
+<<<<<<< HEAD
+
+    //var date = start.toString(),
+    //var dateDisplay = date
+
+    timezone: "America/Chicago"
+
+=======
     adCheck: req.body.allDay
+>>>>>>> 7c088e236d3cdcd61521d00e5d21b5ef8d4d0357
   } )
 
 
