@@ -49,5 +49,9 @@ exports.sendFrequest = ( req, res ) =>{
 
 exports.deleteRequest = ( req, res) =>{
   console.log("deleteRequest");
+  Notification.deleteOne({from:noti.from})
+              .exec()
+              .then(()=>{res.direct('/notification')})
+              .catch((error)=>{res.send(error)})
 
 };
