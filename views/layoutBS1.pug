@@ -14,41 +14,47 @@ html(lang="en")
     block head
     
     body
-      .w3-top
-        .w3-bar.w3-white.w3-wide.w3-padding.w3-card 
-          a.w3-bar-item.w3-button(href='/')
-            b SON
-          .w3-right.w3-hide-small 
-            a.w3-bar-item.w3-button(href='/calendar/calendarD')
+      .w3-display-topright
+        br
+        #myNavbar.w3-bar
+          a.w3-bar-item.w3-button.w3-hover-black.w3-hide-medium.w3-hide-large.w3-right(href='javascript:void(0);', onclick='toggleFunction()', title='Toggle Navigation Menu')
+            i.fa.fa-bars 
+          |
+          if loggedIn
+            a.w3-bar-item.w3-button(href='/') HOME 
+            |   
+            a.w3-bar-item.w3-button.w3-hide-small(href='/calendar/calendarD')
               i.fa.fa-calendar 
               |  Calendar  
             |
-            a.w3-bar-item.w3-button(href='/friend')
+            a.w3-bar-item.w3-button.w3-hide-small(href='/friend')
               i.fa.fa-group 
               |  Friends 
             |
-            a.w3-bar-item.w3-button(href='/notification')
+            a.w3-bar-item.w3-button.w3-hide-small(href='/notification')
               i.fa.fa-bullhorn 
               |  Notifications
             |
-            a.w3-bar-item.w3-button(href='/setting')
+            a.w3-bar-item.w3-button.w3-hide-small(href='/setting')
               i.fa.fa-cog 
               |  Settings    
             |
-            if loggedIn
-              a.w3-bar-item.w3-button(href="/logout")
-                i.fa.fa-close 
-                |  Logout
+            a.w3-bar-item.w3-button.w3-hide-small(href="/logout")
+              i.fa.fa-close 
+              |  Logout
+            |
+            if status=='0211'
+              a.w3-bar-item.w3-button.w3-hide-small(href="/users")
+                i.fa.fa-cog 
+                |  Google Users
               |
-              if status=='0211'
-                a.w3-bar-item.w3-button.w3-hide-small(href="/users")
-                  i.fa.fa-cog 
-                  |  Google Users
-                | 
-            else
-              a.w3-bar-item.w3-button.w3-aqua(href="/auth/google")
-                i.fa.fa-user 
-                |  Login
+          else
+            a.w3-bar-item.w3-button.w3-hide-small(href="/auth/google")
+              span.fa.fa-google-plus.text-monospace  Google Login  
+
+    br
+    br
+    hr
       
     block content
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous")
