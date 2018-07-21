@@ -47,12 +47,9 @@ exports.saveInput = ( req, res ) => {
   //console.dir(req)
   var sd = req.body.startDate;
   var sd1 = sd.toString();
-<<<<<<< HEAD
   var st = req.body.startTime;
-=======
   var sd2 = sd.slice(0,10);
   var st = req.body.startTime
->>>>>>> 7c088e236d3cdcd61521d00e5d21b5ef8d4d0357
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
   var ed = req.body.endDate;
