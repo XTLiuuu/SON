@@ -30,7 +30,7 @@ $(function() {
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
-    timezone: 'local'
+    timezone: 'local',
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
   /**

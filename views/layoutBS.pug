@@ -16,32 +16,32 @@ html(lang="en")
     body
       .w3-top
         .w3-bar.w3-white.w3-wide.w3-padding.w3-card 
-          a.w3-bar-item.w3-button(href='/')
+          a.w3-bar-item.w3-button.w3-hover-teal(href='/')
             b SON
           .w3-right.w3-hide-small 
-            a.w3-bar-item.w3-button(href='/calendar/calendarD')
+            a.w3-bar-item.w3-button.w3-hover-teal(href='/calendar/calendarD')
               i.fa.fa-calendar 
               |  Calendar  
             |
-            a.w3-bar-item.w3-button(href='/friend')
+            a.w3-bar-item.w3-button.w3-hover-teal(href='/friend')
               i.fa.fa-group 
               |  Friends 
             |
-            a.w3-bar-item.w3-button(href='/notification')
+            a.w3-bar-item.w3-button.w3-hover-teal(href='/notification')
               i.fa.fa-bullhorn 
               |  Notifications
             |
-            a.w3-bar-item.w3-button(href='/setting')
+            a.w3-bar-item.w3-button.w3-hover-teal(href='/setting')
               i.fa.fa-cog 
               |  Settings    
             |
             if loggedIn
-              a.w3-bar-item.w3-button(href="/logout")
+              a.w3-bar-item.w3-button.w3-hover-teal(href="/logout")
                 i.fa.fa-close 
                 |  Logout
               |
               if status=='0211'
-                a.w3-bar-item.w3-button.w3-hide-small(href="/users")
+                a.w3-bar-item.w3-button.w3-hide-small.w3-hover-teal(href="/users")
                   i.fa.fa-cog 
                   |  Google Users
                 | 
