@@ -33,17 +33,17 @@ block content
       
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
-
               each noti in notis
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
                     | Friend request
                     .alignright.text-monospace now
                   .card-body
-                    h5.font-weight-bold #{noti.content}
-                    h5.font-weight-bold #{noti.email}
-                    h5.font-weight-bold #{noti.from}
-                    button() accept
-                    button() cancel
+                    form.form-inline.mr-auto(method="post" action="deleteRequest")                      
+                      h5.font-weight-bold #{noti.content}
+                      h5.font-weight-bold #{noti.email}
+                      h5.font-weight-bold #{noti.from}
+                      button() accept
+                      button(type='submit') cancel
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll
