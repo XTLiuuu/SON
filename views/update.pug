@@ -6,12 +6,14 @@ block head
 block content
   .body
     br
-    br
+    br 
     br
     br 
     .margin
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
-        h4.w3-wide.w3-center UPDATE EVENT
+        h4.w3-wide.w3-center 
+          i.fa.fa-check-square-o.w3-large
+          |  UPDATE EVENT
         br
         br
         form(method="post" action="" onsubmit="return validateForm()")
@@ -67,7 +69,6 @@ block content
               input.w3-button.w3-red(type="submit" name = "delete" value="Delete")        
             .col-1
               a.w3-button.w3-grey(href="/calendar/calendarD") Back
-          hr 
       br
       br
     

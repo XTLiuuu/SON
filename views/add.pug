@@ -3,12 +3,14 @@ extends layoutBS
 block content
   .body
     br
-    br
+    br 
     br
     br
     .margin
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
-        h4.w3-wide.w3-center ADD NEW EVENT
+        h4.w3-wide.w3-center 
+          i.fa.fa-plus-square.w3-large
+          |  ADD NEW EVENT
         br
         br
         form(method="post" action="saveInput")
