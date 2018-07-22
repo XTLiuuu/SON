@@ -5,12 +5,15 @@ block content
   body.w3-theme-l5
     .w3-container.w3-content(style="max-width:1400px;margin-top:80px")
       .w3-row
-        .w3-col.m4
+        .w3-col.m4 
           .w3-card.w3-round.w3-white
             .w3-container
               h4.w3-center My Profile
               p.w3-center
-                img.w3-circle(src="../images/profile.png" style="height:106px;width:106px" alt="Avatar")
+                if profile.gender == "Female" 
+                  img.w3-circle(src="../images/woman.png" style="height:106px;width:106px" alt="Avatar")
+                else
+                  img.w3-circle(src="../images/man.png" style="height:106px;width:106px" alt="Avatar")
               hr
               p
                 i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
@@ -20,7 +23,7 @@ block content
                 |  #{profile.gender}
               p
                 i.fa.fa-home.fa-fw.w3-margin-right.w3-text-theme
-                |  Waltham, MA
+                |  #{profile.home}
               p
                 i.fa.fa-birthday-cake.fa-fw.w3-margin-right.w3-text-theme
                 |  #{profile.dob}
@@ -36,7 +39,7 @@ block content
         .w3-col.m8
           .w3-container.w3-card.w3-white.w3-round.w3-margin
             h5.w3-text-dark-grey.text-bold 
-              b.bold Event settings
+              b.bold.w3-text Event settings
             br
             input.w3-check(type = "checkbox" name = "voice")
             label Enable voice functions

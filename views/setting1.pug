@@ -5,66 +5,65 @@ block content
   br
   br
   br
-  body
+  body 
     .margin
-      h4.text-monospace Setting
-      .row 
-        .col-4
-          #list-tab.list-group(role="tablist")
-            a#list-profile-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#profileSetting" role="tab" aria-controls="profile") Profile 
-            a#list-event-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventSetting" role="tab" aria-controls="event") Event
-        .col-8
-          #nav-tabContent.tab-content
-            #profileSetting.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
-              form.text-monospace(method="post" action="saveProfile")
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Name
-                  .formGroup.col-md-6
-                    input.form-control(name="name" type="text" value=user.googlename)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Email
-                  .formGroup.col-md-6
-                    input.form-control(name="email" type="email" value=user.googleemail)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Phone Number
-                  .formGroup.col-md-6
-                    input.form-control(name="phone" type="text" value=profile.phone)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Gender
-                  .formGroup.col-md-6
-                    select.text-monospace(name="gender").form-control
-                      option(selected="") #{profile.gender}
-                      option Male
-                      option Female
-                      option Other
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label City
-                  .formGroup.col-md-6
-                    input.form-control(name="home" type="text" value=profile.home)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Date of Birth
-                  .formGroup.col-md-6
-                    input.form-control(name="dob" type="date" value=profile.dob)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Description
-                  .formGroup.col-md-6
-                    input.form-control(name="about" type="text" value=profile.about)
-                br
-                input.btn.btn-secondary.btn-lg(type="submit" value="SAVE")
-    
-
-            #eventSetting.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
-    
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center 
+          i.fa.fa-rocket.w3-large
+          |  UPDATE PROFILE
+        br
+        br
+        form(method="post" action="saveProfile")
+          .row
+            .col-2
+              label Name
+            .col-6
+              .input-group.md-3
+                input.form-control(name="name" type="text" value=user.googlename)
+          br
+          .form-row
+            .formGroup.col-2
+              label Email
+            .formGroup.col-6
+              input.form-control(name="email" type="email" value=user.googleemail)
+          br
+          .form-row
+            .formGroup.col-2
+              label Phone Number
+            .formGroup.col-6
+              input.form-control(name="phone" type="text" value=profile.phone)
+          br
+          .form-row
+            .formGroup.col-2
+              label Date of Birth
+            .formGroup.col-6
+              input.form-control(name="dob" type="date" value=profile.dob)
+          br
+          .form-row
+            .formGroup.col-2
+              label Gender
+            .formGroup.col-6
+              select(name="gender").form-control
+                option(selected="") #{profile.gender}
+                option Male
+                option Female
+                option Other
+          br
+          .form-row
+            .formGroup.col-2
+              label City
+            .formGroup.col-6
+              input.form-control(name="home" type="text" value=profile.home)
+          br
+          .form-row
+            .formGroup.col-2
+              label Description
+            .formGroup.col-6
+              input.form-control(name="about" type="text" value=profile.about)
+            .col-1
+            .col-1
+              input.w3-button.w3-teal(type="submit" value="SAVE")
+            .col-1
+              a.w3-button.w3-grey(href="/calendar/calendarD") Back
+      br
+      br
