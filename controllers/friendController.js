@@ -35,7 +35,6 @@ exports.searchProfile_get = ( req, res  ) => {
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
-
   let request = new Notification({email:searchfriendemail,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
                   from: res.locals.user.googleemail})
@@ -50,10 +49,26 @@ exports.sendFrequest = ( req, res ) =>{
 };
 
 exports.deleteRequest = ( req, res) =>{
-  console.log("in deleteRequest");
-  Notification.deleteOne({from:noti.from})
+  console.log("in deleteRequest"+res.locals.noti);
+  Notification.deleteOne({from:noti.email})
               .exec()
               .then(()=>{res.direct('/notification')})
               .catch((error)=>{res.send(error)})
 
+};
+
+exports.acceptRequest = ( req, res ) => {
+  console.log("in acceptRequest");
+  let newf = new Friend({
+    user:"hh",
+    friend:"haha",
+    status:"friend",
+  })
+  newf.save()
+    .then( () => {
+      res.redirect('/notification');
+    })
+    .catch( error => {
+      res.send( error );
+    });
 };

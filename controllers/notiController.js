@@ -49,7 +49,6 @@ exports.attachNoti = ( req, res, next ) => {
   Input.find({}) //{"_id": objId})
     .exec()
     .then( ( noti ) => {
-
       res.locals.noti = noti
       next()
     } )

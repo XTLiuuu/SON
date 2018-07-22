@@ -20,7 +20,7 @@ block content
             #schedulereminder.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-event-list")
 
 
-              each input in inputs
+              //-each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
                     | Reminder
@@ -41,8 +41,8 @@ block content
                   .card-body
                     form.form-inline.mr-auto(method="post" action="deleteRequest")                      
                       h5.font-weight-bold #{noti.content}
-                      h5.font-weight-bold #{noti.email}
-                      h5.font-weight-bold #{noti.from}
+                      p.card-text
+                        | #{noti.email}
                       button() accept
                       button(type='submit') cancel
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
