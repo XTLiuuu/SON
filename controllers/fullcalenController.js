@@ -89,6 +89,7 @@ exports.update_event_post = function(req, res){
       editable: true,
       overlap: true,
       color: req.body.color,
+      description: req.body.description,
       adCheck: req.body.allDay
     }).exec()
     .then( () => {

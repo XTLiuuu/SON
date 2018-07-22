@@ -1,5 +1,8 @@
 extends layoutBS
 
+block head
+  script(src="/js/add.js")
+  
 block content
   .body
     br
@@ -13,7 +16,7 @@ block content
           |  ADD NEW EVENT
         br
         br
-        form(method="post" action="saveInput")
+        form(method="post" name="myForm" action="saveInput" onsubmit="return validateForm()")
           .row
             .col-2
               label Title
@@ -26,7 +29,7 @@ block content
               label Start Time 
             .formGroup.col-3
               input.form-control(type="date" name="startDate")
-            .formGroup.col-2
+            .formGroup.col-3
               input.form-control(type="text" name="startTime" placeholder="e.g. 10:00")
             .formGroup.col-2
               input(type="checkbox" class = "all-day-check" name = "allDay") 
@@ -37,15 +40,15 @@ block content
               label End Time 
             .formGroup.col-3
               input.form-control(type="date" name="endDate")
-            .formGroup.col-2
+            .formGroup.col-3
               input.form-control(type="text" name="endTime" placeholder="e.g. 13:00")
           br
           br
           .form-row
             .formGroup.col-2
-              label People
-            .formGroup.col-3
-              input.form-control(type="text" name="id" placeholder = "Add participants here")
+              label Description
+            .formGroup.col-6
+              input.form-control(type="text" name="description" placeholder = "Include event details here")
           br
           .form-row
             .formGroup.col-2
