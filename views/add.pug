@@ -2,93 +2,66 @@ extends layoutBS
 
 block content
   .body
+    br
+    br
+    br
+    br
     .margin
-      .row
-        .col-12.text-center
-          h1.text-center SON
-          input.btTxt.submit(type="image" src="/images/microphone.png" name="saveForm" width="20" align="middle")
-      br
-      br
-      form(method="post" action="saveInput")
-        .row
-          .col-2
-            label Title
-          .col-6
-            .input-group.md-3
-              input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%')
-        br
-        .form-row
-          .formGroup.col-2
-            label Start Time 
-          .formGroup.col-3
-            input.form-control(type="date" name="startDate")
-          .formGroup.col-2
-            input.form-control(type="text" name="startTime" placeholder="e.g. 10:00")
-          .formGroup.col-2
-            input(type="checkbox" class = "all-day-check" name = "allDay") 
-            label.all-day-check All day 
-        br
-        .form-row
-          .formGroup.col-2
-            label End Time 
-          .formGroup.col-3
-            input.form-control(type="date" name="endDate")
-          .formGroup.col-2
-            input.form-control(type="text" name="endTime" placeholder="e.g. 13:00")
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center ADD NEW EVENT
         br
         br
-        .form-row
-          .formGroup.col-2
-            label People
-          .formGroup.col-3
-            input.form-control(type="text" name="id" placeholder = "Add participants here")
-        br
-        .form-row
-          .formGroup.col-2
-            label Color 
-          .formGroup.col-3
-            select(name="color").form-control
-              option(selected="") Choose...
-              option Red
-              option Yellow
-              option Pink
-              option Green
-              option Grey
-          .col-2
-          .col-1
-            input.text-center.btn.btn-danger(type="submit" value="Add")
-          .col-1
-            a.text-center.btn.btn-secondary(href="/calendar/calendarD") Back
-        hr
+        form(method="post" action="saveInput")
+          .row
+            .col-2
+              label Title
+            .col-6
+              .input-group.md-3
+                input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%')
+          br
+          .form-row
+            .formGroup.col-2
+              label Start Time 
+            .formGroup.col-3
+              input.form-control(type="date" name="startDate")
+            .formGroup.col-2
+              input.form-control(type="text" name="startTime" placeholder="e.g. 10:00")
+            .formGroup.col-2
+              input(type="checkbox" class = "all-day-check" name = "allDay") 
+              label.all-day-check All day 
+          br
+          .form-row
+            .formGroup.col-2
+              label End Time 
+            .formGroup.col-3
+              input.form-control(type="date" name="endDate")
+            .formGroup.col-2
+              input.form-control(type="text" name="endTime" placeholder="e.g. 13:00")
+          br
+          br
+          .form-row
+            .formGroup.col-2
+              label People
+            .formGroup.col-3
+              input.form-control(type="text" name="id" placeholder = "Add participants here")
+          br
+          .form-row
+            .formGroup.col-2
+              label Color 
+            .formGroup.col-3
+              select(name="color").form-control
+                option(selected="") Choose...
+                option Green
+                option Grey
+                option Pink
+                option Red
+                option Yellow
+            .col-2
+            .col-1
+              input.w3-button.w3-teal(type="submit" value="Add")
+            .col-1
+              a.w3-button.w3-grey(href="/calendar/calendarD") Back
+          hr
       br 
       br
       br
-      br
-      br
-      br
-      br
-      form(method="post" action="deleteInput")
-        br
-        .card(style="width: 35rem;") 
-          .card-header 
-          | All events
-          ol
-            each input in inputs
-              li
-                input(name="deleteInput" value=input._id type="checkbox")
-                list-group-item title = #{input.title}
-                br
-                | start = #{input.start}
-                br
-                | end = #{input.end}
-                br
-                | content = #{input.description}
-                br
-                | id = #{input.id}, color = #{input.color}
-              br
-        br
-        br
-        input(type="submit" value="Delete checked items")
-            
-            
-          

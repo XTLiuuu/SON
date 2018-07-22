@@ -27,10 +27,16 @@ $(function() {
       textColor: 'black', // a non-ajax option,
     }
     ],
+    weekNumbers: true, 
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
     timezone: 'local',
+    eventClick: function(event, jsEvent, view){
+      $('#modalTitle').html(event.title)
+      $('#modalStartTime').html(event.startTime)
+      $('#fullCalModal').modal();
+    }
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
   /**
