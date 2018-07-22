@@ -143,7 +143,7 @@ app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
 
 // friend function
-app.use('/friend',isLoggedIn, friend);
+app.get('/friend',isLoggedIn, friendController.getFriend);
 //app.use('/addfriend', isLoggedIn, addfriend);
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
@@ -152,6 +152,7 @@ app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
 app.post('/deleteRequest', isLoggedIn, friendController.deleteRequest);
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
+app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

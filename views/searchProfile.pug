@@ -30,6 +30,7 @@ block content
       
     .container
       form.form-inline.mr-auto(method="post" action="sendFrequest")
+        input.form-control(name="friendemail" type="hidden" value=friend.email)
         //-input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
         button#friendqbutton.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
         
