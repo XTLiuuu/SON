@@ -23,6 +23,26 @@ exports.getProfile = ( req, res ) => {
     } );
 };
 
+// this displays all of the hotel reviews
+exports.getProfile1 = ( req, res ) => {
+  const objId = new mongo.ObjectId(req.params.id)
+  console.log('in getprofile')
+  Profile.findOne(objId)
+    .exec()
+    //this is a function takes one parameter (function) and does this
+    .then( ( profile ) => {
+      profile: profile
+      res.render('setting1');
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'profile promise complete' );
+    } );
+};
+
 exports.saveProfile = ( req, res ) => {
   console.log("in saveProfile!")
   Profile.findOne({email:res.locals.user.googleemail}) //{"_id": objId})
@@ -36,6 +56,8 @@ exports.saveProfile = ( req, res ) => {
           phone: req.body.phone,
           gender: req.body.gender,
           dob: req.body.dob,
+          about: req.body.about,
+          home: req.body.home
         } )
         //console.log("profile = "+ newProfile)
         profile.save()
@@ -52,7 +74,10 @@ exports.saveProfile = ( req, res ) => {
         uProfile.update({email:res.locals.user.googleemail},
           {phone: req.body.phone,
            gender: req.body.gender,
-           dob: req.body.dob})
+           dob: req.body.dob,
+           about: req.body.about,
+           home: req.body.home
+         })
           .exec()
           .then( () => {
             res.redirect( '/setting' );
@@ -78,6 +103,8 @@ exports.attachProfile = ( req, res, next ) => {
           phone: req.body.phone,
           gender: req.body.gender,
           dob: req.body.dob,
+          about: req.body.about,
+          home: req.body.home
         } )
       }
       res.locals.profile = profile

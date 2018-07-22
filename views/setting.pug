@@ -1,58 +1,128 @@
 extends layoutBS
 
 block content
-  br
-  br
-  br
-  br
-  body
-    .margin
-      h4.text-monospace Setting
-      .row 
-        .col-4
-          #list-tab.list-group(role="tablist")
-            a#list-profile-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#profileSetting" role="tab" aria-controls="profile") Profile 
-            a#list-event-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventSetting" role="tab" aria-controls="event") Event
-        .col-8
-          #nav-tabContent.tab-content
-            #profileSetting.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-profile-list")
-              form.text-monospace(method="post" action="saveProfile")
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Name
-                  .formGroup.col-md-6
-                    input.form-control(name="name" type="text" value=user.googlename)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Email
-                  .formGroup.col-md-6
-                    input.form-control(name="email" type="email" value=user.googleemail)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Phone Number
-                  .formGroup.col-md-6
-                    input.form-control(name="phone" type="text" value=profile.phone)
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Gender
-                  .formGroup.col-md-6
-                    select.text-monospace(name="gender").form-control
-                      option(selected="") #{profile.gender}
-                      option Male
-                      option Female
-                      option Other
-                br
-                .row.text-monospace
-                  .formGroup.col-md-4
-                    label Date of Birth
-                  .formGroup.col-md-6
-                    input.form-control(name="dob" type="date" value=profile.dob)
-                br
-                input.btn.btn-secondary.btn-lg(type="submit" value="SAVE")
-    
-
-            #eventSetting.tab-pane.fade(role="tabpanel" aria-labelledby="list-event-list")
-    
+  style(html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif})
+  body.w3-theme-l5
+    .w3-container.w3-content(style="max-width:1400px;margin-top:80px")
+      .w3-row
+        .w3-col.m4
+          .w3-card.w3-round.w3-white
+            .w3-container
+              h4.w3-center My Profile
+              p.w3-center
+                img.w3-circle(src="../images/profile.png" style="height:106px;width:106px" alt="Avatar")
+              hr
+              p
+                i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
+                |  #{user.googlename}
+              p
+                i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
+                |  #{profile.gender}
+              p
+                i.fa.fa-home.fa-fw.w3-margin-right.w3-text-theme
+                |  Waltham, MA
+              p
+                i.fa.fa-birthday-cake.fa-fw.w3-margin-right.w3-text-theme
+                |  #{profile.dob}
+              p
+                i.fa.fa-phone.fa-fw.w3-margin-right.w3-text-theme
+                |  #{profile.phone}
+              p
+                i.fa.fa-hand-peace-o.fa-fw.w3-margin-right.w3-text-theme
+                |  #{profile.about}
+              p.w3-center
+                a.w3-button.w3-white.w3-border.w3-border-teal.w3-small.w3-center(href="/updateProfile") Edit your info
+          br
+        .w3-col.m8
+          .w3-container.w3-card.w3-white.w3-round.w3-margin
+            h5.w3-text-dark-grey.text-bold 
+              b.bold Event settings
+            br
+            input.w3-check(type = "checkbox" name = "voice")
+            label Enable voice functions
+            br
+            br
+            .row
+              .formGroup.col-md-3
+                label Time format 
+              .formGroup.col-md-6
+                select.form-control(name="timeFormat")
+                  option(selected="") ..
+                  option(value="") 1:00 pm
+                  option(value="") 13:00
+            br
+            .row
+              .formGroup.col-md-3
+                label Duration set 
+              .formGroup.col-md-6
+                select.form-control(name="duration")
+                  option(selected="") ..
+                  option(value="") 10 min
+                  option(value="") 20 min 
+                  option(value="") 30 min
+                  option(value="") 40 min
+                  option(value="") 50 min
+                  option(value="") 60 min
+            br
+            .row
+              .formGroup.col-md-3
+                label Profile permission 
+              .formGroup.col-md-6
+                select.form-control(name="profilePermission")
+                  option(selected="") ..
+                  option(value="") Allow all users to see my profile
+                  option(value="") Allow only friends to see my profile 
+                  option(value="") Allow only myself to see my profile
+            br
+            .row
+              .formGroup.col-md-3
+                label Notifications
+              .formGroup.col-md-6
+                select.form-control(name="notimethod")
+                  option(selected="") ..
+                  option(value="") Don't notify me 
+                  option(value="") SON notification 
+                  option(value="") SON alert 
+            br
+          .w3-container.w3-card.w3-white.w3-round.w3-margin
+            h5.w3-text-dark-grey.text-bold 
+              b.bold View settings
+            br
+            input.w3-check(type = "checkbox" name = "weekend")
+            label Show weekend
+            br
+            input.w3-check(type = "checkbox" name = "weeknumber")
+            label Show weeknumber
+            br
+            input.w3-check(type = "checkbox" name = "eventEnd")
+            label Show event end time
+            br
+            input.w3-check(type = "checkbox" name = "fixedWeek")
+            label Show fixed week 
+            br
+            br
+            .row
+              .formGroup.col-md-3
+                label Default view  
+              .formGroup.col-md-6
+                select.form-control(name="view")
+                  option(selected="") ..
+                  option(value="") Daily
+                  option(value="") Weekly 
+                  option(value="") Monthly
+            br
+            .row
+              .formGroup.col-md-3
+                label Text color  
+              .formGroup.col-md-6
+                select.form-control(name="color")
+                  option(selected="") ..
+                  option(value="") Black(default)
+                  option(value="") Green 
+                  option(value="") Grey
+                  option(value="") Red
+            br
+            button.w3-button.w3-teal.w3-section.w3-right(type="submit") SAVE
+          br
+          br
+            
