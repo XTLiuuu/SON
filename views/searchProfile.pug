@@ -1,4 +1,11 @@
 extends layoutBS
+block head
+  script.
+    $(document).ready(function(){
+    $("#friendqbutton").click(function(){
+    alert("The invitation has been sent");
+    });
+    });
 
 block content
   body
@@ -24,10 +31,10 @@ block content
     .container
       form.form-inline.mr-auto(method="post" action="sendFrequest")
         //-input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
-        button.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
+        button.btn.btn-primary#friendqbutton(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
         
         
-        #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+        //-#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
           .modal-dialog(role='document')
             .modal-content
               .modal-header
