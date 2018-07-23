@@ -2,10 +2,12 @@
 const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
 console.log("loading the ipnut Controller")
+var result1;
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
+  //console.log("user = " + req.locals.user)
   //console.log("req.user.goo = " + req.locals.user)
   var output_string;
   var name;
@@ -42,19 +44,66 @@ exports.process_request =  (req, res) => {
 
   // ask what event will happen at some time
   else if(req.body.request.intent.name == "ask_event"){
+    result1 = [];
     console.log("in Ask_Event1");
     var time = req.body.request.intent.slots.time["value"];
     var date = req.body.request.intent.slots.date["value"];
     var constraint = req.body.request.intent.slots.constraint["value"];
+    console.log("constraint = " + constraint)
     // if the user does not include time - e.g. What am I going to do before three p.m.
     // the default time is today
     if(date == null){
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     }
+    console.log("date = " + date)
+    console.log("time = " + time)
+    var s = new Date(date);
+    s.setDate(s.getDate()+1)
+    var index = time.indexOf(":")
+    s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
+    console.log("s = " + s)
+    if(constraint){
+      if(constraint == "before"){
+        Input.find({},
+        function(err, schedule_list){
+          if(err){
+            console.log(err.message);
+          } else{
+            console.log("after finding results")
+            console.log("list length = " + schedule_list.length)
+            for(var i = 0; i < schedule_list.length; i ++){
+              console.log("i = " + i)
+              console.log("list start " + schedule_list[i].start)
+              if(schedule_list[i].start < s){
+                result1.push(schedule_list[i]);
+              }
+              console.log("result = " + result1)
+            }
+            console.log("length= " + result1.length)
+            if(result1.length == 0){
+              output_string = "Pipi, you have nothing scheduled before " + time + " on " + date
+            }
+            else{
+              console.log("here")
+              console.log(result1[0].title)
+              console.log(result1[0].startTime)
+              console.log(result1[0].startDate)
+              output_string = "Pipi: "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+              for(var i = 1; i < result1.length; i ++){
+                output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
+              }
+            }
+          }
+          console.log("output_string1 = " + output_string)
+          result.response.outputSpeech.text = output_string;
+          res.json(result);
+        })
+      }
+    }
 
     // when the user asks a certain time slot
-    if(time){
+    else if(time){
       var start1 = date + " " + time
       Input.find({
         start: start1
