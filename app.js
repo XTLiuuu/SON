@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
 
+
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
@@ -14,7 +15,23 @@ var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
+///////////////////////////////////////////////////
+var http = require('http');
+var io = require('socket.io');
 
+server = http.createServer(function(req, res){
+});
+server.listen(8080);
+
+// socket.io
+var socket = io.listen(server);
+
+socket.on('connection', function(client){
+  client.on('message', function(msg){
+      socket.broadcast(msg);
+  })
+});
+/////////////////////////////////////////////////////
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
@@ -132,9 +149,10 @@ app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 
 //app.use('/setting', settingRouter);
 
-app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
+app.get('saveSetting', isLoggedIn,)
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);

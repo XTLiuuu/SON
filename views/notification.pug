@@ -33,25 +33,14 @@ block content
       
               
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
-<<<<<<< HEAD
 
-=======
->>>>>>> 601a28210a4df15d5283833b79e0ed96164bee70
               each noti in notis
                 .card.bg-light.mb-3(style="max-width: 50rem;")
                   .card-header 
                     | Friend request
                     .alignright.text-monospace now
                   .card-body
-<<<<<<< HEAD
-                    h5.font-weight-bold #{noti.content}
-                    h5.font-weight-bold #{noti.email}
-                    h5.font-weight-bold #{noti.from}
-                    button() accept
-                    button() cancel
 
-
-=======
                     form.form-inline.mr-auto(method="post" action="acceptRequest")                      
                       input.form-control(name="from" type="hidden" value=noti.from)
                       h5.font-weight-bold #{noti.content}
@@ -59,6 +48,6 @@ block content
                         | #{noti.email}
                       button(type='submit') accept
                       button(type='submit') cancel
->>>>>>> 601a28210a4df15d5283833b79e0ed96164bee70
+
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll
