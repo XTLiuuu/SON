@@ -14,7 +14,7 @@ block content
     br
     .btn-group-vertical
       each f in friend
-        button.btn.btn-default(typr='button') #{f.friend}
+        button.btn.btn-outline-primary(type='button') #{f.friendname}
         
     br
     br
@@ -22,7 +22,7 @@ block content
       each f in friend
         .col-4
           #list-tab.list-group(role='tablist')
-            a#list-home-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-home', role='tab', aria-controls='home') #{f.friend}
+            a#list-home-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-home', role='tab', aria-controls='home') #{f.friendname}
         .col-8
           #nav-tabContent.tab-content
             #list-home.tab-pane.fade(role='tabpanel', aria-labelledby='list-home-list') #{f.status}

@@ -27,21 +27,16 @@ $(function() {
       textColor: 'black', // a non-ajax option,
     }
     ],
-    weekNumbers: true, 
+    weekNumbers: true,
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
-<<<<<<< HEAD
-    timezone: 'local'
-
-=======
     timezone: 'local',
     eventClick: function(event, jsEvent, view){
       $('#modalTitle').html(event.title)
       $('#modalStartTime').html(event.startTime)
       $('#fullCalModal').modal();
     }
->>>>>>> 601a28210a4df15d5283833b79e0ed96164bee70
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
   /**

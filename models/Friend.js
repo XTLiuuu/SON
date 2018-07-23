@@ -3,7 +3,9 @@ const mongoose = require( 'mongoose' );
 
 var friendSchema = mongoose.Schema( {
   user: String,
+  username: String,
   friend: String,
+  friendname: String,
   status: String,
 } );
 

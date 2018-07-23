@@ -2,9 +2,11 @@
 const mongoose = require( 'mongoose' );
 
 var notificationSchema = mongoose.Schema( {
-  email: String,
+  to: String,
+  toname: String,
   content: String,
-  from: String
+  from: String,
+  fromname: String
 } );
 
 module.exports = mongoose.model( 'Notification', notificationSchema );
