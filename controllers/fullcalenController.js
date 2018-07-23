@@ -96,6 +96,7 @@ exports.update_event_post = function(req, res){
       res.redirect( '/calendar/calendarD' );
     } )
   }
+
   else if(req.body.delete == 'Delete'){
     console.log("in delete event")
     Input.deleteOne({_id:event_id})
