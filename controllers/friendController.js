@@ -45,39 +45,38 @@ exports.sendFrequest = ( req, res ) =>{
   })
 };
 
-exports.deleteRequest = ( req, res) =>{
-  console.log("in deleteRequest"+req.body.email);
-  Notification.deleteOne({from:req.body.email})
-              .exec()
-              .then(()=>{res.redirect('/notification')})
-              .catch((error)=>{res.send(error)})
-
-};
-
-exports.acceptRequest = ( req, res ) => {
-  console.log("in acceptRequest");
-  let newf = new Friend({
-    user:res.locals.user.googleemail,
-    friend:req.body.from,
-    status:"friend",
-  })
-
-  let newf2 = new Friend({
-    user:req.body.from,
-    friend:res.locals.user.googleemail,
-    status:"friend"
-  })
-
-  newf2.save()
-  Notification.deleteOne({from:req.body.from})
-              .exec()
-  newf.save()
-    .then( () => {
-      res.redirect('/notification');
+exports.updateRequest = ( req, res )=> {
+  if(req.body.accept == 'Accept'){
+    console.log("in acceptRequest");
+    let newf = new Friend({
+      user:res.locals.user.googleemail,
+      friend:req.body.from,
+      status:"friend",
     })
-    .catch( error => {
-      res.send( error );
-    });
+
+    let newf2 = new Friend({
+      user:req.body.from,
+      friend:res.locals.user.googleemail,
+      status:"friend"
+    })
+
+    newf2.save()
+    Notification.deleteOne({from:req.body.from})
+                .exec()
+    newf.save()
+      .then( () => {
+        res.redirect('/notification');
+      })
+      .catch( error => {
+        res.send( error );
+      });
+  }else if(req.body.cancel == 'Cancel'){
+    console.log("in deleteRequest"+req.body.from);
+    Notification.deleteOne({from:req.body.from})
+                .exec()
+                .then(()=>{res.redirect('/notification')})
+                .catch((error)=>{res.send(error)})
+  }
 };
 
 exports.getFriend = ( req, res ) => {

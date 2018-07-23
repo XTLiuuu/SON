@@ -150,9 +150,9 @@ app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
-app.post('/deleteRequest', isLoggedIn, friendController.deleteRequest);
+app.post('/notification', isLoggedIn, friendController.updateRequest);
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
-app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
+//app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
