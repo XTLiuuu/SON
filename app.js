@@ -144,15 +144,15 @@ app.use('/calendar', calendarD);
 
 // friend function
 app.get('/friend',isLoggedIn, friendController.getFriend);
-//app.use('/addfriend', isLoggedIn, addfriend);
+
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
-app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
+app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
 
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
-app.post('/deleteRequest', isLoggedIn, friendController.deleteRequest);
+app.post('/notification', isLoggedIn, profileController.attachProfile, friendController.updateRequest);
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
-app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
+//app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

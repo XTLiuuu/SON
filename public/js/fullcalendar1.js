@@ -27,7 +27,7 @@ $(function() {
       textColor: 'black', // a non-ajax option,
     }
     ],
-    weekNumbers: true, 
+    weekNumbers: true,
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,

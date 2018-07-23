@@ -32,9 +32,11 @@ exports.searchProfile_get = ( req, res  ) => {
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
-  let request = new Notification({email:req.body.friendemail,
+  let request = new Notification({to:req.body.friendemail,
+                  toname:req.body.friendname,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
-                  from: res.locals.user.googleemail})
+                  from: res.locals.user.googleemail,
+                  fromname: res.locals.profile.name})
   request.save(function(err, doc){
     if(err){
       res.json(err);
@@ -45,39 +47,45 @@ exports.sendFrequest = ( req, res ) =>{
   })
 };
 
-exports.deleteRequest = ( req, res) =>{
-  console.log("in deleteRequest"+req.body.email);
-  Notification.deleteOne({from:req.body.email})
-              .exec()
-              .then(()=>{res.redirect('/notification')})
-              .catch((error)=>{res.send(error)})
-
-};
-
-exports.acceptRequest = ( req, res ) => {
-  console.log("in acceptRequest");
-  let newf = new Friend({
-    user:res.locals.user.googleemail,
-    friend:req.body.from,
-    status:"friend",
-  })
-
-  let newf2 = new Friend({
-    user:req.body.from,
-    friend:res.locals.user.googleemail,
-    status:"friend"
-  })
-
-  newf2.save()
-  Notification.deleteOne({from:req.body.from})
-              .exec()
-  newf.save()
-    .then( () => {
-      res.redirect('/notification');
+exports.updateRequest = ( req, res )=> {
+  if(req.body.accept == 'Accept'){
+    console.log("in acceptRequest");
+    let newf = new Friend({
+      user:res.locals.user.googleemail,
+      username: res.locals.profile.name,
+      friend:req.body.from,
+      friendname:req.body.fromname,
+      status:"friend",
     })
-    .catch( error => {
-      res.send( error );
-    });
+
+    let newf2 = new Friend({
+      user:req.body.from,
+      username:req.body.fromname,
+      friend:res.locals.user.googleemail,
+      friendname:res.locals.profile.name,
+      status:"friend"
+    })
+
+    newf2.save()
+    newf.save()
+
+    Notification.deleteOne({
+                to: res.locals.user.googleemail,
+                from:req.body.from})
+                .then( () => {
+                  res.redirect('/notification');
+                })
+                .catch( error => {
+                  res.send( error );
+                });
+  }else if(req.body.cancel == 'Cancel'){
+    console.log("in deleteRequest"+req.body.from);
+    Notification.deleteOne({to: res.locals.user.googleemail,
+                            from:req.body.from})
+                .exec()
+                .then(()=>{res.redirect('/notification')})
+                .catch((error)=>{res.send(error)})
+  }
 };
 
 exports.getFriend = ( req, res ) => {
