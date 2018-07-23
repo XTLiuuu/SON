@@ -6,8 +6,7 @@ const Notification = require('../models/Notification');
 const mongo = require('mongodb');
 console.log("loading the friend Controller")
 
-
-exports.searchProfile_post = ( req, res ,next ) => {
+exports.searchProfile_post = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
@@ -15,7 +14,7 @@ exports.searchProfile_post = ( req, res ,next ) => {
     .then( ( friend ) => {
       //console.log("friend"+friend);
       res.render('searchProfile', {friend: friend});
-      next()
+      //next()
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -26,15 +25,14 @@ exports.searchProfile_post = ( req, res ,next ) => {
     } );
 };
 
-exports.searchProfile_get = ( req, res ,next ) => {
-  res.render('searchProfile', {message: "Success."})
+exports.searchProfile_get = ( req, res  ) => {
+  res.render('searchProfile');
 };
 
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
-
-  let request = new Notification({email:req.body.searchfriend,
+  let request = new Notification({email:req.body.friendemail,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
                   from: res.locals.user.googleemail})
   request.save(function(err, doc){
@@ -48,6 +46,54 @@ exports.sendFrequest = ( req, res ) =>{
 };
 
 exports.deleteRequest = ( req, res) =>{
-  console.log("deleteRequest");
+  console.log("in deleteRequest"+req.body.email);
+  Notification.deleteOne({from:req.body.email})
+              .exec()
+              .then(()=>{res.redirect('/notification')})
+              .catch((error)=>{res.send(error)})
 
+};
+
+exports.acceptRequest = ( req, res ) => {
+  console.log("in acceptRequest");
+  let newf = new Friend({
+    user:res.locals.user.googleemail,
+    friend:req.body.from,
+    status:"friend",
+  })
+
+  let newf2 = new Friend({
+    user:req.body.from,
+    friend:res.locals.user.googleemail,
+    status:"friend"
+  })
+
+  newf2.save()
+  Notification.deleteOne({from:req.body.from})
+              .exec()
+  newf.save()
+    .then( () => {
+      res.redirect('/notification');
+    })
+    .catch( error => {
+      res.send( error );
+    });
+};
+
+exports.getFriend = ( req, res ) => {
+  console.log('in getAllNoti')
+  Friend.find( {user:res.locals.user.googleemail} )
+    .exec()
+    .then( ( friend ) => {
+      res.render( 'friend', {
+        friend: friend
+      } );
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'get friend complete' );
+    } );
 };

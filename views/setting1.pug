@@ -1,0 +1,69 @@
+extends layoutBS
+
+block content
+  br
+  br
+  br
+  br
+  body 
+    .margin
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center 
+          i.fa.fa-rocket.w3-large
+          |  UPDATE PROFILE
+        br
+        br
+        form(method="post" action="saveProfile")
+          .row
+            .col-2
+              label Name
+            .col-6
+              .input-group.md-3
+                input.form-control(name="name" type="text" value=user.googlename)
+          br
+          .form-row
+            .formGroup.col-2
+              label Email
+            .formGroup.col-6
+              input.form-control(name="email" type="email" value=user.googleemail)
+          br
+          .form-row
+            .formGroup.col-2
+              label Phone Number
+            .formGroup.col-6
+              input.form-control(name="phone" type="text" value=profile.phone)
+          br
+          .form-row
+            .formGroup.col-2
+              label Date of Birth
+            .formGroup.col-6
+              input.form-control(name="dob" type="date" value=profile.dob)
+          br
+          .form-row
+            .formGroup.col-2
+              label Gender
+            .formGroup.col-6
+              select(name="gender").form-control
+                option(selected="") #{profile.gender}
+                option Male
+                option Female
+                option Other
+          br
+          .form-row
+            .formGroup.col-2
+              label City
+            .formGroup.col-6
+              input.form-control(name="home" type="text" value=profile.home)
+          br
+          .form-row
+            .formGroup.col-2
+              label Description
+            .formGroup.col-6
+              input.form-control(name="about" type="text" value=profile.about)
+            .col-1
+            .col-1
+              input.w3-button.w3-teal(type="submit" value="SAVE")
+            .col-1
+              a.w3-button.w3-grey(href="/calendar/calendarD") Back
+      br
+      br

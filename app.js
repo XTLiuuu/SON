@@ -19,9 +19,7 @@ const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
-
 const notiController = require('./controllers/notiController');
-
 const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
@@ -65,7 +63,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // The following changes are made for dialogflow
@@ -73,7 +70,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 var server = app.listen(3000, function(){
   console.log('API server listening...');
 })
-
 
 app.use((req,res,next) => {
   res.locals.loggedIn = false
@@ -127,6 +123,7 @@ function isLoggedIn(req, res, next) {
 
 console.log("before the users routes...")
 console.dir(usersController)
+
 app.use('/', welcomeRouter);
 
 app.get('/users', isLoggedIn, usersController.getAllUsers );
@@ -136,6 +133,7 @@ app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 //app.use('/setting', settingRouter);
 
 app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
@@ -145,14 +143,16 @@ app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
 
 // friend function
-app.use('/friend',isLoggedIn, friend);
-app.use('/addfriend', isLoggedIn, addfriend);
-app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
+app.get('/friend',isLoggedIn, friendController.getFriend);
+//app.use('/addfriend', isLoggedIn, addfriend);
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
+app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, friendController.sendFrequest);
 
-app.use('/notification', isLoggedIn, usersController.attachUser,inputController.attachInputs,notiController.getAllNotis);
+app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
+app.post('/deleteRequest', isLoggedIn, friendController.deleteRequest);
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
+app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

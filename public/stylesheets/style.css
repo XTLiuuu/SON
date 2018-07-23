@@ -5,6 +5,9 @@ body, html {
     line-height: 1.8;
 }
 
+.w3-myfont{
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
 
 /* Create a Parallax Effect */
 .bgimg-1, .bgimg-2, .bgimg-3 {
@@ -49,6 +52,15 @@ body, html {
   border-right: 0.1in;
   padding-right: 5mm;
   margin-right: 15px;
+}
+
+.margin1 {
+  border-left: 0.2in;
+  padding-left: 10mm;
+  margin-left: 20px;
+  border-right: 0.2in;
+  padding-right: 10mm;
+  margin-right: 20px;
 }
 
 

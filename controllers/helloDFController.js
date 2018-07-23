@@ -154,6 +154,87 @@ exports.process_request =  (req, res) => {
       res.json(result);
     })
   }
+
+  else if(req.body.request.intent.name == "update_event"){
+    var update_event = req.body.request.intent.slots;
+    console.log("in update event")
+    var prevText = update_event.prevText["value"]
+    console.log("prevText = " + prevText)
+    if(prevText.slice(-2) == "at"){
+      prevText = prevText.slice(0, -2)
+    }
+    console.log("prevText1 = " + prevText)
+    var prevTime = update_event.prevTime["value"]
+    console.log("prevTime = " + prevTime)
+    var prevDate = update_event.prevDate["value"]
+    console.log("prevDate = " + prevDate)
+    var newText = update_event.newText["value"]
+    console.log("newText = " + newText)
+    if(newText != null && newText.slice(-2) == "at"){
+      newText = newText.slice(0, -2)
+    }
+    console.log("newText1 = " + newText)
+    var newTime = update_event.newTime["value"]
+    console.log("newTime = " + newTime)
+    var newDate = update_event.newDate["value"]
+    console.log("newDate = " + newDate)
+    if(prevDate == null){
+      var today = new Date();
+      prevDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      console.log("prevDate1 = " + prevDate)
+    }
+    if(newDate == null){
+      newDate = prevDate;
+      console.log("newDate1 = " + newDate)
+    }
+    if(newTime == null){
+      newTime = prevTime;
+      console.log("newTime1 = " + newTime)
+    }
+    if(newText == null){
+      newText = prevText;
+      console.log("newText1= " + newText)
+    }
+    var start1 = prevDate + " " + prevTime
+    console.log("start1 = " + start1)
+    var start2 = newDate + " " + newTime
+    console.log("start2 = " + start2)
+    var sd = newDate.toString().slice(0,10);
+    console.log("sd = " + sd)
+    console.log("[" + prevText.trim() + "]")
+    Input.findOne({
+      title: prevText.trim(),
+      start: start1,
+    }, function(err, input){
+      console.log("found11")
+      if(err){
+        console.log(err.message);
+      } else{
+        if(input == null){
+          console.log("input is empty")
+          output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found, Pipi."
+        }
+        else{
+          console.log("Input1 " + input);
+          Input.update({_id: input._id},{
+            title: newText.trim(),
+            start: start2,
+            startDate: sd,
+            startTime: newTime,
+          }).exec()
+          output_string = "Pipi, " + prevText + " at " + prevTime + " on " + prevDate + " has been changed to " + newText + " at " + newTime + " on " + newDate;
+        }
+      }
+      console.log(output_string)
+      result.response.outputSpeech.text = output_string;
+      res.json(result);
+    })
+  }
+  else{
+    console.log("in no intent")
+    result.response.outputSpeech.text = "Pipi, what are you talking about?"
+    res.json(result);
+  }
 };
 
 

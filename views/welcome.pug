@@ -2,24 +2,128 @@ extends layoutBS
 
 block content
   .body
-    #home.bgimg-1.w3-display-container.w3-opacity-min
-      .w3-display-middle(style='white-space:nowrap;')
-        span.w3-center.w3-padding-large.w3-black.w3-xlarge.w3-wide.w3-animate-opacity
-          | Secretary 
-          span.w3-hide-small Organizer
-          |  Networking
-          
+    header#home.w3-display-container.w3-content.w3-wide(style = "max-width: 1500px")
+      img.w3-image(src = "../images/bg3.jpg" alt = "home" width = "1500" height = "800")  
+      .w3-display-middle.w3-margin-top.w3-center
         br
         br
         br
+        br 
         br
         br
-        br
-        br
-          
-    <!-- Container (About Section) -->      
-    #about.w3-content.w3-container.w3-padding-64
-      h3.w3-center ABOUT SON
-      |   
-      p.w3-center
-        em SON is a convenient voice enabled reminder app with networking functions. It helps you schedule and manage your daily events. You can also use it to connect with your friends.
+        h1.w3-xxlarge.w3-text-white
+          span.w3-padding.w3-black.w3-opacity-min
+            b S O N
+          br
+          br
+          span.w3-hide-small.w3-text-light-grey Social Organizer Networking
+          br
+          br
+          br
+          br
+    div#about.w3-container(style = "padding: 128px 16px")
+      h3.w3-center.w3-text-black ABOUT THE APP
+      p.w3-center.w3-large Key features of our APP
+      .w3-row-padding.w3-center(style = "margin-top:64px")
+        .w3-quarter
+          i.fa.fa-calendar.w3-margin-bottom.w3-jumbo.w3.center
+          p.w3-large.w3-text-teal Calendar
+          p Manage schedules in Calendar. Try to add events by pressing "add calendar" and edit it by clicking the event. You can see events in your list. Don't forget to our voice functions. 
+        .w3-quarter
+          i.fa.fa-group.w3-margin-bottom.w3-jumbo.w3.center
+          p.w3-large.w3-text-teal Friends
+          p Share your schedules with your friends. Use our secret checking to see who can do brunch on Saturday at 9:30? Share SON to your friends and take advantage of SON together.   
+        .w3-quarter
+          i.fa.fa-bullhorn.w3-margin-bottom.w3-jumbo.w3.center
+          p.w3-large.w3-text-teal Notifications
+          p Get notifications of your upcoming events in time. You can also manage your friend requests and invitaions here. Add more friends, accept your friends' invitations and have a nice day. 
+        .w3-quarter
+          i.fa.fa-cog.w3-margin-bottom.w3-jumbo.w3.center
+          p.w3-large.w3-text-teal Settings
+          P Give yourself a cool username and complete your personal information here. Your friends can see your profile! Customize everything to your fav taste. SON is your secretary. 
+    div.w3-container.w3-light-grey(style = "padding: 128px 16px")
+      .w3-row-padding
+        .w3-col.m6
+          h1.w3-jumbo
+            b SON 
+          h1.w3-xxxlarge.w3-text-grey
+            b Why use it? 
+          p
+            span.w3-large Your life is never easier. 
+              | SON is a convenient voice enabled reminder app with networking functions. 
+              | SON is your personal secretary. It manages all your events and reminds you upcoming events in time. 
+              | It can also send your schedule to your friends or invitate available friends to attend events.
+              | SON improves your working effciency, keeps your life organized, and connects you with your friends. 
+              | With SON, you will never forget one single thing. With SON, you will never feel boring.
+        .w3-col.m6
+          img.w3-image.w3-right.w3-hide-small(src = "../images/home1.jpg" width = "450" height = "550" )
+          .w3-center.w3-hide-large.w3-hide-medium
+            button.w3-button.w3-block.w3-padding-large(onclick = "document.getElementById('download').style.display='none'")  
+            img.w3-image.w3-margin-top(src = "../images/home1.jpg" width = "335" height = "471" )
+    div#team.w3-container.w3-padding-64.w3-center(style = "padding: 128px 16px")     
+      h2.w3-text-black OUR TEAM
+      p The ones who create SON
+      br
+      br
+      .row
+        .col-1
+        .col-2
+          img.w3-circle.w3-hover-opacity(src = "../images/port4.jpg" alt = "Xuantong" style = "width45%")
+          h3.w3-text-dark-grey Xuantong Liu 
+          p Developer
+        .col-2
+        .col-2
+          img.w3-circle.w3-hover-opacity(src = "../images/port5.jpg" alt = "Yushan" style = "width45%")
+          h3.w3-text-dark-grey Yushan Wang
+          p Developer
+        .col-2
+        .col-2
+          img.w3-circle.w3-hover-opacity(src = "../images/port6.jpeg" alt = "Ziqing" style = "width45%")
+          h3.w3-text-dark-grey Ziqing Huang
+          p Developer
+        .col-1
+    div.w3-container.w3-light-grey
+      #contact.w3-container.w3-content.w3-padding-64(style="max-width:800px")
+      h2.w3-wide.w3-center CONTACT
+      p.w3-opacity.w3-center
+        i Lets get in touch. Send us a message 
+      .w3-row.w3-padding-32
+        .w3-col.m6.w3-large.w3-margin-bottom
+          i.fa.fa-map-marker(style="width:30px")
+          |  Waltham, MA
+          br
+          i.fa.fa-phone(style="width:30px")
+          |  Phone: (781) 736-5333
+          br
+          i.fa.fa-envelope(style="width:30px")  
+          |  Email: lxt@brandeis.edu
+          br
+        .w3-col.m6
+          form(action="/action_page.php" target="_blank")
+            .w3-row-padding(style="margin:0 -16px 8px -16px")
+              .w3-half
+                input.w3-input.w3-border(type="text" placeholder="Name" required="" name="Name")
+              .w3-half
+                input.w3-input.w3-border(type="text" placeholder="Email" required="" name="Email")
+            input.w3-input.w3-border(type="text" placeholder="Message" required="" name="Message")
+            button.w3-button.w3-black.w3-section.w3-right.w3-hover-teal(type="submit") SEND
+    footer.w3-container.w3-padding-32.w3-center.w3-black(style = "padding: 128px px")
+      h4 Follow Us
+      .row
+      a.w3-button.w3-large.w3-teal(href="javascript:void(0)" title="Facebook")
+        i.fa.fa-facebook 
+      | 
+      a.w3-button.w3-large.w3-teal(href="javascript:void(0)" title="Twitter")
+        i.fa.fa-twitter 
+      | 
+      a.w3-button.w3-large.w3-teal(href="javascript:void(0)" title="Google +")
+        i.fa.fa-google-plus 
+      | 
+      a.w3-button.w3-large.w3-teal(href="javascript:void(0)" title="Google +")
+        i.fa.fa-instagram 
+      | 
+      a.w3-button.w3-large.w3-teal.w3-hide-small(href="javascript:void(0)" title="Linkedin")
+        i.fa.fa-linkedin 
+      a.w3-button.w3-right.w3-hover-teal(href="/")
+        span.w3-xlarge
+          i.fa.fa-chevron-circle-up

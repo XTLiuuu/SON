@@ -1,13 +1,18 @@
 extends layoutBS
+block head
+  script.
+    $(document).ready(function(){
+      $("#friendqbutton").click(function(){
+        alert("The invitation has been sent");
+      });
+    });
 
 block content
   body
-    if message
-      h1= message
-    .container
-      form.form-inline.mr-auto(method="post" action="searchProfile")
-        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
-        button.btn.btn-primary(type='submit') Search
+    br
+    br
+    br
+    br
     .container
         br
         | #{friend.name}
@@ -20,27 +25,17 @@ block content
         br
         | #{friend.dob}
         br  
+        br
         
+      
     .container
       form.form-inline.mr-auto(method="post" action="sendFrequest")
-        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
-        button.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
+        input.form-control(name="friendemail" type="hidden" value=friend.email)
+        //-input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
+        button#friendqbutton.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
         
-  //-  .container
-      br
-      | #{friend.name}
-      br
-      | #{friend.email}
-      br
-      | #{friend.phone}
-      br
-      | #{friend.gender}
-      br
-      | #{friend.dob}
-      br
-    
         
-        #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+        //-#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
           .modal-dialog(role='document')
             .modal-content
               .modal-header
