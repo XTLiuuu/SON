@@ -61,18 +61,21 @@ exports.updateRequest = ( req, res )=> {
     })
 
     newf2.save()
-    Notification.deleteOne({from:req.body.from})
-                .exec()
     newf.save()
-      .then( () => {
-        res.redirect('/notification');
-      })
-      .catch( error => {
-        res.send( error );
-      });
+
+    Notification.deleteOne({
+                email: res.locals.user.googleemail,
+                from:req.body.from})
+                .then( () => {
+                  res.redirect('/notification');
+                })
+                .catch( error => {
+                  res.send( error );
+                });
   }else if(req.body.cancel == 'Cancel'){
     console.log("in deleteRequest"+req.body.from);
-    Notification.deleteOne({from:req.body.from})
+    Notification.deleteOne({email: res.locals.user.googleemail,
+                            from:req.body.from})
                 .exec()
                 .then(()=>{res.redirect('/notification')})
                 .catch((error)=>{res.send(error)})
