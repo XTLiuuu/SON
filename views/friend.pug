@@ -24,7 +24,8 @@ block content
       #Demo1.w3-hide.w3-animate-left
         .w3-container
           each f in friend
-            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(href="javascript:void(0)" onclick="openMail('f.friend');w3_close();")
+            // now onclick is passed into as a string, how to give it the value
+            a#firstTab.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(href="javascript:void(0)" onclick="openMail('#{f._id}');w3_close();")
               .w3-container
                 img.w3-round.w3-margin-right(src="../images/man.png" style="width:20%;")
                 span.w3-text-dark-grey #{f.friendname}
@@ -32,27 +33,27 @@ block content
     #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
     // Page content
     .w3-main(style="margin-left:320px;")
-      i.fa.fa-bars.w3-button.w3-white.w3-hide-large.w3-xlarge.w3-margin-left.w3-margin-top(onclick="w3_open()")
+      br
       br
       each f in friend
         form(method="post" action="sendEvent")
-          .w3-container.person(id="f.friend")
-          br
-          img.w3-round.w3-animate-top(src="../images/man.png" style="width:20%;")
-          .row
-            .col-7
-            .col-2
-              input.w3-button.w3-teal(type="submit" name = "sendEvent" value = "Send Event")
-            .col-2
-              input.w3-button.w3-teal(type="submit" name = "checkAva" value = "Check Availability")
-          hr
-          .w3.text-dark-grey
-            p
-              i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
-              |  #{f.friendname}
-            p
-              i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
-              |  #{f.friend}
+          .w3-container.person(id='#{f._id}')
+            br
+            img.w3-round.w3-animate-top(src="../images/man.png" style="width:20%;")
+            .row
+              .col-7
+              .col-2
+                input.w3-button.w3-teal(type="submit" name = "sendEvent" value = "Send Event")
+              .col-2
+                input.w3-button.w3-teal(type="submit" name = "checkAva" value = "Check Availability")
+            hr
+            .w3.text-dark-grey
+              p
+                i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
+                |  #{f.friendname}
+              p
+                i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
+                |  #{f.friend}
           br
           br
           br

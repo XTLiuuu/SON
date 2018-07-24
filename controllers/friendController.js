@@ -92,10 +92,9 @@ exports.getFriend = ( req, res ) => {
   console.log('in getAllNoti')
   Friend.find( {user:res.locals.user.googleemail} )
     .exec()
-    .then( ( friend ) => {
-      res.render( 'friend', {
-        friend: friend
-      } );
+    .then( ( friend_list ) => {
+      res.locals.friend = friend_list
+      res.render( 'friend');
     } )
     .catch( ( error ) => {
       console.log( error.message );

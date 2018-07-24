@@ -29,9 +29,12 @@ function openMail(personName) {
        x[i].style.display = "none";
     }
     x = document.getElementsByClassName("test");
+    console.log("test length = "  + x.length)
     for (i = 0; i < x.length; i++) {
-       x[i].className = x[i].className.replace(" w3-light-grey", "");
+      console.log("x = " + x[i].className)
+       x[i].className = x[i].className.replace("w3-light-grey", "");
     }
+    console.log("personname = " + personName)
     document.getElementById(personName).style.display = "block";
     event.currentTarget.className += " w3-light-grey";
 }

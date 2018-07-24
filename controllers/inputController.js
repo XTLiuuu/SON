@@ -47,17 +47,9 @@ exports.saveInput = ( req, res ) => {
   //console.dir(req)
   var sd = req.body.startDate;
   var sd1 = sd.toString();
-<<<<<<< HEAD
-
   var st = req.body.startTime;
   var sd2 = sd.slice(0,10);
   var st = req.body.startTime
-
-=======
-  var st = req.body.startTime;
-  var sd2 = sd.slice(0,10);
-  var st = req.body.startTime
->>>>>>> 85392c94ce5ed4f25e78fe384ad7c6b99dc9a367
   var start = sd1 + " " + st + " "
   console.log("start = " + start)
   var ed = req.body.endDate;
@@ -92,15 +84,8 @@ exports.saveInput = ( req, res ) => {
     editable: true,
     overlap: true,
     color: req.body.color,
-<<<<<<< HEAD
-
     description: req.body.description,
     adCheck: req.body.allDay
-
-=======
-    description: req.body.description,
-    adCheck: req.body.allDay
->>>>>>> 85392c94ce5ed4f25e78fe384ad7c6b99dc9a367
   } )
 
 
