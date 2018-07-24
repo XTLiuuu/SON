@@ -32,7 +32,7 @@ socket.on('connection', function(client){
       socket.broadcast(msg);
   })
 });
-*/ 
+*/
 /////////////////////////////////////////////////////
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
@@ -179,6 +179,11 @@ app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
+
+app.use('/test.json', function(req, res){
+  console.dir(req.user)
+  res.json({a: 1, b: 2})
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
