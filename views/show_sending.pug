@@ -12,63 +12,51 @@ block content
     .margin
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
         h4.w3-wide.w3-center 
-          i.fa.fa-check-square-o.w3-large
-          |  UPDATE EVENT
+          i.fa.fa-plane.w3-large
+          |  SEND EVENT 
         br
         br
-        form(method="post" name = "myForm" action="" onsubmit="return validateForm()")
+        form(method="post" name = "myForm" action="send_Event")
           .row
             .col-2
-              label Title
-            .col-6
-              .input-group.md-3
-                input.form-control(name = "title" type = "text" placeholder = "Add Event Title" width='60%' value=event_doc.title)
+              b.w3-text-teal Title
+            .col-3
+              label.w3-large #{event_doc.title}
           br
           .form-row
             .formGroup.col-2
-              label Start Time 
-            .formGroup.col-3
-              input.form-control(type="date" name="startDate" value=event_doc.startDate)
-            .formGroup.col-3
-              input.form-control(type="text" name="startTime" placeholder="e.g. 10:00" value=event_doc.startTime)
+              b.w3-text-teal Start Time 
+            .formGroup.col-4
+              label.w3-large #{event_doc.startDate} &nbsp&nbsp #{event_doc.startTime}
             .formGroup.col-2
-              input(type="checkbox" class = "all-day-check" name = "allDay" checked=event_doc.allDay) 
+              input(type="checkbox" checked=event_doc.allDay) 
               label.all-day-check All day 
           br
           .form-row
             .formGroup.col-2
-              label End Time 
+              b.w3-text-teal End Time 
             .formGroup.col-3
-              input.form-control(type="date" name="endDate" value=event_doc.endDate)
+              label.w3-large #{event_doc.endDate}
             .formGroup.col-3
-              input.form-control(type="text" name="endTime" placeholder="e.g. 13:00" value=event_doc.endTime)
+              label.w3-large #{event_doc.endTime}
           br
           br
           .form-row
             .formGroup.col-2
-              label Description
+              b.w3-text-teal Description
             .formGroup.col-6
-              input.form-control(type="text" name="description" placeholder = "Include event details here" value=event_doc.description)
+              label.w3-large #{event_doc.description}
           br
           .form-row
             .formGroup.col-2
-              label Color 
+              b.w3-text-teal Color 
             .formGroup.col-3
-              select(name="color" ).form-control
-                option(selected="") #{event_doc.color}
-                option(name = "...") ...
-                option(name = "green") Green
-                option(name = "grey") Grey                
-                option(name = "pink") Pink
-                option(name = "red") Red
-                option(name = "yellow") Yellow
+              label.w3-large #{event_doc.color}
             .col-2
             .col-1
-              input.w3-button.w3-teal(type="submit" name = "update" value="Update")
-            .col-2
-              input.w3-button.w3-red(type="submit" name = "delete" value="Delete")        
+              input.w3-button.w3-teal(type="submit" name = "send" value="Send")      
             .col-1
-              a.w3-button.w3-grey(href="/calendar/calendarD") Back
+              a.w3-button.w3-grey(href="/calendar/sendCalendar/" + friend_id) Back
       br
       br
     

@@ -1,6 +1,7 @@
 'use strict';
 console.log("in full calendar controller")
 const Input = require( '../models/Input' );
+const Notification = require('../models/Notification');
 
 exports.get_events_post = function(req, res){
    //events
@@ -49,7 +50,11 @@ exports.update_event_get = function(req, res){
   }
 
   exports.show_sending_event = function(req, res){
+    console.log("curr = " + req.param)
     const event_id = req.params.event_id;
+    console.log("event id = " +  event_id)
+    const friend_id = req.params.friend_id;
+    console.log("friend id = " + friend_id)
       Input.findById(event_id, function(err, doc){
         if(err){
           res.status(err.status || 500);
@@ -57,7 +62,7 @@ exports.update_event_get = function(req, res){
         } else {
           console.log(doc)
           if(doc){
-            res.render('show_sending',{event_doc: doc})
+            res.render('show_sending',{event_id: event_id, event_doc: doc, friend_id: friend_id})
           } else {
             res.status(404);
             res.json({status: 404, message: "Not Found."})
@@ -132,3 +137,23 @@ exports.update_event_post = function(req, res){
   }
 
 }
+
+/**
+exports.send_event = function(req, res){
+   console.log("in send_event")
+   let friendEvent =
+    new Notification({to:req.body.friendemail,
+     toname:req.body.friendname,
+     content: "You receive an event shared from " + res.locals.profile.name,
+     from: res.locals.user.googleemail,
+     fromname: res.locals.profile.name})
+   request.save(function(err, doc){
+     if(err){
+       res.json(err);
+     } else {
+       console.log("The event has been sent")
+       res.redirect('/calendar/sendCalendar/ + friend_id');
+     }
+   })
+  }
+  */
