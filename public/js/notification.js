@@ -4,7 +4,7 @@ setInterval(
         $.ajax({
           type: "POST",
           url: "/test.json", // return notification
-          data: "good", // 
+          data: "good", //
           success: function(data){
             console.log("data = " + JSON.stringify(data, null, 2))
           },

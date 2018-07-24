@@ -37,95 +37,96 @@ block content
                 a.w3-button.w3-white.w3-border.w3-border-teal.w3-small.w3-center(href="/updateProfile") Edit your info
           br
         .w3-col.m8
-          .w3-container.w3-card.w3-white.w3-round.w3-margin
-            h5.w3-text-dark-grey.text-bold 
-              b.bold.w3-text Event settings
-            br
-            input.w3-check(type = "checkbox" name = "voice")
-            label Enable voice functions
-            br
-            br
-            .row
-              .formGroup.col-md-3
-                label Time format 
-              .formGroup.col-md-6
-                select.form-control(name="timeFormat")
-                  option(selected="") ..
-                  option(value="") 1:00 pm
-                  option(value="") 13:00
-            br
-            .row
-              .formGroup.col-md-3
-                label Duration set 
-              .formGroup.col-md-6
-                select.form-control(name="duration")
-                  option(selected="") ..
-                  option(value="") 10 min
-                  option(value="") 20 min 
-                  option(value="") 30 min
-                  option(value="") 40 min
-                  option(value="") 50 min
-                  option(value="") 60 min
-            br
-            .row
-              .formGroup.col-md-3
-                label Profile permission 
-              .formGroup.col-md-6
-                select.form-control(name="profilePermission")
-                  option(selected="") ..
-                  option(value="") Allow all users to see my profile
-                  option(value="") Allow only friends to see my profile 
-                  option(value="") Allow only myself to see my profile
-            br
-            .row
-              .formGroup.col-md-3
-                label Notifications
-              .formGroup.col-md-6
-                select.form-control(name="notimethod")
-                  option(selected="") ..
-                  option(value="") Don't notify me 
-                  option(value="") SON notification 
-                  option(value="") SON alert 
-            br
-          .w3-container.w3-card.w3-white.w3-round.w3-margin
-            h5.w3-text-dark-grey.text-bold 
-              b.bold View settings
-            br
-            input.w3-check(type = "checkbox" name = "weekend")
-            label Show weekend
-            br
-            input.w3-check(type = "checkbox" name = "weeknumber")
-            label Show weeknumber
-            br
-            input.w3-check(type = "checkbox" name = "eventEnd")
-            label Show event end time
-            br
-            input.w3-check(type = "checkbox" name = "fixedWeek")
-            label Show fixed week 
-            br
-            br
-            .row
-              .formGroup.col-md-3
-                label Default view  
-              .formGroup.col-md-6
-                select.form-control(name="view")
-                  option(selected="") ..
-                  option(value="") Daily
-                  option(value="") Weekly 
-                  option(value="") Monthly
-            br
-            .row
-              .formGroup.col-md-3
-                label Text color  
-              .formGroup.col-md-6
-                select.form-control(name="color")
-                  option(selected="") ..
-                  option(value="") Black(default)
-                  option(value="") Green 
-                  option(value="") Grey
-                  option(value="") Red
-            br
-            button.w3-button.w3-teal.w3-section.w3-right(type="submit") SAVE
+          form.text-monospace(method="post" action="saveSetting")
+            .w3-container.w3-card.w3-white.w3-round.w3-margin
+              h5.w3-text-dark-grey.text-bold 
+                b.bold.w3-text Event settings
+              br
+              input.w3-check(type = "checkbox" name = "voice")
+              label Enable voice functions
+              br
+              br
+              .row
+                .formGroup.col-md-3
+                  label Time format 
+                .formGroup.col-md-6
+                  select.form-control(name="timeFormat")
+                    option(selected="") ..
+                    option 1:00 pm
+                    option 13:00
+              br
+              .row
+                .formGroup.col-md-3
+                  label Duration set 
+                .formGroup.col-md-6
+                  select.form-control(name="duration")
+                    option(selected="") ..
+                    option 10 min
+                    option 20 min 
+                    option 30 min
+                    option 40 min
+                    option 50 min
+                    option 60 min
+              br
+              .row
+                .formGroup.col-md-3
+                  label Profile permission 
+                .formGroup.col-md-6
+                  select.form-control(name="profilePermission")
+                    option(selected="") ..
+                    option Allow all users to see my profile
+                    option Allow only friends to see my profile 
+                    option Allow only myself to see my profile
+              br
+              .row
+                .formGroup.col-md-3
+                  label Notifications
+                .formGroup.col-md-6
+                  select.form-control(name="notimethod")
+                    option(selected="") ..
+                    option Don't notify me 
+                    option SON notification 
+                    option SON alert 
+              br
+            .w3-container.w3-card.w3-white.w3-round.w3-margin
+              h5.w3-text-dark-grey.text-bold 
+                b.bold View settings
+              br
+              input.w3-check(type = "checkbox" name = "weekend")
+              label Show weekend
+              br
+              input.w3-check(type = "checkbox" name = "weeknumber")
+              label Show weeknumber
+              br
+              input.w3-check(type = "checkbox" name = "eventEnd")
+              label Show event end time
+              br
+              input.w3-check(type = "checkbox" name = "fixedWeek")
+              label Show fixed week 
+              br
+              br
+              .row
+                .formGroup.col-md-3
+                  label Default view  
+                .formGroup.col-md-6
+                  select.form-control(name="view")
+                    option(selected="") ..
+                    option Daily
+                    option Weekly 
+                    option Monthly
+              br
+              .row
+                .formGroup.col-md-3
+                  label Text color  
+                .formGroup.col-md-6
+                  select.form-control(name="color")
+                    option(selected="") ..
+                    option Black(default)
+                    option Green 
+                    option Grey
+                    option Red
+              br
+            input.w3-button.w3-teal.w3-section.w3-right(type="submit" value="SAVE") 
           br
           br
             
