@@ -31,12 +31,20 @@ $(function() {
     timeFormat: 'H(:mm)',
     displayEventEnd: true,
     fixedWeekCount: false,
+<<<<<<< HEAD
+
+=======
+>>>>>>> 85392c94ce5ed4f25e78fe384ad7c6b99dc9a367
     timezone: 'local',
     eventClick: function(event, jsEvent, view){
       $('#modalTitle').html(event.title)
       $('#modalStartTime').html(event.startTime)
       $('#fullCalModal').modal();
     }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 85392c94ce5ed4f25e78fe384ad7c6b99dc9a367
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
   /**

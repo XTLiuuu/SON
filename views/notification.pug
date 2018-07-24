@@ -46,5 +46,26 @@ block content
 
                       | Remind me to #{input.title} at #{input.start}
       
+<<<<<<< HEAD
+              
+            #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
+
+              each noti in notis
+                .card.bg-light.mb-3(style="max-width: 50rem;")
+                  .card-header 
+                    | Friend request
+                    .alignright.text-monospace now
+                  .card-body
+
+                    form.form-inline.mr-auto(method="post" action="acceptRequest")                      
+                      input.form-control(name="from" type="hidden" value=noti.from)
+                      h5.font-weight-bold #{noti.content}
+                      p.card-text
+                        | #{noti.email}
+                      button(type='submit') accept
+                      button(type='submit') cancel
+
+=======
+>>>>>>> 85392c94ce5ed4f25e78fe384ad7c6b99dc9a367
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               | lollllll
