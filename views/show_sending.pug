@@ -11,7 +11,7 @@ block content
     br 
     .margin
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
-        h4.w3-wide.w3-center 
+        h4.w3-wide.w3-center
           i.fa.fa-plane.w3-large
           |  SEND EVENT 
         br
@@ -35,16 +35,14 @@ block content
           .form-row
             .formGroup.col-2
               b.w3-text-teal End Time 
-            .formGroup.col-3
-              label.w3-large #{event_doc.endDate}
-            .formGroup.col-3
-              label.w3-large #{event_doc.endTime}
+            .formGroup.col-4
+              label.w3-large #{event_doc.endDate} &nbsp&nbsp #{event_doc.endTime}
           br
           br
           .form-row
             .formGroup.col-2
               b.w3-text-teal Description
-            .formGroup.col-6
+            .col-6
               label.w3-large #{event_doc.description}
           br
           .form-row
