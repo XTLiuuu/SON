@@ -42,6 +42,7 @@ const notiController = require('./controllers/notiController');
 const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
+const settingController = require('./controllers/settingController');
 const User = require( './models/user' )
 
 //friend function
@@ -150,11 +151,12 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 
 //app.use('/setting', settingRouter);
-app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile, settingController.getSetting);
+app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
 //app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
-app.get('saveSetting', isLoggedIn,)
+//app.get('saveSetting', isLoggedIn,)
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
@@ -179,12 +181,12 @@ app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
-
+/*
 app.use('/test.json', function(req, res){
   console.dir(req.user)
   res.json({a: 1, b: 2})
 })
-
+*/
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

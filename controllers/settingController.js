@@ -1,10 +1,10 @@
 'use strict';
 const Setting = require( '../models/Setting' );
 const mongo = require('mongodb');
-console.log("loading the profile Controller")
+console.log("loading the setting Controller")
 
 // this displays all of the hotel reviews
-exports.getSetting = ( req, res ) => {
+exports.getSetting = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get setting')
   Setting.findOne(objId)
@@ -23,40 +23,68 @@ exports.getSetting = ( req, res ) => {
     } );
 };
 
-// this displays all of the hotel reviews
-exports.getProfile1 = ( req, res ) => {
-  const objId = new mongo.ObjectId(req.params.id)
-  console.log('in getprofile')
-  Profile.findOne(objId)
-    .exec()
-    //this is a function takes one parameter (function) and does this
-    .then( ( profile ) => {
-      profile: profile
-      res.render('setting1');
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'profile promise complete' );
-    } );
-};
-
 exports.saveSetting = ( req, res ) => {
+  console.log("hh24567" + req.body.timeFormat)
+  console.log(req.body)
   console.log("in saveSetting!")
   Setting.findOne({email:res.locals.user.googleemail}) //{"_id": objId})
     .exec()
     .then( ( setting ) => {
+      var es = req.body.voice;
+      var enablev;
+      if(es == 'on'){
+        enablev = true;
+      } else {
+        enablev = false;
+      }
+
+      var wk = req.body.weekend;
+      var weekend;
+      if(wk == 'on'){
+        weekend = true;
+      } else {
+        weekend = false;
+      }
+
+      var wkn = req.body.weeknumber;
+      var weeknumber;
+      if(wkn == 'on'){
+        weeknumber = true;
+      } else {
+        weeknumber = false;
+      }
+
+      var eve = req.body.eventEnd;
+      var eventEnd;
+      if(eve == 'on'){
+        eventEnd = true;
+      } else {
+        eventEnd = false;
+      }
+
+      var fw = req.body.fixedWeek;
+      var fixedWeek;
+      if(fw == 'on'){
+        fixedWeek = true;
+      } else {
+        fixedWeek = false;
+      }
+
       if(setting==null){
         console.log("in save!")
         let setting = new Setting ({
-          email: req.user.googleemail,
-          enableVoice: req.body.enableVoice,
-          timeFormat = req.body.timeFormat,
-          durationSet = req.body.durationSet,
-          profilePermission = req.body.profilePermission,
-          notifications = req.body.notifications
+          email: res.locals.user.googleemail,
+          voice: enablev,
+          timeFormat : req.body.timeFormat,
+          durationSet : req.body.durationSet,
+          profilePermission : req.body.profilePermission,
+          notimethod : req.body.notimethod,
+          weekend : weekend,
+          weeknumber : weeknumber,
+          eventEnd : eventEnd,
+          fixedWeek : fixedWeek,
+          view : req.body.view,
+          color : req.body.color
         } )
         //console.log("profile = "+ newProfile)
         setting.save()
@@ -70,12 +98,18 @@ exports.saveSetting = ( req, res ) => {
         console.log("in update!")
         var uSetting = Setting.findOne({email:res.locals.user.googleemail})
         //console.log(uProfile)
-        uProfile.update({email:res.locals.user.googleemail},
-          {enableVoice: req.body.enableVoice,
-          timeFormat = req.body.timeFormat,
-          durationSet = req.body.durationSet,
-          profilePermission = req.body.profilePermission,
-          notifications = req.body.notifications
+        uSetting.update({email:res.locals.user.googleemail},
+          { voice: enablev,
+          timeFormat : req.body.timeFormat,
+          durationSet : req.body.durationSet,
+          profilePermission : req.body.profilePermission,
+          notimethod : req.body.notimethod,
+          weekend : weekend,
+          weeknumber : weeknumber,
+          eventEnd : eventEnd,
+          fixedWeek : fixedWeek,
+          view : req.body.view,
+          color : req.body.color
          })
           .exec()
           .then( () => {
@@ -94,15 +128,62 @@ exports.attachSetting = ( req, res, next ) => {
   Setting.findOne({email:res.locals.user.googleemail}) //{"_id": objId})
     .exec()
     .then( ( setting ) => {
+      var es = req.body.voice;
+      var enablev;
+      if(es == 'on'){
+        enablev = true;
+      } else {
+        enablev = false;
+      }
+
+      var wk = req.body.weekend;
+      var weekend;
+      if(wk == 'on'){
+        weekend = true;
+      } else {
+        weekend = false;
+      }
+
+      var wkn = req.body.weeknumber;
+      var weeknumber;
+      if(wkn == 'on'){
+        weeknumber = true;
+      } else {
+        weeknumber = false;
+      }
+
+      var eve = req.body.eventEnd;
+      var eventEnd;
+      if(eve == 'on'){
+        eventEnd = true;
+      } else {
+        eventEnd = false;
+      }
+
+      var fw = req.body.fixedWeek;
+      var fixedWeek;
+      if(fw == 'on'){
+        fixedWeek = true;
+      } else {
+        fixedWeek = false;
+      }
+
+
       if (setting == null){
         console.log("666");
         setting = new Setting ({
-          email: req.user.googleemail,
-          enableVoice: req.body.enableVoice,
-          timeFormat = req.body.timeFormat,
-          durationSet = req.body.durationSet,
-          profilePermission = req.body.profilePermission,
-          notifications = req.body.notifications
+          email: res.locals.user.googleemail,
+          voice: enablev,
+          timeFormat : req.body.timeFormat,
+          durationSet : req.body.durationSet,
+          profilePermission : req.body.profilePermission,
+          notimethod : req.body.notimethod,
+          weekend : weekend,
+          weeknumber : weeknumber,
+          eventEnd : eventEnd,
+          fixedWeek : fixedWeek,
+          view : req.body.view,
+          color : req.body.color
         } )
       }
       res.locals.setting = setting

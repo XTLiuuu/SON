@@ -3,11 +3,17 @@ const mongoose = require( 'mongoose' );
 
 var settingSchema = mongoose.Schema( {
   email: String,
-  enableVoice : Boolean,
+  voice : Boolean,
   timeFormat : String,
   durationSet : String,
   profilePermission : String,
-  notifications : String
+  notimethod : String,
+  weekend: Boolean,
+  weeknumber: Boolean,
+  eventEnd: Boolean,
+  fixedWeek: Boolean,
+  view: String,
+  color: String
 } );
 
 module.exports = mongoose.model( 'Setting', settingSchema );
