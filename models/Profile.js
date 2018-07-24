@@ -8,7 +8,8 @@ var profileSchema = mongoose.Schema( {
   phone: String,
   gender: String,
   dob: String,
-  about: String
+  about: String,
+  friendEmail: Array,
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

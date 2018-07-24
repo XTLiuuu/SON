@@ -1,43 +1,60 @@
 extends layoutBS
 
+block head
+  script(src="/js/friend.js")
+  
 block content
-  .container
-    br
-    br
-    br
-    br
-    .container
-      form.form-inline.mr-auto(method="post" action="searchProfile")
-        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search an email', aria-label='Search')
-        button.btn.btn-primary(type='submit') Search
-    br
-    br
-    .btn-group-vertical
+  br
+  br
+  br
+  style.
+    html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
+    .w3-bar-block .w3-bar-item {padding: 16px}
+  body
+    // Side Navigation
+    nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-white.w3-animate-left.w3-card(style="z-index:3;width:320px;")
+      h3.w3-text-wide &nbsp&nbsp MY FRIENDS
+      a.w3-bar-item.w3-button(href="/friend1")
+        i.fa.fa-hourglass-end.w3-margin-right
+        | Add new friends
+      a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('Demo1')" href="javascript:void(0)")
+        i.fa.fa-inbox.w3-margin-right
+        | All friends
+        i.fa.fa-caret-down.w3-margin-left
+      #Demo1.w3-hide.w3-animate-left
+        .w3-container
+          each f in friend
+            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(href="javascript:void(0)" onclick="openMail('f.friend');w3_close();")
+              .w3-container
+                img.w3-round.w3-margin-right(src="../images/man.png" style="width:20%;")
+                span.w3-text-dark-grey #{f.friendname}
+    // Overlay effect when opening the side navigation on small screens
+    #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
+    // Page content
+    .w3-main(style="margin-left:320px;")
+      i.fa.fa-bars.w3-button.w3-white.w3-hide-large.w3-xlarge.w3-margin-left.w3-margin-top(onclick="w3_open()")
+      br
       each f in friend
-        button.btn.btn-outline-primary(type='button') #{f.friendname}
-        
-    br
-    br
-    .row
-      each f in friend
-        .col-4
-          #list-tab.list-group(role='tablist')
-            a#list-home-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-home', role='tab', aria-controls='home') #{f.friendname}
-        .col-8
-          #nav-tabContent.tab-content
-            #list-home.tab-pane.fade(role='tabpanel', aria-labelledby='list-home-list') #{f.status}
-
-
-
-//-
-        #list-tab.list-group(role='tablist')
-          a#list-home-list.list-group-item.list-group-item-action.active(data-toggle='list', href='#list-home', role='tab', aria-controls='home') friend 1
-          a#list-profile-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-profile', role='tab', aria-controls='profile') friend 2
-          a#list-messages-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-messages', role='tab', aria-controls='messages') friend 3
-          a#list-settings-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-settings', role='tab', aria-controls='settings') friend 4
-      .col-8
-        #nav-tabContent.tab-content
-          #list-home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='list-home-list') first friend
-          #list-profile.tab-pane.fade(role='tabpanel', aria-labelledby='list-profile-list') second friend
-          #list-messages.tab-pane.fade(role='tabpanel', aria-labelledby='list-messages-list') third friend
-          #list-settings.tab-pane.fade(role='tabpanel', aria-labelledby='list-settings-list') forth friend
+        form(method="post" action="sendEvent")
+          .w3-container.person(id="f.friend")
+          br
+          img.w3-round.w3-animate-top(src="../images/man.png" style="width:20%;")
+          .row
+            .col-7
+            .col-2
+              input.w3-button.w3-teal(type="submit" name = "sendEvent" value = "Send Event")
+            .col-2
+              input.w3-button.w3-teal(type="submit" name = "checkAva" value = "Check Availability")
+          hr
+          .w3.text-dark-grey
+            p
+              i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
+              |  #{f.friendname}
+            p
+              i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
+              |  #{f.friend}
+          br
+          br
+          br
+          br
+          b

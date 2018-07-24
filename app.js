@@ -144,6 +144,7 @@ app.use('/calendar', calendarD);
 
 // friend function
 app.get('/friend',isLoggedIn, friendController.getFriend);
+app.get('/friend1',isLoggedIn, friendController.getFriend1);
 
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)

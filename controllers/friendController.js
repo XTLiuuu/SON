@@ -105,3 +105,21 @@ exports.getFriend = ( req, res ) => {
       console.log( 'get friend complete' );
     } );
 };
+
+exports.getFriend1 = ( req, res ) => {
+  console.log('in getAllNoti')
+  Friend.find( {user:res.locals.user.googleemail} )
+    .exec()
+    .then( ( friend ) => {
+      res.render( 'friend1', {
+        friend: friend
+      } );
+    } )
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'get friend complete' );
+    } );
+};

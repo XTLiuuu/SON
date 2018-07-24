@@ -57,7 +57,8 @@ exports.saveProfile = ( req, res ) => {
           gender: req.body.gender,
           dob: req.body.dob,
           about: req.body.about,
-          home: req.body.home
+          home: req.body.home,
+          friendEmail: []
         } )
         //console.log("profile = "+ newProfile)
         profile.save()
@@ -104,7 +105,8 @@ exports.attachProfile = ( req, res, next ) => {
           gender: req.body.gender,
           dob: req.body.dob,
           about: req.body.about,
-          home: req.body.home
+          home: req.body.home,
+          friendEmail: req.body.friendEmail
         } )
       }
       res.locals.profile = profile
