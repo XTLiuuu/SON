@@ -122,3 +122,8 @@ exports.getFriend1 = ( req, res ) => {
       console.log( 'get friend complete' );
     } );
 };
+
+exports.check_avail = (req, res) =>{
+  console.log("in check availability")
+  console.log(req.body.friendEmail);
+}

@@ -1,5 +1,5 @@
-var openInbox = document.getElementById("myBtn");
-openInbox.click();
+//var openInbox = document.getElementById("myBtn");
+//openInbox.click();
 
 function w3_open() {
     document.getElementById("mySidebar").style.display = "block";
@@ -23,6 +23,7 @@ function myFunc(id) {
 }
 
 function openMail(event) {
+    event.preventDefault();
     const personName = event.currentTarget.attributes[1].nodeValue;
 
     var i;
@@ -41,5 +42,19 @@ function openMail(event) {
     event.currentTarget.className += " w3-light-grey";
 }
 
-var openTab = document.getElementById("firstTab");
-openTab.click();
+
+function openModal(event) {
+    event.preventDefault();
+    const personName = event.currentTarget.attributes[1].nodeValue;
+    console.log("personname = " + personName)
+    document.getElementById(personName+"modal").style.display = "block";
+}
+
+function closeModal(event) {
+    event.preventDefault();
+    const personName = event.currentTarget.attributes[1].nodeValue;
+    console.log("personname = " + personName)
+    document.getElementById(personName+"modal").style.display = "none";
+}
+//var openTab = document.getElementById("firstTab");
+//openTab.click();

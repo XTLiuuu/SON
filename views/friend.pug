@@ -34,7 +34,7 @@ block content
     // Page content
     .w3-main(style="margin-left:320px;")
       each f in friend
-        form(method="post" action="")
+        form(method="post" action="check_avail")
           .w3-container.person(id= f._id)
             br
             img.w3-round.w3-animate-top(src="../images/man.png" style="width:20%;")
@@ -45,7 +45,28 @@ block content
                 //-.w3-button.w3-teal(onClick="window.open("/calendar/sendCalendar"+ f._id)") Send Event
                 //-.w3-button.w3-teal(onClick="window.open("/calendar/sendCalendar"+ f._id)") Send Event
               .col-2
-                input.w3-button.w3-teal(type="submit" name = "checkAva" value = "Check Availability")
+                .w3-container
+                  button.w3-button.w3-teal(friend_id= f._id onclick="openModal(event)") Check Availability
+                  .w3-modal(id= f._id+"modal")
+                    .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
+                      .w3-center
+                        span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(friend_id= f._id title="Close Modal" onclick="closeModal(event)") X
+                        img.w3-circle.w3-margin-top(src="../images/man.png" alt="Avatar" style="width:30%")
+                        br
+                        label #{f.friendname}
+                        .w3-container
+                          .margin
+                            .w3-section
+                              b Check Time
+                              .row
+                                input(type="hidden" name="friendEmail" value=f.friend)
+                                .col-6
+                                  input.w3-input.w3-border(type="date" name="checkDate")
+                                .col-6
+                                  input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime")
+                              br
+                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding(type="submit" value="Start Checking")
+                              br
             hr
             .w3.text-dark-grey
               p
