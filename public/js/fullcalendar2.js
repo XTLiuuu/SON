@@ -1,4 +1,4 @@
-console.log('in full calendar 1')
+console.log('in full calendar 2')
 $(function() {
   var containerEl = $('#calendar');
   containerEl.fullCalendar({
@@ -39,8 +39,21 @@ $(function() {
     }
   })
   var calendar = $('#calendar').fullCalendar('getCalendar');
+  /**
+  calendar.on('eventMouseover', function(callEvent, jsEvent, view){
+    if(callEvent.end == null){
+      alert(callEvent.start.format("hh:mm a") + ": " + callEvent.title)
+    }
+    else{
+      alert(callEvent.start.format("hh:mm a") + " - " + callEvent.end.format("hh:mm a") + ": " + callEvent.title)
+    }
+  });
+  */
   calendar.on('eventClick', function(callEvent, jsEvent, view){
     console.log(callEvent)
-    window.open("/calendar/update_event/" + callEvent._id);
+    const current_pathname = window.location.pathname;
+    const f_id = current_pathname.substring(current_pathname.lastIndexOf("/") + 1)
+    console.log("friend = " + f_id)
+    window.open("/calendar/show_sending_event/" + f_id + "/" + callEvent._id);
   });
 });

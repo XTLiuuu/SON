@@ -22,6 +22,14 @@ exports.getCalendar = (req, res) => {
   res.render('calendarD');
 };
 
+exports.getCalendar1 = (req, res) => {
+  console.log("in get calendar 1")
+  console.log("here="+req.params)
+  const f_id = req.params.friend_id;
+  console.log("id = " + f_id)
+  res.render('calendarDS', {f_id: f_id});
+};
+
 exports.update_event_get = function(req, res){
   const event_id = req.params.event_id;
     Input.findById(event_id, function(err, doc){
@@ -39,6 +47,24 @@ exports.update_event_get = function(req, res){
       }
     })
   }
+
+  exports.show_sending_event = function(req, res){
+    const event_id = req.params.event_id;
+      Input.findById(event_id, function(err, doc){
+        if(err){
+          res.status(err.status || 500);
+          res.json(err);
+        } else {
+          console.log(doc)
+          if(doc){
+            res.render('show_sending',{event_doc: doc})
+          } else {
+            res.status(404);
+            res.json({status: 404, message: "Not Found."})
+          }
+        }
+      })
+    }
 
 exports.update_event_post = function(req, res){
   console.log('in update_event_post1')

@@ -22,7 +22,9 @@ function myFunc(id) {
     }
 }
 
-function openMail(personName) {
+function openMail(event) {
+    const personName = event.currentTarget.attributes[1].nodeValue;
+
     var i;
     var x = document.getElementsByClassName("person");
     for (i = 0; i < x.length; i++) {
