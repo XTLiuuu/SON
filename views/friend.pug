@@ -33,7 +33,7 @@ block content
     #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
     // Page content
     .w3-main(style="margin-left:320px;")
-      div.alert.alert-info#check-result(role="alert" style="display:none")
+      div#check-result.alert.alert-info(role="alert" style="display:none")
         | I'm not stupid.
       br
       button.w3-button.w3-teal(onclick="document.getElementById('id0211').style.display='block'") GUESS FREE
@@ -90,7 +90,7 @@ block content
                                 .col-6
                                   input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime"+f._id)
                               br
-                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit(value="Start Checking" fid=f._id)
+                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit(type="button" value="Start Checking" fid=f._id)
                               br
             hr
             .w3.text-dark-grey

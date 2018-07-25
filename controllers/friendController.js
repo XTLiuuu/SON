@@ -134,6 +134,9 @@ exports.check_avail = (req, res) =>{
   console.log(req.body.checkDate)
   console.log(req.body.checkTime)
   var s = new Date(req.body.checkDate);
+  var friendName = req.body.friendName
+  var checkDate = req.body.checkDate
+  var checkTime = req.body.checkTime
   s.setDate(s.getDate()+1)
   var index = req.body.checkTime.indexOf(":")
   s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
@@ -168,18 +171,10 @@ exports.check_avail = (req, res) =>{
         if(checkStatus != "BUSY"){
           checkStatus = "FREE"
         }
+        var answer = {checkStatus: checkStatus, friendName: friendName, checkDate: checkDate, checkTime: checkTime}
+        console.dir(answer)
         console.log("checkStatus at end1 is " + checkStatus)
-        res.json(checkStatus);
-        // Friend.find( {user:res.locals.user.googleemail} )
-        //   .exec()
-        //   .then( ( friend_list ) => {
-        //     res.locals.friend = friend_list
-        //     res.locals.checkedFriend = req.body.friendName
-        //     res.locals.checkStatus = checkStatus
-        //     res.locals.checkedTime = req.body.checkTime
-        //     res.locals.checkedDate = req.body.checkDate
-        //     res.render( 'friend');
-        //   } )
+        res.json(answer);
       }
     }
   )
