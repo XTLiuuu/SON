@@ -129,6 +129,7 @@ exports.getFriend1 = ( req, res ) => {
 
 exports.check_avail = (req, res) =>{
   console.log("in check availability")
+  console.dir(req.body)
   console.log(req.body.friendEmail);
   console.log(req.body.checkDate)
   console.log(req.body.checkTime)
@@ -168,16 +169,17 @@ exports.check_avail = (req, res) =>{
           checkStatus = "FREE"
         }
         console.log("checkStatus at end1 is " + checkStatus)
-        Friend.find( {user:res.locals.user.googleemail} )
-          .exec()
-          .then( ( friend_list ) => {
-            res.locals.friend = friend_list
-            res.locals.checkedFriend = req.body.friendName
-            res.locals.checkStatus = checkStatus
-            res.locals.checkedTime = req.body.checkTime
-            res.locals.checkedDate = req.body.checkDate
-            res.render( 'friend');
-          } )
+        res.json(checkStatus);
+        // Friend.find( {user:res.locals.user.googleemail} )
+        //   .exec()
+        //   .then( ( friend_list ) => {
+        //     res.locals.friend = friend_list
+        //     res.locals.checkedFriend = req.body.friendName
+        //     res.locals.checkStatus = checkStatus
+        //     res.locals.checkedTime = req.body.checkTime
+        //     res.locals.checkedDate = req.body.checkDate
+        //     res.render( 'friend');
+        //   } )
       }
     }
   )
