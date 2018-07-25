@@ -138,16 +138,26 @@ exports.update_event_post = function(req, res){
 
 }
 
-/**
+
 exports.send_event = function(req, res){
    console.log("in send_event")
    let friendEvent =
-    new Notification({to:req.body.friendemail,
-     toname:req.body.friendname,
+    new Notification({
+     type:"event invitation",
+     //to:req.body.friendemail,
+     //toname:req.body.friendname,
      content: "You receive an event shared from " + res.locals.profile.name,
      from: res.locals.user.googleemail,
-     fromname: res.locals.profile.name})
-   request.save(function(err, doc){
+     fromname: res.locals.profile.name,
+
+     title: req.body.event_doc.title,
+     sDate: req.body.event_doc.startDate,
+     sTime: req.body.event_doc.startTime,
+     eDate: req.body.event_doc.endDate,
+     eTime: req.body.event_doc.endTime,
+     description: req.body.event_doc.description,
+   })
+   friendEvent.save(function(err, doc){
      if(err){
        res.json(err);
      } else {
@@ -156,4 +166,3 @@ exports.send_event = function(req, res){
      }
    })
   }
-  */

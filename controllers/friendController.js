@@ -32,7 +32,9 @@ exports.searchProfile_get = ( req, res  ) => {
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
   //if req.body.searchfriend = null
-  let request = new Notification({to:req.body.friendemail,
+  let request = new Notification({
+                  type: "friend request",
+                  to:req.body.friendemail,
                   toname:req.body.friendname,
                   content: "You have a friend request from "+ res.locals.user.googleemail,
                   from: res.locals.user.googleemail,
