@@ -90,6 +90,8 @@ exports.updateRequest = ( req, res )=> {
 
 exports.getFriend = ( req, res ) => {
   console.log('in getAllNoti')
+  console.log('checkStatus=' + res.locals.checkStatus)
+  console.log('checkStatus1=' + res.checkStatus)
   Friend.find( {user:res.locals.user.googleemail} )
     .exec()
     .then( ( friend_list ) => {
@@ -126,4 +128,55 @@ exports.getFriend1 = ( req, res ) => {
 exports.check_avail = (req, res) =>{
   console.log("in check availability")
   console.log(req.body.friendEmail);
+  console.log(req.body.checkDate)
+  console.log(req.body.checkTime)
+  var s = new Date(req.body.checkDate);
+  s.setDate(s.getDate()+1)
+  var index = req.body.checkTime.indexOf(":")
+  s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
+  console.log("s = " + s)
+  var start = req.body.checkDate + " " + req.body.checkTime
+  console.log(start)
+  Input.find({email:req.body.friendEmail},
+    function(err, input_list){
+      if(err){
+        console.log(err.message);
+      } else{
+        console.log("after getting friend's events")
+        console.log("length = " + input_list.length)
+        var checkStatus;
+        for(var i = 0; i < input_list.length; i ++){
+          console.log("list " + i + " startTime = " + input_list[i].startTime)
+          console.log("list " + i + " endTime = " + input_list[i].endTime)
+          if(input_list[i].endTime != ""){
+            if(input_list[i].start <= s && s <= input_list[i].end){
+              console.log("input meet is " + input_list[i]);
+              checkStatus = "NO";
+            }
+          }
+          else{
+            if(input_list[i].start == s){
+              console.log("input1 meet is " + input_list[i]);
+              checkStatus = "NO";
+            }
+          }
+        }
+        console.log("checkStatus at end is " + checkStatus)
+        if(checkStatus != "NO"){
+          checkStatus = "YES"
+        }
+        console.log("checkStatus at end1 is " + checkStatus)
+        Friend.find( {user:res.locals.user.googleemail} )
+          .exec()
+          .then( ( friend_list ) => {
+            res.locals.friend = friend_list
+            res.locals.checkedFriend = req.body.friendName
+            res.locals.checkStatus = checkStatus
+            res.locals.checkedTime = req.body.checkTime
+            res.locals.checkedDate = req.body.checkDate
+            res.render( 'friend');
+          } )
+      }
+    }
+  )
 }
