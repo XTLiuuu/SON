@@ -138,9 +138,10 @@ exports.update_event_post = function(req, res){
 
 }
 
-/**
+
 exports.send_event = function(req, res){
-   console.log("in send_event")
+   console.log("in send_event666")
+   console.log("friendID = " + req.params.friend_id)
    let friendEvent =
     new Notification({to:req.body.friendemail,
      toname:req.body.friendname,
@@ -156,4 +157,3 @@ exports.send_event = function(req, res){
      }
    })
   }
-  */
