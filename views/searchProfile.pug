@@ -13,41 +13,28 @@ block content
     br
     br
     br
-    .container
-        br
-        | #{friend.name}
-        br
-        | #{friend.email}
-        br
-        | #{friend.phone}
-        br
-        | #{friend.gender}
-        br
-        | #{friend.dob}
-        br
-        | #{friend.id}
-        br
-        
       
-    .container
-      form.form-inline.mr-auto(method="post" action="sendFrequest")
-        input.form-control(name="friendemail" type="hidden" value=friend.email)
-        input.form-control(name="friendname" type="hidden" value=friend.name)
-        input.form-control(name="friendid" type="hidden" value=friend.id)
-
-        //-input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
-        button#friendqbutton.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
-        
-        
-        //-#exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-          .modal-dialog(role='document')
-            .modal-content
-              .modal-header
-                h5#exampleModalLabel.modal-title Friend request
-                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                  span(aria-hidden='true') ×
-              .modal-body
-                | Your friend request has been sent.
-              //-.modal-footer
-                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                button.btn.btn-primary(type='button') Save changes
+    .margin
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center 
+          |  User Information
+        .form-row
+          .col-12
+            label #{friend.name}
+            br
+            label #{friend.email}
+            br
+            label #{friend.phone}
+            br
+            label #{friend.gender}
+            br
+            label #{friend.dob}
+            br
+            br
+        form(method="post" action="sendFrequest")
+          input.form-control(name="friendemail" type="hidden" value=friend.email)
+          input.form-control(name="friendname" type="hidden" value=friend.name)
+          //-input.form-control(name="friendid" type="hidden" value=friend.id)
+            
+          input.w3-button.w3-teal(type="submit" value="Send invitation")
+          

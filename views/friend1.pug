@@ -6,9 +6,18 @@ block content
     br
     br
     br
-    .container
-      form.form-inline.mr-auto(method="post" action="searchProfile")
-        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search an email', aria-label='Search')
-        button.btn.btn-primary(type='submit') Search
+    .margin
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center 
+          |  Enter an email below
+        br
+        br
+        form(method="post" action="searchProfile")
+          .row
+            .col-6
+              .input-group.md-3
+                input.form-control(name = "searchfriend" type = "text" placeholder = "Search an email" width='60%')
+            .col-2
+              input.w3-button.w3-teal(type="submit" value="Search")
     br
     br

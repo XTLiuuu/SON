@@ -4,7 +4,7 @@ const mongo = require('mongodb');
 console.log("loading the setting Controller")
 
 // this displays all of the hotel reviews
-exports.getSetting = ( req, res, next ) => {
+exports.getSetting = ( req, res ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get setting')
   Setting.findOne(objId)

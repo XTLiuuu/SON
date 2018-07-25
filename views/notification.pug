@@ -29,11 +29,11 @@ block content
                       form.form-inline.mr-auto(method="post" action="")                      
                         input.form-control(name="from" type="hidden" value=noti.from)
                         input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                        h5.font-weight-bold #{noti.content}
-                        br
-                        br
-                        input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                        input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+                        h5 #{noti.content}
+                          br
+                          br
+                          input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                          input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
 
               //-each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
@@ -56,9 +56,11 @@ block content
                       form.form-inline.mr-auto(method="post" action="")                      
                         //-input.form-control(name="from" type="hidden" value=noti.from)
                         //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                        h5.font-weight-bold #{noti.title}
-                        br
-                        h5.font-weight-bold #{noti.description}
-                        br
+                        .row
+                          .col-12
+                            h5 #{noti.content}
+                          .col-12
+                            h5.font-weight-bold #{noti.title}
+                            h5 #{noti.description}
                         //-input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
                         //-input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
