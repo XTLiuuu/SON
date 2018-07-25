@@ -151,19 +151,19 @@ exports.check_avail = (req, res) =>{
           if(input_list[i].endTime != ""){
             if(input_list[i].start <= s && s <= input_list[i].end){
               console.log("input meet is " + input_list[i]);
-              checkStatus = "NO";
+              checkStatus = "BUSY";
             }
           }
           else{
             if(input_list[i].start == s){
               console.log("input1 meet is " + input_list[i]);
-              checkStatus = "NO";
+              checkStatus = "BUSY";
             }
           }
         }
         console.log("checkStatus at end is " + checkStatus)
-        if(checkStatus != "NO"){
-          checkStatus = "YES"
+        if(checkStatus != "BUSY"){
+          checkStatus = "FREE"
         }
         console.log("checkStatus at end1 is " + checkStatus)
         Friend.find( {user:res.locals.user.googleemail} )

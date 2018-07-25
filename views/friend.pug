@@ -34,7 +34,8 @@ block content
     // Page content
     .w3-main(style="margin-left:320px;")
       if checkStatus
-        label #{checkStatus} #{checkedFriend} #{checkedTime} #{checkedDate}
+        h5.w3-text-black #{checkedFriend}, #{checkedTime}, #{checkedDate}
+        h5.w3-text-black Check result: #{checkStatus}!
       each f in friend
         form(method="post" action="check_avail")
           .w3-container.person(id= f._id)
