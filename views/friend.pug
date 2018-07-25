@@ -41,13 +41,15 @@ block content
         .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
           .w3-center
             form(method="post" action="guess_free")
-              span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(friend_id= "id01" title="Close Modal" onclick="closeModal(event)") X
+              span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(onclick="document.getElementById('id0211').style.display='none'") X
               br
               label GUESS WHO ARE FREE
               .w3-container
                 .margin
                   .w3-section
                     b Check Time
+                    input(type="hidden" name="currUser" value=userEmail)
+                    input(type="hidden" name="currUserID" value=userID)
                     .row
                       .col-6
                         input.w3-input.w3-border(type="date" name="checkDate")

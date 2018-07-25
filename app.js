@@ -168,7 +168,7 @@ app.use('/calendar', calendarD);
 app.get('/friend',isLoggedIn, friendController.getFriend);
 app.get('/friend1',isLoggedIn, friendController.getFriend1);
 app.post('/check_avail',isLoggedIn, friendController.check_avail);
-//app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
+app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
 
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
