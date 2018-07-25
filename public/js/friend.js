@@ -1,6 +1,42 @@
 //var openInbox = document.getElementById("myBtn");
 //openInbox.click();
 
+$(document).ready(function(){
+  $("input.check-avail-submit").on('click', function(event){
+    event.preventDefault();
+    console.dir(event)
+    const fid = event.currentTarget.attributes["fid"].nodeValue
+    console.log("clicked!")
+    const theData = {
+      friendName: $("#friendName"+fid).val(),
+      friendEmail: $("#friendEmail"+fid).val(),
+      checkDate: $("#checkDate"+fid).val(),
+      checkTime: $("#checkTime"+fid).val()
+    }
+    console.dir(theData)
+    $.ajax({
+      type: "POST",
+      url:"/check_avail",
+      data: theData,
+      success: function(data){
+        console.log("inside success")
+        var name = data["friendName"]
+        var date = data["checkDate"]
+        var time = data["checkTime"]
+        var status = data["checkStatus"]
+        $("#check-result").text(name + " is " + status + " on " + date + " at " + time + "!");
+        console.log("data is")
+        console.dir(data)
+        console.dir(document.getElementById("check-result"));
+        document.getElementById("check-result").style.display = "block";
+        document.getElementById(fid+"modal").style.display = "none";
+        setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 3000)
+      },
+      dataType: "json",
+    })
+  })
+})
+
 function w3_open() {
     document.getElementById("mySidebar").style.display = "block";
     document.getElementById("myOverlay").style.display = "block";
