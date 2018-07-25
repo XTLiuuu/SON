@@ -11,12 +11,13 @@ var notificationSchema = mongoose.Schema( {
   fromname: String,
 
   //for event invitation
-
+  toid: String,
   title: String,
   sDate: String,
   sTime: String,
   eDate: String,
   eTime: String,
+  allday: Boolean,
   description: String
 } );
 

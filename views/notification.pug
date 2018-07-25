@@ -20,19 +20,20 @@ block content
             
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
               each noti in notis
-                .card.bg-light.mb-3(style="max-width: 50rem;")
-                  .card-header 
-                    | Friend request
-                    .alignright.text-monospace now
-                  .card-body
-                    form.form-inline.mr-auto(method="post" action="")                      
-                      input.form-control(name="from" type="hidden" value=noti.from)
-                      input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                      h5.font-weight-bold #{noti.content}
-                      br
-                      br
-                      input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                      input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+                if noti.type == "friend request"
+                  .card.bg-light.mb-3(style="max-width: 50rem;")
+                    .card-header 
+                      | Friend request
+                      .alignright.text-monospace now
+                    .card-body
+                      form.form-inline.mr-auto(method="post" action="")                      
+                        input.form-control(name="from" type="hidden" value=noti.from)
+                        input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                        h5.font-weight-bold #{noti.content}
+                        br
+                        br
+                        input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                        input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
 
               //-each input in inputs
                 .card.bg-light.mb-3(style="max-width: 50rem;")
@@ -45,4 +46,19 @@ block content
 
                       | Remind me to #{input.title} at #{input.start}
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
-              | lollllll
+              each noti in notis
+                if noti.type == "event invitation"
+                  .card.bg-light.mb-3(style="max-width: 50rem;")
+                    .card-header 
+                      | Event Invitation
+                      .alignright.text-monospace now
+                    .card-body
+                      form.form-inline.mr-auto(method="post" action="")                      
+                        //-input.form-control(name="from" type="hidden" value=noti.from)
+                        //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                        h5.font-weight-bold #{noti.title}
+                        br
+                        h5.font-weight-bold #{noti.description}
+                        br
+                        //-input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                        //-input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 

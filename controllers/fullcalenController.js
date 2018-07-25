@@ -2,6 +2,8 @@
 console.log("in full calendar controller")
 const Input = require( '../models/Input' );
 const Notification = require('../models/Notification');
+const Friend = require('../models/Friend');
+const mongo = require('mongodb');
 
 exports.get_events_post = function(req, res){
    //events
@@ -142,21 +144,85 @@ exports.update_event_post = function(req, res){
 exports.send_event = function(req, res){
    console.log("in send_event666")
    console.log("friendID = " + req.params.friend_id)
+   const fId = new mongo.ObjectId(req.params.friend_id)
+   Friend.findOne(fId)
+    .exec()
+    .then( (fff) =>{
+      var ad = req.body.allday;
+      var allDay;
+      if(ad == 'on'){
+        allDay = true;
+      }
+      else{
+        allDay = false;
+      }
+      let friendEvent =
+       new Notification({
+        type:"event invitation",
+        to:fff.friend,
+        toname:fff.friendname,
+        content: "You receive an event shared from " + res.locals.profile.name,
+        from: res.locals.user.googleemail,
+        fromname: res.locals.profile.name,
+
+        title: req.body.title,
+        sDate: req.body.startDate,
+        sTime: req.body.startTime,
+        eDate: req.body.endDate,
+        eTime: req.body.endTime,
+        allday: allDay,
+        description: req.body.description,
+      })
+      friendEvent.save(function(err, doc){
+        if(err){
+          res.json(err);
+        } else {
+          console.log("The event has been sent")
+          res.redirect('/calendar/sendCalendar/ + friend_id');
+        }
+      })
+
+    })
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'setting promise complete' );
+    } );
+};
+
+
+/*
+
+   const fId = new mongo.ObjectId(req.params.id)
+   var fid = Friend.findOne(fId);
+   console.log("friend name = " + fid);
+   console.log("friend name isisis = " + fid.friend);
+   var ad = req.body.allday;
+   var allDay;
+   if(ad == 'on'){
+     allDay = true;
+   }
+   else{
+     allDay = false;
+   }
    let friendEvent =
     new Notification({
      type:"event invitation",
-     //to:req.body.friendemail,
-     //toname:req.body.friendname,
+     to:fid.friend,
+     toname:fid.friendname,
      content: "You receive an event shared from " + res.locals.profile.name,
      from: res.locals.user.googleemail,
      fromname: res.locals.profile.name,
 
-     title: req.body.event_doc.title,
-     sDate: req.body.event_doc.startDate,
-     sTime: req.body.event_doc.startTime,
-     eDate: req.body.event_doc.endDate,
-     eTime: req.body.event_doc.endTime,
-     description: req.body.event_doc.description,
+     title: req.body.title,
+     sDate: req.body.startDate,
+     sTime: req.body.startTime,
+     eDate: req.body.endDate,
+     eTime: req.body.endTime,
+     allday: allDay,
+     description: req.body.description,
    })
    friendEvent.save(function(err, doc){
      if(err){
@@ -167,3 +233,4 @@ exports.send_event = function(req, res){
      }
    })
   }
+*/

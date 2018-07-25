@@ -12,32 +12,3 @@ block content
         button.btn.btn-primary(type='submit') Search
     br
     br
-    .btn-group-vertical
-      each f in friend
-        button.btn.btn-outline-primary(type='button') #{f.friendname}
-        
-    br
-    br
-    .row
-      each f in friend
-        .col-4
-          #list-tab.list-group(role='tablist')
-            a#list-home-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-home', role='tab', aria-controls='home') #{f.friendname}
-        .col-8
-          #nav-tabContent.tab-content
-            #list-home.tab-pane.fade(role='tabpanel', aria-labelledby='list-home-list') #{f.status}
-
-
-
-//-
-        #list-tab.list-group(role='tablist')
-          a#list-home-list.list-group-item.list-group-item-action.active(data-toggle='list', href='#list-home', role='tab', aria-controls='home') friend 1
-          a#list-profile-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-profile', role='tab', aria-controls='profile') friend 2
-          a#list-messages-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-messages', role='tab', aria-controls='messages') friend 3
-          a#list-settings-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-settings', role='tab', aria-controls='settings') friend 4
-      .col-8
-        #nav-tabContent.tab-content
-          #list-home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='list-home-list') first friend
-          #list-profile.tab-pane.fade(role='tabpanel', aria-labelledby='list-profile-list') second friend
-          #list-messages.tab-pane.fade(role='tabpanel', aria-labelledby='list-messages-list') third friend
-          #list-settings.tab-pane.fade(role='tabpanel', aria-labelledby='list-settings-list') forth friend

@@ -24,7 +24,8 @@ block content
         | #{friend.gender}
         br
         | #{friend.dob}
-        br  
+        br
+        | #{friend.id}
         br
         
       
@@ -32,6 +33,8 @@ block content
       form.form-inline.mr-auto(method="post" action="sendFrequest")
         input.form-control(name="friendemail" type="hidden" value=friend.email)
         input.form-control(name="friendname" type="hidden" value=friend.name)
+        input.form-control(name="friendid" type="hidden" value=friend.id)
+
         //-input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search a friend gmail', aria-label='Search')
         button#friendqbutton.btn.btn-primary(type='submit',  data-toggle='modal', data-target='#exampleModal') Send invitation
         

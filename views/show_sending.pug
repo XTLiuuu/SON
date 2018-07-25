@@ -22,14 +22,17 @@ block content
               b.w3-text-teal Title
             .col-3
               label.w3-large #{event_doc.title}
+              input(name="title" type="hidden" value=event_doc.title)
           br
           .form-row
             .formGroup.col-2
               b.w3-text-teal Start Time 
             .formGroup.col-4
               label.w3-large #{event_doc.startDate} &nbsp&nbsp #{event_doc.startTime}
+              input(name="startDate" type="hidden" value=event_doc.startDate)
+              input(name="startTime" type="hidden" value=event_doc.startTime)
             .formGroup.col-2
-              input(type="checkbox" checked=event_doc.allDay) 
+              input(type="checkbox" checked=event_doc.allDay name="allday")
               label.all-day-check All day 
           br
           .form-row
@@ -37,6 +40,9 @@ block content
               b.w3-text-teal End Time 
             .formGroup.col-4
               label.w3-large #{event_doc.endDate} &nbsp&nbsp #{event_doc.endTime}
+              input(name="endDate" type="hidden" value=event_doc.endDate)
+              input(name="endTime" type="hidden" value=event_doc.endTime)
+
           br
           br
           .form-row
@@ -44,6 +50,7 @@ block content
               b.w3-text-teal Description
             .col-6
               label.w3-large #{event_doc.description}
+              input(name="description" type="hidden" value=event_doc.description)
           br
           .form-row
             .formGroup.col-2
