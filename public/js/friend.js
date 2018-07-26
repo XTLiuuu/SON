@@ -30,7 +30,7 @@ $(document).ready(function(){
         console.dir(document.getElementById("check-result"));
         document.getElementById("check-result").style.display = "block";
         document.getElementById(fid+"modal").style.display = "none";
-        setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 3000)
+        setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 5000)
       },
       dataType: "json",
     })
@@ -76,7 +76,7 @@ $(document).ready(function(){
         console.dir(document.getElementById("check-result"));
         document.getElementById("check-result").style.display = "block";
         document.getElementById("id0211").style.display = "none";
-        setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 3000)
+        setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 5000)
       },
       dataType: "json",
     })
@@ -123,6 +123,7 @@ function openMail(event) {
     console.log("personname = " + personName)
     document.getElementById(personName).style.display = "block";
     event.currentTarget.className += " w3-light-grey";
+    document.getElementById("021").style.display = "none";
 }
 
 

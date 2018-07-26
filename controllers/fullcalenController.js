@@ -51,12 +51,33 @@ exports.update_event_get = function(req, res){
     })
   }
 
+  exports.attachCurrFriend = ( req, res, next ) => {
+    console.log('in attach curr Friend')
+    console.log("curr friend = " + req.params.friend_id)
+    const friend_id = req.params.friend_id;
+    Friend.findOne({_id: friend_id},
+      function(err, friend){
+        if(err){
+          console.log(err.message)
+        }
+        else{
+          console.log(friend)
+          res.locals.friendName = friend["friendname"]
+          console.log(res.locals.friendName)
+          next();
+        }
+      })
+    }
+
+
   exports.show_sending_event = function(req, res){
+    console.log(res.locals)
     console.log("curr = " + req.param)
     const event_id = req.params.event_id;
     console.log("event id = " +  event_id)
     const friend_id = req.params.friend_id;
     console.log("friend id = " + friend_id)
+    const friendName = res.locals["friendName"]
       Input.findById(event_id, function(err, doc){
         if(err){
           res.status(err.status || 500);
@@ -64,7 +85,7 @@ exports.update_event_get = function(req, res){
         } else {
           console.log(doc)
           if(doc){
-            res.render('show_sending',{event_id: event_id, event_doc: doc, friend_id: friend_id})
+            res.render('show_sending',{friendName: friendName, event_id: event_id, event_doc: doc, friend_id: friend_id})
           } else {
             res.status(404);
             res.json({status: 404, message: "Not Found."})
