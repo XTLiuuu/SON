@@ -1,25 +1,26 @@
 'use strict';
 const Setting = require( '../models/Setting' );
+const Profile = require( '../models/Profile' );
 const mongo = require('mongodb');
 console.log("loading the setting Controller")
 
 // this displays all of the hotel reviews
-exports.getSetting = ( req, res ) => {
+exports.getSetting = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get setting')
   Setting.findOne(objId)
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( setting ) => {
-      setting: setting
-      res.render('setting');
+        setting:setting
+        next()
     } )
     .catch( ( error ) => {
       console.log( error.message );
       return [];
     } )
     .then( () => {
-      console.log( 'setting promise complete' );
+      console.log( 'getsetting promise complete' );
     } );
 };
 
