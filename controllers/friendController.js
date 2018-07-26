@@ -233,10 +233,10 @@ exports.guess_free = (req, res) => {
   console.log(friend_list.length)
   var freeFriend = []
   var x = 0;
-  checkWithFriend(friend_list, s, freeFriend, x, res);
+  checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime);
 }
 
-function checkWithFriend(friend_list, s, freeFriend, x, res){
+function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime){
   console.log("in check with friend")
   var length = friend_list.length
   console.log("length 12 = " + length);
@@ -267,8 +267,9 @@ function checkWithFriend(friend_list, s, freeFriend, x, res){
         if(x == friend_list.length - 1 && checkStatus == "BUSY"){
           console.log("the final free friend_list = ")
           console.log(freeFriend)
-          res.locals.freeFriend = freeFriend
-          res.render('test')
+          //res.locals.freeFriend = freeFriend
+          var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
+          res.json(response)
         }
         console.log("checkStatus at end is " + checkStatus)
         if(checkStatus != "BUSY"){
@@ -281,16 +282,17 @@ function checkWithFriend(friend_list, s, freeFriend, x, res){
           if(x == friend_list.length - 1){
             console.log("the final free friend_list = ")
             console.log(freeFriend)
-            res.locals.freeFriend = freeFriend
-            res.render('test')
+            var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
+            //res.locals.freeFriend = freeFriend
+            res.json(response)
           }
           if(x < friend_list.length - 1){
             console.log("call again lala")
-            checkWithFriend(friend_list, s, freeFriend, x + 1, res)
+            checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
           }
         }
         else{
-          checkWithFriend(friend_list, s, freeFriend, x + 1, res)
+          checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
         }
       }
     }

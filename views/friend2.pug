@@ -48,15 +48,15 @@ block content
                 .margin
                   .w3-section
                     b Check Time
-                    input(type="hidden" name="currUser" id="currUser" value=userEmail)
-                    input(type="hidden" name="currUserID" id="currUserID" value=userID)
+                    input(type="hidden" name="currUser" value=userEmail)
+                    input(type="hidden" name="currUserID" value=userID)
                     .row
                       .col-6
-                        input.w3-input.w3-border(type="date" name="checkDate" id="checkDate")
+                        input.w3-input.w3-border(type="date" name="checkDate")
                       .col-6
-                        input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime")
+                        input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime")
                     br
-                    input.w3-button.w3-block.w3-teal.w3-section.w3-padding.guess-free(type="button" value="Start Checking")
+                    input.w3-button.w3-block.w3-teal.w3-section.w3-padding(type="submit" value="Start Checking")
                     br
       each f in friend
         form(method="post" action="check_avail")
