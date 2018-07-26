@@ -75,10 +75,15 @@ exports.process_request =  (req, res) => {
     console.log("date = " + date)
     console.log("time = " + time)
     if(constraint){
-      var s = new Date(date);
-      s.setDate(s.getDate()+1)
-      var index = time.indexOf(":")
-      s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
+      if(time == null){
+        var s = new Date(date);
+      }
+      else{
+        var s = new Date(date);
+        s.setDate(s.getDate()+1)
+        var index = time.indexOf(":")
+        s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
+      }
       console.log("s = " + s)
       if(constraint == "before"){
         Input.find({email: "liuxuantong0611@gmail.com",},
