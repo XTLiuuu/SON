@@ -15,25 +15,7 @@ var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
-///////////////////////////////////////////////////
-var http = require('http');
-//var io = require('socket.io');
 
-server = http.createServer(function(req, res){
-});
-server.listen(8080);
-
-// socket.io
-/**
-var socket = io.listen(server);
-
-socket.on('connection', function(client){
-  client.on('message', function(msg){
-      socket.broadcast(msg);
-  })
-});
-*/
-/////////////////////////////////////////////////////
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
@@ -180,9 +162,23 @@ app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
-app.use('/test.json', function(req, res){
-  console.dir(req.user)
-  res.json({a: 1, b: 2})
+app.get('/test_json', function(req, res){
+  const current_date = new Date();
+  const current_date_start = new Date(current_date.toISOString().substring(0, current_date.toISOString().indexOf("T")));
+  const Input = require('./models/Input.js');
+  Input.find({
+    start: {$lte: current_date_start},
+    end: {$gte: current_date_start}
+  }, function(err, input_list){
+    if(err){
+      res.status(err.status || 500);
+      res.json(err);
+    } else {
+      res.json(input_list);
+    }
+  });
+  //console.dir(req.user)
+  //res.json({a: 1, b: 2})
 })
 
 // catch 404 and forward to error handler
