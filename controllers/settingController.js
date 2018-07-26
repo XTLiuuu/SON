@@ -1,5 +1,6 @@
 'use strict';
 const Setting = require( '../models/Setting' );
+const Profile = require( '../models/Profile' );
 const mongo = require('mongodb');
 console.log("loading the setting Controller")
 
@@ -11,15 +12,24 @@ exports.getSetting = ( req, res ) => {
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( setting ) => {
-      setting: setting
-      res.render('setting');
+
+
+      Profile.findOne(objId)
+        .exec()
+        //this is a function takes one parameter (function) and does this
+        .then( ( profile ) => {
+          res.render('setting',{profile: profile})
+        } )
+
+        setting: setting;
+        res.render('setting')
     } )
     .catch( ( error ) => {
       console.log( error.message );
       return [];
     } )
     .then( () => {
-      console.log( 'setting promise complete' );
+      console.log( 'getsetting promise complete' );
     } );
 };
 
