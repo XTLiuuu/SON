@@ -1,6 +1,7 @@
 'use strict';
 const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
+const Friend = require( '../models/Friend' );
 console.log("loading the ipnut Controller")
 var result1;
 var name = "Pipi";
@@ -42,6 +43,163 @@ exports.process_request =  (req, res) => {
     output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
     result.response.outputSpeech.text = output_string;
     res.json(result);
+   }
+
+
+   else if(req.body.request.intent.name == "ask_friend_number"){
+     console.log("in ask_friend_number")
+     Friend.find({user: "liuxuantong0611@gmail.com"},
+      function(err, friend_list){
+        if(err){
+          console.log(err.message)
+          res.status(err.status || 500);
+          res.json(err);
+        } else{
+          console.log("after finding friends")
+          var num = friend_list.length;
+          if(num == 0){
+            output_string = "Oh! You have no friend in SON. Please add more friends, and have fun with Pipi."
+          }
+          if(num == 1){
+            output_string = "You have only one friend."
+          }
+          else{
+            output_string = "You currently have " + num + " friends."
+          }
+        }
+        result.response.outputSpeech.text = output_string;
+        res.json(result);
+      })
+   }
+
+
+
+   else if(req.body.request.intent.name == "guess_free"){
+     console.log("in guess_free")
+     var time = req.body.request.intent.slots.time["value"];
+     var date = req.body.request.intent.slots.date["value"];
+     var freeFriend = [];
+     console.log(time)
+     console.log(date)
+     var s = new Date(date);
+     s.setDate(s.getDate() + 1);
+     var index = time.indexOf(":")
+     s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
+     console.log("s = " + s)
+     Friend.find({user: "liuxuantong0611@gmail.com"},
+      function(err, friend_list){
+        if(err){
+          console.log(err.message)
+          res.status(err.status || 500);
+          res.json(err);
+        } else{
+          console.log("after attaching friends")
+          console.log(friend_list)
+          var x = 0;
+          checkWithFriend(friend_list, s, freeFriend, x, function(err, freeResult){
+            if(err){
+              console.log(err.message)
+              res.status(err.status || 500);
+              res.json(err);
+            } else {
+              console.log("get result of free friend back")
+              var free = "";
+              for(var a = 0; a < freeResult.length; a ++){
+                free = free + freeResult[a] + ", "
+              }
+              console.log("free = " + free)
+              free = free.slice(0, free.length-2)
+              if(freeResult.length == 0){
+                output_string = "I'm sorry, " + name + ". You don't have any friends available on " + date + " at " + time
+              }
+              else{
+                output_string = "Free friends on " + date + " at " + time + ": " + free;
+              }
+              console.log("output_string = " + output_string)
+              result.response.outputSpeech.text = output_string;
+              res.json(result);
+            }
+          });
+        }
+      })
+   }
+
+
+
+   else if(req.body.request.intent.name == "check_inFriend"){
+     console.log("in check_inFriend")
+     var friendName =  req.body.request.intent.slots.name["value"];
+     friendName = friendName.trim();
+     console.log("friendName = " + friendName)
+     var index = friendName.indexOf(" ")
+     friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
+     console.log("friendName = " + friendName)
+     Friend.findOne({
+       user: "liuxuantong0611@gmail.com",
+       friendname: friendName
+     },
+      function(err, friend){
+        if(err){
+          console.log(err.message)
+        } else{
+          console.log("after checking friends")
+          console.log(friend)
+          if(friend == null){
+            output_string = "I'm sorry. " + friendName + " is not your friend."
+          }
+          else{
+            output_string = "Yes! " + friendName + " is in your friend list."
+          }
+        }
+        result.response.outputSpeech.text = output_string;
+        res.json(result);
+      })
+   }
+
+   else if(req.body.request.intent.name == "ask_friend_avail"){
+     console.log("in ask_friend_avail")
+     var friendName =  req.body.request.intent.slots.name["value"];
+     var date =  req.body.request.intent.slots.date["value"];
+     var time =  req.body.request.intent.slots.time["value"];
+     friendName = friendName.trim();
+     console.log("friendName = " + friendName)
+     var index = friendName.indexOf(" ")
+     friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
+     console.log("friendName = " + friendName)
+     var s = new Date(date);
+     s.setDate(s.getDate()+1)
+     var index1 = time.indexOf(":")
+     s.setHours(time.slice(0, index1), time.slice(index1 + 1, time.length));
+     console.log("s = " + s)
+     Friend.findOne({friendname: friendName},
+       function(err, friend){
+         if(err){
+           console.log(err.message)
+         }
+         else{
+           if(friend == null){
+             output_string = "I'm sorry. " + friendName + " is not your friend."
+             console.log("output_string = " + output_string)
+             result.response.outputSpeech.text = output_string;
+             res.json(result);
+           }
+           else{
+             var friendEmail = friend["friend"]
+             console.log("friendEmail = " + friendEmail)
+             checkFriendStatus(friendName, friendEmail, s, date, time, function(err, output_string){
+               if(err){
+                 console.log(err.message)
+                 res.status(err.status || 500);
+                 res.json(err);
+               } else {
+                 console.log("output_string = " + output_string)
+                 result.response.outputSpeech.text = output_string;
+                 res.json(result);
+               }
+             });
+           }
+         }
+       })
    }
 
 
@@ -515,3 +673,104 @@ exports.deleteSchedule = (req, res) => {
   }
 
 };
+
+function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
+  console.log("in check friend status function");
+  Input.find({email: friendEmail},
+    function(err, input_list){
+      if(err){
+        console.log(err.message);
+        callback(err, null);
+      }
+      else{
+        console.log("after getting inputs of this friend");
+        console.log("length = " + input_list.length)
+        var checkStatus;
+        for(var i = 0; i < input_list.length; i ++){
+          console.log("list " + i + " startTime = " + input_list[i].start)
+          console.log("list " + i + " endTime = " + input_list[i].end)
+          if(input_list[i].endTime != ""){
+            if(input_list[i].start <= s && s <= input_list[i].end){
+              console.log("input meet is " + input_list[i]);
+              checkStatus = "BUSY";
+            }
+          }
+          else{
+            if(input_list[i].start == s){
+              console.log("input1 meet is " + input_list[i]);
+              checkStatus = "BUSY";
+            }
+          }
+        }
+        if(checkStatus != "BUSY"){
+          checkStatus = "FREE"
+        }
+        console.log("checkStatus at end is " + checkStatus)
+        var response = friendName + " is " + checkStatus + " on " + date + " at " + time
+        console.log(response)
+        callback(null, response);
+      }
+    }
+  )
+}
+
+function checkWithFriend(friend_list, s, freeFriend, x, callback){
+  console.log("in check with friend")
+  var length = friend_list.length
+  console.log("length 12 = " + length);
+  Input.find({email: friend_list[x]["friend"]},
+    function(err, input_list){
+      if(err){
+        console.log(err.message);
+        callback(err, null);
+      } else{
+        console.log("after getting friend " + x);
+        console.log("length = " + input_list.length);
+        var checkStatus;
+        for(var i = 0; i < input_list.length; i ++){
+          console.log("list " + i + " startTime = " + input_list[i].startTime)
+          console.log("list " + i + " endTime = " + input_list[i].endTime)
+          if(input_list[i].endTime != ""){
+            if(input_list[i].start <= s && s <= input_list[i].end){
+              console.log("input meet is " + input_list[i]);
+              checkStatus = "BUSY";
+            }
+          }
+          else{
+            if(input_list[i].start == s){
+              console.log("input1 meet is " + input_list[i]);
+              checkStatus = "BUSY";
+            }
+          }
+        }
+        if(x == friend_list.length - 1 && checkStatus == "BUSY"){
+          console.log("the final free friend_list = ")
+          console.log(freeFriend)
+          callback(null, freeFriend);
+        }
+        console.log("checkStatus at end is " + checkStatus)
+        if(checkStatus != "BUSY"){
+          console.log(friend_list[x])
+          console.log(friend_list[x].friendname)
+          console.log(friend_list[x]["friendname"])
+          freeFriend.push(friend_list[x].friendname);
+          console.log("before freefriend")
+          console.log(freeFriend)
+          if(x == friend_list.length - 1){
+            console.log("the final free friend_list = ")
+            console.log(freeFriend)
+            callback(null, freeFriend);
+
+          }
+          if(x < friend_list.length - 1){
+            console.log("call again lala")
+            checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
+          }
+        }
+        else{
+          checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
+        }
+      }
+    }
+  )
+}
