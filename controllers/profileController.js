@@ -4,7 +4,7 @@ const mongo = require('mongodb');
 console.log("loading the profile Controller")
 
 // this displays all of the hotel reviews
-exports.getProfile = ( req, res ) => {
+exports.getProfile = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in getprofile')
   Profile.findOne(objId)

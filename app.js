@@ -153,7 +153,7 @@ app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 //app.use('/setting', settingRouter);
 app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser,
                     profileController.attachProfile,settingController.attachSetting,
-                    settingController.getSetting);
+                    settingController.getSetting,profileController.getProfile);
 app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
 //app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);

@@ -5,24 +5,15 @@ const mongo = require('mongodb');
 console.log("loading the setting Controller")
 
 // this displays all of the hotel reviews
-exports.getSetting = ( req, res ) => {
+exports.getSetting = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get setting')
   Setting.findOne(objId)
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( setting ) => {
-
-
-      Profile.findOne(objId)
-        .exec()
-        //this is a function takes one parameter (function) and does this
-        .then( ( profile ) => {
-          res.render('setting',{profile: profile})
-        } )
-
-        setting: setting;
-        res.render('setting')
+        setting:setting
+        next()
     } )
     .catch( ( error ) => {
       console.log( error.message );
