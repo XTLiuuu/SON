@@ -3,14 +3,14 @@ const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
 console.log("loading the ipnut Controller")
 var result1;
+var name = "Pipi";
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
   //console.log("user = " + req.locals.user)
   //console.log("req.user.goo = " + req.locals.user)
-  var output_string;
-  var name;
+  var output_string = "Sorry, " + name + ". Can you say that again?";
  // this is how we define the result
   var result = {
     "version": "beta",
@@ -33,14 +33,30 @@ exports.process_request =  (req, res) => {
     }
   };
 
+
+
+
+  if(req.body.request.intent.name == "tell_name"){
+    console.log("in tell name")
+    name = req.body.request.intent.slots.name["value"];
+    output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
+    result.response.outputSpeech.text = output_string;
+    res.json(result);
+   }
+
+
+
   // needs to figure out how to extract event
-  if(req.body.request.intent.name == "add_event"){
+  else if(req.body.request.intent.name == "add_event"){
     console.log("in Add_Event");
     output_string = addEvent(req.body.request, req.user);
     console.log("output_string1 = " + output_string)
     result.response.outputSpeech.text = output_string;
     res.json(result);
   }
+
+
+
 
   // ask what event will happen at some time
   else if(req.body.request.intent.name == "ask_event"){
@@ -58,14 +74,14 @@ exports.process_request =  (req, res) => {
     }
     console.log("date = " + date)
     console.log("time = " + time)
-    var s = new Date(date);
-    s.setDate(s.getDate()+1)
-    var index = time.indexOf(":")
-    s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
-    console.log("s = " + s)
     if(constraint){
+      var s = new Date(date);
+      s.setDate(s.getDate()+1)
+      var index = time.indexOf(":")
+      s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
+      console.log("s = " + s)
       if(constraint == "before"){
-        Input.find({},
+        Input.find({email: "liuxuantong0611@gmail.com",},
         function(err, schedule_list){
           if(err){
             console.log(err.message);
@@ -75,21 +91,22 @@ exports.process_request =  (req, res) => {
             for(var i = 0; i < schedule_list.length; i ++){
               console.log("i = " + i)
               console.log("list start " + schedule_list[i].start)
-              if(schedule_list[i].start < s){
+              var today = new Date();
+              if(schedule_list[i].start <= s && schedule_list[i].start >= today){
                 result1.push(schedule_list[i]);
               }
               console.log("result = " + result1)
             }
             console.log("length= " + result1.length)
             if(result1.length == 0){
-              output_string = "Pipi, you have nothing scheduled before " + time + " on " + date
+              output_string = name + ", you have nothing scheduled before " + time + " on " + date
             }
             else{
               console.log("here")
               console.log(result1[0].title)
               console.log(result1[0].startTime)
               console.log(result1[0].startDate)
-              output_string = "Pipi: "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+              output_string = name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
               for(var i = 1; i < result1.length; i ++){
                 output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
               }
@@ -106,6 +123,7 @@ exports.process_request =  (req, res) => {
     else if(time){
       var start1 = date + " " + time
       Input.find({
+        email: "liuxuantong0611@gmail.com",
         start: start1
       }, function(err, schedule_list){
         if(err){
@@ -113,16 +131,16 @@ exports.process_request =  (req, res) => {
         } else {
           // if the schedule_list is empty
           if(schedule_list.length == 0){
-            output_string = "Pipi, you have nothing scheduled for " + date + " at " + time
+            output_string = name + ", you have nothing scheduled for " + date + " at " + time
           } else {
             // if the list contains only one event
             if(schedule_list.length == 1){
-              output_string =  time + " on " + date + ", Pipi: "+ schedule_list[0].title + "; ";
+              output_string =  time + " on " + date + ", " + name + ": "+ schedule_list[0].title + "; ";
             }
             // if the list contains more than one event
             // do this only for format
             else{
-              output_string = time + " on " + date + ", Pipi: "+ schedule_list[0].title + "; ";
+              output_string = time + " on " + date + ", " + name + ": "+ schedule_list[0].title + "; ";
               for(var i = 1; i < schedule_list.length; i ++){
                 output_string = output_string + schedule_list[i].title + "; ";
               }
@@ -137,32 +155,39 @@ exports.process_request =  (req, res) => {
     // when the user asks a certain date
     // e.g. what am i going to do tomorrow
     else{
+      console.log("in no time")
       Input.find({
+        email: "liuxuantong0611@gmail.com",
         startDate: date,
       }, function(err, schedule_list){
         if(err){
           console.log( error.message );
         } else {
+          console.log("after finding in no time")
           if(schedule_list.length == 0){
-            output_string = "Pipi, you have nothing scheduled for " + date
+            output_string = name + ", you have nothing scheduled for " + date
           } else {
             console.log("schedule is " + schedule_list)
             if(schedule_list.length == 1){
-              output_string = date + ", Pipi: "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
+              output_string = date + ", " + name + ": "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
             }
             else{
-              output_string = date + ", Pipi: "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
+              output_string = date + ", " + name + ": "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
               for(var i = 1; i < schedule_list.length; i ++){
                 output_string = output_string + schedule_list[i].title + " at " + schedule_list[i].startTime + "; ";
               }
             }
           }
         }
+        console.log(output_string)
         result.response.outputSpeech.text = output_string;
         res.json(result);
       })
     }
   }
+
+
+
 
   // delete event
   else if(req.body.request.intent.name == "delete_event"){
@@ -179,10 +204,14 @@ exports.process_request =  (req, res) => {
     if(text.slice(-2) == "at"){
       text = text.slice(0, -2)
     }
+    if(text.slice(-2) == "on"){
+      text = text.slice(0, -2)
+    }
     console.log("text = " + text)
     console.log("["+text.trim()+"]");
     var start1 = date + " " + time
     Input.findOne({
+      email: "liuxuantong0611@gmail.com",
       title: text.trim(),
       start: start1
     }, function(err, input){
@@ -191,10 +220,10 @@ exports.process_request =  (req, res) => {
       } else {
         console.log("Input is " + input)
         if(input == null){
-          output_string = text + " on " + date + " at " + time + " is not found, pipi"
+          output_string = text + " on " + date + " at " + time + " is not found, " + name
         } else {
           console.log("Input is " + input)
-          output_string =  text + " on " + date + " at " + time + " is cancelled, pipi";
+          output_string =  text + " on " + date + " at " + time + " is cancelled, " + name;
           Input.deleteOne({_id:input._id}).exec()
         }
       }
@@ -204,12 +233,18 @@ exports.process_request =  (req, res) => {
     })
   }
 
+
+
+
   else if(req.body.request.intent.name == "update_event"){
     var update_event = req.body.request.intent.slots;
     console.log("in update event")
     var prevText = update_event.prevText["value"]
     console.log("prevText = " + prevText)
     if(prevText.slice(-2) == "at"){
+      prevText = prevText.slice(0, -2)
+    }
+    if(prevText.slice(-2) == "on"){
       prevText = prevText.slice(0, -2)
     }
     console.log("prevText1 = " + prevText)
@@ -220,6 +255,9 @@ exports.process_request =  (req, res) => {
     var newText = update_event.newText["value"]
     console.log("newText = " + newText)
     if(newText != null && newText.slice(-2) == "at"){
+      newText = newText.slice(0, -2)
+    }
+    if(newText != null && newText.slice(-2) == "on"){
       newText = newText.slice(0, -2)
     }
     console.log("newText1 = " + newText)
@@ -246,22 +284,31 @@ exports.process_request =  (req, res) => {
     }
     var start1 = prevDate + " " + prevTime
     console.log("start1 = " + start1)
+    var s = new Date(prevDate);
+    s.setDate(s.getDate() + 1)
+    var index = prevTime.indexOf(":")
+    s.setHours(prevTime.slice(0, index), prevTime.slice(index + 1, prevTime.length));
+    console.log("s = " + s)
     var start2 = newDate + " " + newTime
     console.log("start2 = " + start2)
     var sd = newDate.toString().slice(0,10);
     console.log("sd = " + sd)
     console.log("[" + prevText.trim() + "]")
     Input.findOne({
+      email: "liuxuantong0611@gmail.com",
       title: prevText.trim(),
-      start: start1,
+      start: s,
     }, function(err, input){
       console.log("found11")
       if(err){
         console.log(err.message);
       } else{
+        console.log("found 22")
+        console.dir(input)
+        console.log(input)
         if(input == null){
           console.log("input is empty")
-          output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found, Pipi."
+          output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found, " + name + ". "
         }
         else{
           console.log("Input1 " + input);
@@ -271,7 +318,7 @@ exports.process_request =  (req, res) => {
             startDate: sd,
             startTime: newTime,
           }).exec()
-          output_string = "Pipi, " + prevText + " at " + prevTime + " on " + prevDate + " has been changed to " + newText + " at " + newTime + " on " + newDate;
+          output_string = name + ", " + prevText + " at " + prevTime + " on " + prevDate + " has been changed to " + newText + " at " + newTime + " on " + newDate;
         }
       }
       console.log(output_string)
@@ -279,20 +326,16 @@ exports.process_request =  (req, res) => {
       res.json(result);
     })
   }
+
+
+
   else{
     console.log("in no intent")
-    result.response.outputSpeech.text = "Pipi, what are you talking about?"
+    result.response.outputSpeech.text = name + ", what are you talking about?"
     res.json(result);
   }
 };
 
-
-// dialogflow
-function welcome(name) {
-  console.log("in Welcome function")
-  var response = "Hello, " + name + "." + " I'm your personal secretary, Pipi."
-  return response;
-};
 
 // save event
 function addEvent(req, user){
@@ -318,7 +361,7 @@ function addEvent(req, user){
         date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
       }
     }
-    response = "Okay, pipi, I will remind you on " + date + " at " + time + "."
+    response = "Okay, " + name + ", I will remind you on " + date + " at " + time + "."
   }
 
   if(duration){
@@ -425,7 +468,7 @@ function addEvent(req, user){
 // this displays all of the skills
 exports.getAllSchedule = ( req, res ) => {
   console.log('in getAllSchedule')
-  Schedule.find( {} )
+  Input.find( {email: "liuxuantong0611@gmail.com",} )
     .exec()
     .then( ( schedule ) => {
       res.render( 'test', {
