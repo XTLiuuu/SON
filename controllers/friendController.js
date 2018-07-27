@@ -72,6 +72,7 @@ exports.updateRequest = ( req, res )=> {
     newf.save()
 
     Notification.deleteOne({
+                type:"friend request",
                 to: res.locals.user.googleemail,
                 from:req.body.from})
                 .then( () => {
@@ -82,7 +83,40 @@ exports.updateRequest = ( req, res )=> {
                 });
   }else if(req.body.cancel == 'Cancel'){
     console.log("in deleteRequest"+req.body.from);
-    Notification.deleteOne({to: res.locals.user.googleemail,
+    Notification.deleteOne({type:"friend request",
+                            to: res.locals.user.googleemail,
+                            from:req.body.from})
+                .exec()
+                .then(()=>{res.redirect('/notification')})
+                .catch((error)=>{res.send(error)})
+  }
+  else if(req.body.add == 'Add'){
+    console.log("in acceptaInvitation");
+    let newi = new Input({
+      email: res.locals.user.googleemail,
+      title:req.body.title + " with " + req.body.fromname,
+      startDate: req.body.startDate,
+      startTime: req.body.startTime,
+      endDate: req.body.endDate,
+      endTime:req.body.endTime,
+      description: req.body.description
+    });
+    newi.save();
+    Notification.deleteOne({
+                type:"event invitation",
+                to: res.locals.user.googleemail,
+                from:req.body.from})
+                .then( () => {
+                  res.redirect('/notification');
+                })
+                .catch( error => {
+                  res.send( error );
+                });
+  }
+  else if(req.body.decline == 'Decline'){
+    console.log("in deleteInvitation"+req.body.from);
+    Notification.deleteOne({type:"event invitation",
+                            to: res.locals.user.googleemail,
                             from:req.body.from})
                 .exec()
                 .then(()=>{res.redirect('/notification')})

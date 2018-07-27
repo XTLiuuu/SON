@@ -17,6 +17,16 @@ block content
           #nav-tabContent.tab-content
 
             #schedulereminder.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-event-list")
+              //-each input in inputs
+                .card.bg-light.mb-3(style="max-width: 50rem;")
+                  .card-header 
+                    | Reminder
+                    .alignright.text-monospace now
+                  .card-body
+                    h5.font-weight-bold #{input.title}
+                    p.card-text
+
+                      | Remind me to #{input.title} at #{input.start}
             
             #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
               each noti in notis
@@ -29,22 +39,16 @@ block content
                       form.form-inline.mr-auto(method="post" action="")                      
                         input.form-control(name="from" type="hidden" value=noti.from)
                         input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                        br
                         h5 #{noti.content}
                           br
                           br
-                          input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                          input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+                          .row
+                            .col-3
+                              input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                            .col-3
+                              input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
 
-              //-each input in inputs
-                .card.bg-light.mb-3(style="max-width: 50rem;")
-                  .card-header 
-                    | Reminder
-                    .alignright.text-monospace now
-                  .card-body
-                    h5.font-weight-bold #{input.title}
-                    p.card-text
-
-                      | Remind me to #{input.title} at #{input.start}
             #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
               each noti in notis
                 if noti.type == "event invitation"
@@ -54,8 +58,14 @@ block content
                       .alignright.text-monospace now
                     .card-body
                       form.form-inline.mr-auto(method="post" action="")                      
-                        //-input.form-control(name="from" type="hidden" value=noti.from)
-                        //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                        input.form-control(name="from" type="hidden" value=noti.from)
+                        input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                        input.form-control(name="title" type="hidden" value=noti.title)
+                        input.form-control(name="description" type="hidden" value=noti.description)
+                        input.form-control(name="startDate" type="hidden" value=noti.sDate)
+                        input.form-control(name="startTime" type="hidden" value=noti.sTime)
+                        input.form-control(name="endDate" type="hidden" value=noti.eDate)
+                        input.form-control(name="endTime" type="hidden" value=noti.eTime)
                         .row
                           .col-12
                             h5 #{noti.content}
@@ -64,5 +74,9 @@ block content
                             h5 #{noti.description}
                           .col-12
                             h5 Start Time: &nbsp #{noti.sDate} #{noti.sTime}
-                        //-input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                        //-input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+                            h5 End Time: &nbsp #{noti.eDate} #{noti.eTime}
+                        .row
+                          .col-6
+                            input.w3-button.w3-teal(type='submit' name = "add" value="Add") 
+                          .col-6
+                            input.w3-button.w3-teal(type='submit' name = "decline" value="Decline") 
