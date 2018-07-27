@@ -154,16 +154,18 @@ exports.check_avail = (req, res) =>{
         console.log("length = " + input_list.length)
         var checkStatus;
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].startTime)
-          console.log("list " + i + " endTime = " + input_list[i].endTime)
+          console.log("list " + i + " startTime = " + input_list[i].start)
+          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
-            if(input_list[i].start <= s && s <= input_list[i].end){
+            if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
               console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            if(input_list[i].start == s){
+            console.log(input_list[i].start == s)
+            console.log(input_list[i].start.getTime() == s.getTime())
+            if(input_list[i].start.getTime() == s.getTime()){
               console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
@@ -237,7 +239,7 @@ exports.guess_free = (req, res) => {
 }
 
 function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime){
-  console.log("in check with friend")
+  console.log("in check with friend" + x)
   var length = friend_list.length
   console.log("length 12 = " + length);
   Input.find({email: friend_list[x]["friend"]},
@@ -248,24 +250,29 @@ function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTim
         console.log("after getting friend " + x);
         console.log("length = " + input_list.length);
         var checkStatus;
+        console.log("s = " + s)
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].startTime)
-          console.log("list " + i + " endTime = " + input_list[i].endTime)
+          console.log("list " + i + " startTime = " + input_list[i].start)
+          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
+            console.log("have end time")
             if(input_list[i].start <= s && s <= input_list[i].end){
               console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            if(input_list[i].start == s){
+            console.log("do not have end time")
+            console.log(input_list[i].start == s)
+            console.log(input_list[i].start.getTime() == s.getTime())
+            if(input_list[i].start.getTime() == s.getTime()){
               console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
         }
         if(x == friend_list.length - 1 && checkStatus == "BUSY"){
-          console.log("the final free friend_list = ")
+          console.log("the final free friend_list0 = ")
           console.log(freeFriend)
           //res.locals.freeFriend = freeFriend
           var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
@@ -280,19 +287,22 @@ function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTim
           console.log("before freefriend")
           console.log(freeFriend)
           if(x == friend_list.length - 1){
-            console.log("the final free friend_list = ")
+            console.log("the final free friend_list1 = ")
             console.log(freeFriend)
             var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
             //res.locals.freeFriend = freeFriend
             res.json(response)
           }
           if(x < friend_list.length - 1){
-            console.log("call again lala")
+            console.log("call again in free")
             checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
           }
         }
         else{
-          checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
+          if(x < friend_list.length - 1){
+            console.log("call again in busy")
+            checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
+          }
         }
       }
     }

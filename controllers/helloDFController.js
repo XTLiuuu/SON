@@ -690,13 +690,13 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
           console.log("list " + i + " startTime = " + input_list[i].start)
           console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
-            if(input_list[i].start <= s && s <= input_list[i].end){
+            if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
               console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            if(input_list[i].start == s){
+            if(input_list[i].start.getTime() == s.getTime()){
               console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
