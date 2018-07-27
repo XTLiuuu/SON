@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
+var HashSet = require('hashset');
 
 
 var usersRouter = require('./routes/users');
@@ -38,6 +39,7 @@ const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
 const helloDFController = require('./controllers/helloDFController');
+const helloDFController1 = require('./controllers/helloDFController1');
 const notiController = require('./controllers/notiController');
 const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
@@ -181,6 +183,7 @@ app.post('/notification', isLoggedIn, profileController.attachProfile, friendCon
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
 //app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
+app.post('/check_secret', profileController.check_secret);
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);

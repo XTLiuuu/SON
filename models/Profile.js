@@ -10,6 +10,7 @@ var profileSchema = mongoose.Schema( {
   dob: String,
   about: String,
   friendEmail: Array,
+  secret: String, 
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

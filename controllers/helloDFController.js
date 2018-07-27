@@ -2,13 +2,15 @@
 const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
 const Friend = require( '../models/Friend' );
-console.log("loading the ipnut Controller")
+
+console.log("loading the hell0 Controller")
 var result1;
 var name = "Pipi";
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
+
   //console.log("user = " + req.locals.user)
   //console.log("req.user.goo = " + req.locals.user)
   var output_string = "Sorry, " + name + ". Can you say that again?";
@@ -33,9 +35,6 @@ exports.process_request =  (req, res) => {
       "shouldEndSession": true
     }
   };
-
-
-
 
   if(req.body.request.intent.name == "tell_name"){
     console.log("in tell name")

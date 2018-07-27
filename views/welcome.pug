@@ -2,6 +2,8 @@ extends layoutBS
 
 block content
   .body
+    
+
     header#home.w3-display-container.w3-content.w3-wide(style = "max-width: 1500px")
       img.w3-image(src = "../images/bg3.jpg" alt = "home" width = "1500" height = "800")  
       .w3-display-middle.w3-margin-top.w3-center
@@ -21,6 +23,8 @@ block content
           br
           br
           br
+    if badsecret
+      h1 Someone else has the secret #{badsecret}, try again
     div#about.w3-container(style = "padding: 128px 16px")
       h3.w3-center.w3-text-black ABOUT THE APP
       p.w3-center.w3-large Key features of our APP
