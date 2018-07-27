@@ -13,9 +13,7 @@ block content
   body
     // Side Navigation
     nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-white.w3-animate-left.w3-card(style="z-index:3;width:320px;")
-      a.w3-bar-item.w3-button(href="/friend")
-        i.fa.fa-reddit-alien.w3-margin-right
-        | MY FRIENDS
+      h3.w3-text-wide &nbsp&nbsp MY FRIENDS
       a.w3-bar-item.w3-button(href="/friend1")
         i.fa.fa-hourglass-end.w3-margin-right
         | Add new friends
@@ -38,11 +36,7 @@ block content
       div#check-result.alert.alert-info(role="alert" style="display:none")
         | I'm not stupid.
       br
-      .row
-        .col-3
-        .col-8
-          button#021.w3-button.w3-wide.w3-block.w3-teal(onclick="document.getElementById('id0211').style.display='block'" style="width:60%;") CHECK AVAILABLE FRIENDS
-        .col-1
+      button.w3-button.w3-teal(onclick="document.getElementById('id0211').style.display='block'") GUESS FREE
       #id0211.w3-modal
         .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
           .w3-center
@@ -54,19 +48,19 @@ block content
                 .margin
                   .w3-section
                     b Check Time
-                    input(type="hidden" name="currUser" id="currUser" value=userEmail)
-                    input(type="hidden" name="currUserID" id="currUserID" value=userID)
+                    input(type="hidden" name="currUser" value=userEmail)
+                    input(type="hidden" name="currUserID" value=userID)
                     .row
                       .col-6
-                        input.w3-input.w3-border(type="date" name="checkDate" id="checkDate")
+                        input.w3-input.w3-border(type="date" name="checkDate")
                       .col-6
-                        input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime")
+                        input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime")
                     br
-                    input.w3-button.w3-block.w3-teal.w3-section.w3-padding.guess-free(type="button" value="Start Checking")
+                    input.w3-button.w3-block.w3-teal.w3-section.w3-padding(type="submit" value="Start Checking")
                     br
       each f in friend
         form(method="post" action="check_avail")
-          .w3-container.person(id= f._id style="display:none")
+          .w3-container.person(id= f._id)
             br
             img.w3-round.w3-animate-top(src="../images/man.png" style="width:20%;")
             .row

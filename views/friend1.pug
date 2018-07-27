@@ -6,38 +6,20 @@ block content
     br
     br
     br
-    .container
-      form.form-inline.mr-auto(method="post" action="searchProfile")
-        input.form-control.mr-sm-2(name="searchfriend" type='text', placeholder='Search an email', aria-label='Search')
-        button.btn.btn-primary(type='submit') Search
+    .margin
+      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+        h4.w3-wide.w3-center 
+          |  Enter an email below
+        br
+        br
+        form(method="post" action="searchProfile")
+          .row
+            .col-6
+              .input-group.md-3
+                input.form-control(name = "searchfriend" type = "text" placeholder = "Search an email" width='60%')
+            .col-2
+              input.w3-button.w3-teal(type="submit" value="Search")
+            .col-1
+              a.w3-button.w3-grey(href="/friend") Back
     br
     br
-    .btn-group-vertical
-      each f in friend
-        button.btn.btn-outline-primary(type='button') #{f.friendname}
-        
-    br
-    br
-    .row
-      each f in friend
-        .col-4
-          #list-tab.list-group(role='tablist')
-            a#list-home-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-home', role='tab', aria-controls='home') #{f.friendname}
-        .col-8
-          #nav-tabContent.tab-content
-            #list-home.tab-pane.fade(role='tabpanel', aria-labelledby='list-home-list') #{f.status}
-
-
-
-//-
-        #list-tab.list-group(role='tablist')
-          a#list-home-list.list-group-item.list-group-item-action.active(data-toggle='list', href='#list-home', role='tab', aria-controls='home') friend 1
-          a#list-profile-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-profile', role='tab', aria-controls='profile') friend 2
-          a#list-messages-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-messages', role='tab', aria-controls='messages') friend 3
-          a#list-settings-list.list-group-item.list-group-item-action(data-toggle='list', href='#list-settings', role='tab', aria-controls='settings') friend 4
-      .col-8
-        #nav-tabContent.tab-content
-          #list-home.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='list-home-list') first friend
-          #list-profile.tab-pane.fade(role='tabpanel', aria-labelledby='list-profile-list') second friend
-          #list-messages.tab-pane.fade(role='tabpanel', aria-labelledby='list-messages-list') third friend
-          #list-settings.tab-pane.fade(role='tabpanel', aria-labelledby='list-settings-list') forth friend

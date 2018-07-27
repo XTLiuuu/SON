@@ -9,21 +9,4 @@ block content
   br
   h1 All saved schedules 
  
-  ul
-    form(method="post" action="deleteSchedule")
-      each s in schedule
-        input(name="deleteSchedule" value=s._id type="checkbox")
-        li
-          | ID: #{s.count}
-          br
-          | Time: #{s.time}, Date: #{s.date}
-          br
-          | Event: #{s.schedule}
-          br
-          | Date1: #{s.date1}
-          hr
-      input(type="submit" value="Delete checked items")
-  br
-  br
-  br
-     
+  | #{freeFriend}   

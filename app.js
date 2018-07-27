@@ -24,6 +24,7 @@ const notiController = require('./controllers/notiController');
 const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
+const settingController = require('./controllers/settingController');
 const User = require( './models/user' )
 
 //friend function
@@ -132,11 +133,14 @@ app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
 
 //app.use('/setting', settingRouter);
-app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser,
+                    profileController.attachProfile,settingController.attachSetting,
+                    settingController.getSetting,profileController.getProfile);
+app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
 //app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
 app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
-app.get('saveSetting', isLoggedIn,)
+//app.get('saveSetting', isLoggedIn,)
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
@@ -147,6 +151,8 @@ app.use('/calendar', calendarD);
 // friend function
 app.get('/friend',isLoggedIn, friendController.getFriend);
 app.get('/friend1',isLoggedIn, friendController.getFriend1);
+app.post('/check_avail',isLoggedIn, friendController.check_avail);
+app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
 
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
@@ -161,6 +167,7 @@ app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
+<<<<<<< HEAD
 
 app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res){
   const current_date = new Date();
@@ -180,8 +187,14 @@ app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res)
     res.status(err.status || 500);
     res.json(err);
   })
+=======
+/*
+app.use('/test.json', function(req, res){
+  console.dir(req.user)
+  res.json({a: 1, b: 2})
+>>>>>>> ab1f936e1fb48a58c2846a2b3cf86ae2afdaad6b
 })
-
+*/
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

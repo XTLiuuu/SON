@@ -2,6 +2,8 @@
 console.log("in full calendar controller")
 const Input = require( '../models/Input' );
 const Notification = require('../models/Notification');
+const Friend = require('../models/Friend');
+const mongo = require('mongodb');
 
 exports.get_events_post = function(req, res){
    //events
@@ -49,12 +51,33 @@ exports.update_event_get = function(req, res){
     })
   }
 
+  exports.attachCurrFriend = ( req, res, next ) => {
+    console.log('in attach curr Friend')
+    console.log("curr friend = " + req.params.friend_id)
+    const friend_id = req.params.friend_id;
+    Friend.findOne({_id: friend_id},
+      function(err, friend){
+        if(err){
+          console.log(err.message)
+        }
+        else{
+          console.log(friend)
+          res.locals.friendName = friend["friendname"]
+          console.log(res.locals.friendName)
+          next();
+        }
+      })
+    }
+
+
   exports.show_sending_event = function(req, res){
+    console.log(res.locals)
     console.log("curr = " + req.param)
     const event_id = req.params.event_id;
     console.log("event id = " +  event_id)
     const friend_id = req.params.friend_id;
     console.log("friend id = " + friend_id)
+    const friendName = res.locals["friendName"]
       Input.findById(event_id, function(err, doc){
         if(err){
           res.status(err.status || 500);
@@ -62,7 +85,7 @@ exports.update_event_get = function(req, res){
         } else {
           console.log(doc)
           if(doc){
-            res.render('show_sending',{event_id: event_id, event_doc: doc, friend_id: friend_id})
+            res.render('show_sending',{friendName: friendName, event_id: event_id, event_doc: doc, friend_id: friend_id})
           } else {
             res.status(404);
             res.json({status: 404, message: "Not Found."})
@@ -138,22 +161,54 @@ exports.update_event_post = function(req, res){
 
 }
 
-/**
+
 exports.send_event = function(req, res){
-   console.log("in send_event")
-   let friendEvent =
-    new Notification({to:req.body.friendemail,
-     toname:req.body.friendname,
-     content: "You receive an event shared from " + res.locals.profile.name,
-     from: res.locals.user.googleemail,
-     fromname: res.locals.profile.name})
-   request.save(function(err, doc){
-     if(err){
-       res.json(err);
-     } else {
-       console.log("The event has been sent")
-       res.redirect('/calendar/sendCalendar/ + friend_id');
-     }
-   })
-  }
-  */
+   console.log("in send_event666")
+   console.log("friendID = " + req.params.friend_id)
+   const fId = new mongo.ObjectId(req.params.friend_id)
+   Friend.findOne(fId)
+    .exec()
+    .then( (fff) =>{
+      var ad = req.body.allday;
+      var allDay;
+      if(ad == 'on'){
+        allDay = true;
+      }
+      else{
+        allDay = false;
+      }
+      let friendEvent =
+       new Notification({
+        type:"event invitation",
+        to:fff.friend,
+        toname:fff.friendname,
+        content: "You received an event shared from " + res.locals.profile.name,
+        from: res.locals.user.googleemail,
+        fromname: res.locals.profile.name,
+
+        title: req.body.title,
+        sDate: req.body.startDate,
+        sTime: req.body.startTime,
+        eDate: req.body.endDate,
+        eTime: req.body.endTime,
+        allday: allDay,
+        description: req.body.description,
+      })
+      friendEvent.save(function(err, doc){
+        if(err){
+          res.json(err);
+        } else {
+          console.log("The event has been sent")
+          res.redirect('/calendar/sendCalendar/ + friend_id');
+        }
+      })
+
+    })
+    .catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'setting promise complete' );
+    } );
+};
