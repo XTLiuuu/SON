@@ -167,7 +167,7 @@ app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
-<<<<<<< HEAD
+
 
 app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res){
   const current_date = new Date();
@@ -187,14 +187,10 @@ app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res)
     res.status(err.status || 500);
     res.json(err);
   })
-=======
-/*
-app.use('/test.json', function(req, res){
-  console.dir(req.user)
-  res.json({a: 1, b: 2})
->>>>>>> ab1f936e1fb48a58c2846a2b3cf86ae2afdaad6b
+
 })
-*/
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

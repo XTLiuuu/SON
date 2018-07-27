@@ -1,72 +1,74 @@
 extends layoutBS
 
-block head
-  script(src="/js/notification.js")
-
 block content
+  br
+  br
+  br
+  style.
+    html,body,h1,h2,h3,h4,h5 {font-family: "RobotoDraft", "Roboto", sans-serif}
+    .w3-bar-block .w3-bar-item {padding: 16px}
+    
   body
-    br
-    br
-    br
-    br
-    .margin
-      h4.text-monospace Notifications
-      .row 
-        .col-4
-          #list-tab.list-group(role="tablist")
-            a#list-reminder-list.list-group-item.list-group-item-action.active(data-toggle="list" href="#schedulereminder" role="tab" aria-controls="reminder") Schedule Reminder
-            a#list-request-list.list-group-item.list-group-item-action(data-toggle="list" href="#friendrequest" role="tab" aria-controls="request") Friend Request
-            a#list-invitation-list.list-group-item.list-group-item-action(data-toggle="list" href="#eventinvitation" role="tab" aria-controls="invitation") Event Invitation
-        .col-8
-          #nav-tabContent.tab-content
-
-            #schedulereminder.tab-pane.fade.show.active(role="tabpanel" aria-labelledby="list-event-list")
-            
-            #friendrequest.tab-pane.fade(role="tabpanel" aria-labelledby="list-request-list")
-              each noti in notis
-                if noti.type == "friend request"
-                  .card.bg-light.mb-3(style="max-width: 50rem;")
-                    .card-header 
-                      | Friend request
-                      .alignright.text-monospace now
-                    .card-body
-                      form.form-inline.mr-auto(method="post" action="")                      
-                        input.form-control(name="from" type="hidden" value=noti.from)
-                        input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                        h5 #{noti.content}
-                          br
-                          br
-                          input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                          input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
-
-              //-each input in inputs
-                .card.bg-light.mb-3(style="max-width: 50rem;")
-                  .card-header 
-                    | Reminder
-                    .alignright.text-monospace now
-                  .card-body
-                    h5.font-weight-bold #{input.title}
-                    p.card-text
-
-                      | Remind me to #{input.title} at #{input.start}
-            #eventinvitation.tab-pane.fade(role="tabpanel" aria-labelledby="list-invitation-list")
-              each noti in notis
-                if noti.type == "event invitation"
-                  .card.bg-light.mb-3(style="max-width: 50rem;")
-                    .card-header 
-                      | Event Invitation
-                      .alignright.text-monospace now
-                    .card-body
-                      form.form-inline.mr-auto(method="post" action="")                      
-                        //-input.form-control(name="from" type="hidden" value=noti.from)
-                        //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                        .row
-                          .col-12
-                            h5 #{noti.content}
-                          .col-12
-                            h5.font-weight-bold #{noti.title}
-                            h5 #{noti.description}
-                          .col-12
-                            h5 Start Time: &nbsp #{noti.sDate} #{noti.sTime}
-                        //-input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                        //-input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+    nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-white.w3-animate-left.w3-card(style="z-index:3;width:320px;")
+      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'ScheduleReminder')") 
+        i.fa.fa-table.w3-margin-right 
+        | Scehdule Reminder
+      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'FriendRequest')")
+        i.fa.fa-vcard-o.w3-margin-right
+        | Friend Request
+      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'EventInvitation')") 
+        i.fa.fa-bell-o.w3-margin-right
+        | Event Invitation
+    div(style='margin-left:330px')
+      #ScheduleReminder.w3-container.tab(style='display:none')
+        | In schedule reminder
+      #FriendRequest.w3-container.tab(style='display:none')
+        each noti in notis
+          if noti.type == "friend request"
+            .card.bg-light.mb-3(style="max-width: 50rem;")
+              .card-header 
+                | Friend request
+                .alignright.text-monospace now
+              .card-body
+                form.form-inline.mr-auto(method="post" action="")                      
+                  input.form-control(name="from" type="hidden" value=noti.from)
+                  input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  h5 #{noti.content}
+                    br
+                    br
+                    input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                    input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+      #EventInvitation.w3-container.tab(style='display:none')
+        each noti in notis
+          if noti.type == "event invitation"
+            .card.bg-light.mb-3(style="max-width: 50rem;")
+              .card-header 
+                | Event Invitation
+                .alignright.text-monospace now
+              .card-body
+                form.form-inline.mr-auto(method="post" action="")                      
+                  //-input.form-control(name="from" type="hidden" value=noti.from)
+                  //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  .row
+                    .col-12
+                      h5 #{noti.content}
+                    .col-12
+                      h5.font-weight-bold #{noti.title}
+                      h5 #{noti.description}
+                    .col-12
+                      h5 Start Time: &nbsp #{noti.sDate} #{noti.sTime}
+          
+  script.
+    function openTab(evt, tabName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("tab");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-teal", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " w3-teal";
+    }
