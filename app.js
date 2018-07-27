@@ -16,25 +16,7 @@ var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
-///////////////////////////////////////////////////
-var http = require('http');
-//var io = require('socket.io');
 
-server = http.createServer(function(req, res){
-});
-server.listen(8080);
-
-// socket.io
-/**
-var socket = io.listen(server);
-
-socket.on('connection', function(client){
-  client.on('message', function(msg){
-      socket.broadcast(msg);
-  })
-});
-*/
-/////////////////////////////////////////////////////
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
@@ -188,12 +170,30 @@ app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
-/*
-app.use('/test.json', function(req, res){
-  console.dir(req.user)
-  res.json({a: 1, b: 2})
+
+
+app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res){
+  const current_date = new Date();
+  const current_date_start = new Date(current_date.toISOString().substring(0, current_date.toISOString().indexOf("T")));
+  console.dir(current_date_start)
+  const Input = require('./models/Input.js');
+  const User = require('./models/user.js')
+  Input.find({
+    start: {$gte: current_date_start},
+    email: req.user.googleemail
+  }).exec().then((input_list)=> {
+    console.log("in test_json again")
+    console.dir(input_list)
+    res.json(input_list);
+  }).catch((err) => {
+    console.log("in test_json err")
+    res.status(err.status || 500);
+    res.json(err);
+  })
+
 })
-*/
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
