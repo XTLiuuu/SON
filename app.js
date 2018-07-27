@@ -162,23 +162,24 @@ app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
-app.get('/test_json', function(req, res){
+app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res){
   const current_date = new Date();
   const current_date_start = new Date(current_date.toISOString().substring(0, current_date.toISOString().indexOf("T")));
+  console.dir(current_date_start)
   const Input = require('./models/Input.js');
+  const User = require('./models/user.js')
   Input.find({
-    start: {$lte: current_date_start},
-    end: {$gte: current_date_start}
-  }, function(err, input_list){
-    if(err){
-      res.status(err.status || 500);
-      res.json(err);
-    } else {
-      res.json(input_list);
-    }
-  });
-  //console.dir(req.user)
-  //res.json({a: 1, b: 2})
+    start: {$gte: current_date_start},
+    email: req.user.googleemail
+  }).exec().then((input_list)=> {
+    console.log("in test_json again")
+    console.dir(input_list)
+    res.json(input_list);
+  }).catch((err) => {
+    console.log("in test_json err")
+    res.status(err.status || 500);
+    res.json(err);
+  })
 })
 
 // catch 404 and forward to error handler

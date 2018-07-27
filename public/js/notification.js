@@ -1,39 +1,26 @@
-// const Input = require('../models/Input');
-// exports.findInput = (req, res, next) => {
-//   Input.find({email:res.locals.user.googleemail})
-//   .exec()
-//   then((inputs) => {
-//     res.locals.inputs = inputs
-//     next()
-//   })
-//   .catch((error)=>{
-//     console.log(error.message);
-//     return [];
-//   } )
-//   .then( () =>{
-//     console.log('find input promise complete');
-//   })
-// }
-//db.inputs.find({ });
+function getNotifications(){
+    $.ajax({
+      type: "GET",
+      url: "/test_json", // return notification
+      success: function(data){
+        console.log(JSON.stringify(data,null,4))
+        for(let i=0; i<data.length; i++){
+          const d = new Date(data[i].start)
+          const n = new Date()
+          const dn = (d-n)
+          const title = data[i].title
+          if ((dn<1000*60*5) && (dn>0)) {
+            alert("You have a notification: "+title+" at "+data[i].startTime)
+            console.log('alerting! ')
+          } else {
+            console.log("hmmm d-n = "+(d-n))
+          }
+        }
+      },
+      dataType: "json",
+    });
+  }
 
-var d = new Date();
-var dstring = d.toString();
-var date = dstring.slice(0,10);
-var time = dstring.slice(16,24);
-console.log("date: "+dstring)
-console.log("date: "+date)
-console.log("time: "+time)
-console.log("loaded")
+getNotifications()
 
-
-setInterval(
-    function(){
-        $.ajax({
-          type: "GET",
-          url: "/test_json", // return notification
-          success: function(data){
-            console.log(data)
-          },
-          dataType: "json",
-        })
-      }, 300000);
+setInterval(getNotifications, 60*1000*2);
