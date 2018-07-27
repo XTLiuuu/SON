@@ -715,7 +715,7 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
 }
 
 function checkWithFriend(friend_list, s, freeFriend, x, callback){
-  console.log("in check with friend")
+  console.log("in check with friend" + x)
   var length = friend_list.length
   console.log("length 12 = " + length);
   Input.find({email: friend_list[x]["friend"]},
@@ -728,16 +728,18 @@ function checkWithFriend(friend_list, s, freeFriend, x, callback){
         console.log("length = " + input_list.length);
         var checkStatus;
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].startTime)
-          console.log("list " + i + " endTime = " + input_list[i].endTime)
+          console.log("list " + i + " startTime = " + input_list[i].start)
+          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
-            if(input_list[i].start <= s && s <= input_list[i].end){
+            console.log("have end time")
+            if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
               console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            if(input_list[i].start == s){
+            console.log("do not have end time")
+            if(input_list[i].start.getTime() == s.getTime()){
               console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
@@ -768,7 +770,10 @@ function checkWithFriend(friend_list, s, freeFriend, x, callback){
           }
         }
         else{
-          checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
+          if(x < friend_list.length - 1){
+            console.log("call again in busy")
+            checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
+          }
         }
       }
     }
