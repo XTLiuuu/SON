@@ -35,6 +35,10 @@ block content
           input.form-control(name="friendemail" type="hidden" value=friend.email)
           input.form-control(name="friendname" type="hidden" value=friend.name)
           //-input.form-control(name="friendid" type="hidden" value=friend.id)
-            
-          input.w3-button.w3-teal(type="submit" value="Send invitation")
+          .row
+            .col-4
+            .col-2
+              input.w3-button.w3-teal(type="submit" value="Send invitation")
+            .col-2
+              a.w3-button.w3-grey(href="/friend1") Back
           
