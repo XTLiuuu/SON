@@ -44,7 +44,7 @@ exports.sendFrequest = ( req, res ) =>{
       res.json(err);
     } else {
       console.log("The invitation has been sent")
-      res.redirect( '/friend' );
+      res.redirect( '/friend1' );
     }
   })
 };
@@ -246,14 +246,12 @@ exports.check_avail = (req, res) =>{
     console.log("in delete friends")
     var friendEmail = req.body.friendEmail
     var userEmail = req.body.userEmail
+    var pair = [friendEmail, userEmail];
+    console.log(pair)
     console.log(userEmail)
-    Friend.deleteOne({
-      user: userEmail,
-      friend: friendEmail
-    }).exec()
-    Friend.deleteOne({
-      friend: userEmail,
-      user: friendEmail
+    Friend.deleteMany({
+      user: {$in:pair},
+      friend: {$in:pair}
     }).exec()
     res.redirect('/friend')
   }

@@ -84,6 +84,7 @@ exports.saveProfile = ( req, res ) => {
           dob: req.body.dob,
           about: req.body.about,
           home: req.body.home,
+          image: req.body.image,
           secret: req.body.secret.toLowerCase().trim(),
         })
         //console.log("profile = "+ newProfile)
@@ -104,6 +105,7 @@ exports.saveProfile = ( req, res ) => {
            dob: req.body.dob,
            about: req.body.about,
            home: req.body.home,
+           image: req.body.image,
            secret: req.body.secret.toLowerCase().trim(),
          })
         .exec()
