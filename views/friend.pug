@@ -70,11 +70,10 @@ block content
             br
             img.w3-round.w3-animate-top(src="../images/" +p.image+ ".png" style="width:20%;")
             .row
-              .col-7 
+              .col-7
               .col-2
                 a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
-              .col-
-              
+              .col-             
                 .w3-container
                   button.w3-button.w3-teal(friend_id= p._id onclick="openModal(event)") Check Availability
                   .w3-modal(id= p._id+"modal")
@@ -96,7 +95,7 @@ block content
                                 .col-6
                                   input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime"+p._id)
                               br
-                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit(type="button" value="Start Checking" fid=p._id)
+                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit(type="button" value="Start Checking" name="check_avail" fid=p._id)
                               br
             hr
             .w3.text-dark-grey
@@ -118,3 +117,7 @@ block content
               p
                 i.fa.fa-hand-peace-o.fa-fw.w3-margin-right.w3-text-theme
                 |  #{p.about}
+            br
+            br
+            input(type="hidden" name="userEmail" value=userEmail)
+            input.w3-button.w3-red(type="submit" name = "delete_friend" value = "Delete Friend") 

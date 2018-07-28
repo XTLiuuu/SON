@@ -11,4 +11,4 @@ function countNoti(){
   }
 
 countNoti()
-setInterval(countNoti, 10000);
+setInterval(countNoti, 10000*100);

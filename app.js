@@ -143,7 +143,7 @@ app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser,
 app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
 //app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
-app.post('/saveProfile', isLoggedIn, profileController.saveProfile );
+app.post('/saveProfile', isLoggedIn, profileController.checkSecret, profileController.saveProfile );
 //app.get('saveSetting', isLoggedIn,)
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
