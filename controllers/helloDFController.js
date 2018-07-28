@@ -2,10 +2,13 @@
 const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
 const Friend = require( '../models/Friend' );
+const Profile = require( '../models/Profile' );
 
 console.log("loading the hell0 Controller")
 var result1;
-var name = "Pipi";
+var name;
+var userEmail;
+var output_string = "Sorry, " + name + ". Can you say that again?";
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
@@ -13,7 +16,6 @@ exports.process_request =  (req, res) => {
 
   //console.log("user = " + req.locals.user)
   //console.log("req.user.goo = " + req.locals.user)
-  var output_string = "Sorry, " + name + ". Can you say that again?";
  // this is how we define the result
   var result = {
     "version": "beta",
@@ -36,18 +38,47 @@ exports.process_request =  (req, res) => {
     }
   };
 
-  if(req.body.request.intent.name == "tell_name"){
-    console.log("in tell name")
-    name = req.body.request.intent.slots.name["value"];
-    output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
+  if(name == undefined && req.body.request.intent.name != "ask_secret"){
+    console.log("no name yet");
+    output_string = "Hi! Who are you? Please tell me your secret code."
     result.response.outputSpeech.text = output_string;
     res.json(result);
-   }
+  }
 
+  else if(req.body.request.intent.name == "ask_secret"){
+    console.log("in ask_secret")
+    var secret = req.body.request.intent.slots.secret["value"];
+    console.log("[" + secret + "]")
+    Profile.findOne({secret: secret},
+      function(err, profile){
+        console.log("after finding profile")
+        if(err){
+          console.log(err.message)
+        }
+        else{
+          console.log("after finding profile")
+          console.log(profile)
+          if(profile == null){
+            output_string = "Sorry, " + secret + " is not a correct secret code"
+          }
+          else{
+            userEmail = profile.email;
+            name = profile.name;
+            console.log(userEmail)
+            console.log(name)
+            console.log("user6 = " + userEmail)
+            output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
+          }
+          result.response.outputSpeech.text = output_string;
+          res.json(result);
+        }
+      })
+   }
 
    else if(req.body.request.intent.name == "ask_friend_number"){
      console.log("in ask_friend_number")
-     Friend.find({user: "liuxuantong0611@gmail.com"},
+     console.log(userEmail)
+     Friend.find({user: userEmail},
       function(err, friend_list){
         if(err){
           console.log(err.message)
@@ -85,7 +116,7 @@ exports.process_request =  (req, res) => {
      var index = time.indexOf(":")
      s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
      console.log("s = " + s)
-     Friend.find({user: "liuxuantong0611@gmail.com"},
+     Friend.find({user: userEmail},
       function(err, friend_list){
         if(err){
           console.log(err.message)
@@ -134,7 +165,7 @@ exports.process_request =  (req, res) => {
      friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
      console.log("friendName = " + friendName)
      Friend.findOne({
-       user: "liuxuantong0611@gmail.com",
+       user: userEmail,
        friendname: friendName
      },
       function(err, friend){
@@ -231,9 +262,11 @@ exports.process_request =  (req, res) => {
     }
     console.log("date = " + date)
     console.log("time = " + time)
+    var time1;
     if(constraint){
       if(time == null){
         var s = new Date(date);
+        time1 = "notime"
       }
       else{
         var s = new Date(date);
@@ -243,7 +276,7 @@ exports.process_request =  (req, res) => {
       }
       console.log("s = " + s)
       if(constraint == "before"){
-        Input.find({email: "liuxuantong0611@gmail.com",},
+        Input.find({email: userEmail,},
         function(err, schedule_list){
           if(err){
             console.log(err.message);
@@ -261,16 +294,29 @@ exports.process_request =  (req, res) => {
             }
             console.log("length= " + result1.length)
             if(result1.length == 0){
-              output_string = name + ", you have nothing scheduled before " + time + " on " + date
+              if(time1 == "notime"){
+                output_string = name + ", you have nothing scheduled before " + date
+              }
+              else{
+                output_string = name + ", you have nothing scheduled before " + time + " on " + date
+              }
             }
             else{
               console.log("here")
               console.log(result1[0].title)
               console.log(result1[0].startTime)
               console.log(result1[0].startDate)
-              output_string = name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
-              for(var i = 1; i < result1.length; i ++){
-                output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
+              if(time1 == "notime"){
+                output_string = "Before " + date + " ," + name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+                for(var i = 1; i < result1.length; i ++){
+                  output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
+                }
+              }
+              else{
+                output_string = "Before " + date + " ," + time + " ," + name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+                for(var i = 1; i < result1.length; i ++){
+                  output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
+                }
               }
             }
           }
@@ -285,7 +331,7 @@ exports.process_request =  (req, res) => {
     else if(time){
       var start1 = date + " " + time
       Input.find({
-        email: "liuxuantong0611@gmail.com",
+        email: userEmail,
         start: start1
       }, function(err, schedule_list){
         if(err){
@@ -319,7 +365,7 @@ exports.process_request =  (req, res) => {
     else{
       console.log("in no time")
       Input.find({
-        email: "liuxuantong0611@gmail.com",
+        email: userEmail,
         startDate: date,
       }, function(err, schedule_list){
         if(err){
@@ -373,7 +419,7 @@ exports.process_request =  (req, res) => {
     console.log("["+text.trim()+"]");
     var start1 = date + " " + time
     Input.findOne({
-      email: "liuxuantong0611@gmail.com",
+      email: userEmail,
       title: text.trim(),
       start: start1
     }, function(err, input){
@@ -382,10 +428,10 @@ exports.process_request =  (req, res) => {
       } else {
         console.log("Input is " + input)
         if(input == null){
-          output_string = text + " on " + date + " at " + time + " is not found, " + name
+          output_string = text + " on " + date + " at " + time + " is not found, "
         } else {
           console.log("Input is " + input)
-          output_string =  text + " on " + date + " at " + time + " is cancelled, " + name;
+          output_string =  text + " on " + date + " at " + time + " is cancelled";
           Input.deleteOne({_id:input._id}).exec()
         }
       }
@@ -457,7 +503,7 @@ exports.process_request =  (req, res) => {
     console.log("sd = " + sd)
     console.log("[" + prevText.trim() + "]")
     Input.findOne({
-      email: "liuxuantong0611@gmail.com",
+      email: userEmail,
       title: prevText.trim(),
       start: s,
     }, function(err, input){
@@ -607,7 +653,7 @@ function addEvent(req, user){
     else{
       date = year + "-" + month + "-" + day;
     }
-    response = "Okay, pipi, I will remind you in " + num + " " + type
+    response = "Okay," + name + ", I will remind you in " + num + " " + type
   }
   if(text.slice(-2) == "at"){
     text = text.slice(0, -2)
@@ -615,7 +661,7 @@ function addEvent(req, user){
   var start1 = date + " " + time + " "
   var sd = date.toString().slice(0,10);
   let newInput = new Input ({
-    email: "liuxuantong0611@gmail.com",
+    email: userEmail,
     title: text.trim(),
     start: start1,
     startDate: sd,
@@ -630,7 +676,7 @@ function addEvent(req, user){
 // this displays all of the skills
 exports.getAllSchedule = ( req, res ) => {
   console.log('in getAllSchedule')
-  Input.find( {email: "liuxuantong0611@gmail.com",} )
+  Input.find( {email: userEmail,} )
     .exec()
     .then( ( schedule ) => {
       res.render( 'test', {
