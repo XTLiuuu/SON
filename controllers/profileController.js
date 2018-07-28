@@ -86,6 +86,7 @@ exports.saveProfile = ( req, res ) => {
                       dob: req.body.dob,
                       about: req.body.about,
                       secret: req.body.secret,
+                      image: req.body.image,
                       home: req.body.home,
                       friendEmail: []
                     } )
@@ -108,7 +109,8 @@ exports.saveProfile = ( req, res ) => {
                        dob: req.body.dob,
                        about: req.body.about,
                        secret: newS,
-                       home: req.body.home
+                       home: req.body.home, 
+                       image: req.body.image,
                      })
                       .exec()
                       .then( () => {
@@ -143,6 +145,7 @@ exports.attachProfile = ( req, res, next ) => {
           dob: req.body.dob,
           about: req.body.about,
           secret: req.body.secret,
+          image: req.body.image,
           home: req.body.home,
           friendEmail: req.body.friendEmail
         } )

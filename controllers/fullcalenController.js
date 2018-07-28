@@ -3,6 +3,7 @@ console.log("in full calendar controller")
 const Input = require( '../models/Input' );
 const Notification = require('../models/Notification');
 const Friend = require('../models/Friend');
+const Profile = require('../models/Profile');
 const mongo = require('mongodb');
 
 exports.get_events_post = function(req, res){
@@ -55,14 +56,14 @@ exports.update_event_get = function(req, res){
     console.log('in attach curr Friend')
     console.log("curr friend = " + req.params.friend_id)
     const friend_id = req.params.friend_id;
-    Friend.findOne({_id: friend_id},
+    Profile.findOne({_id: friend_id},
       function(err, friend){
         if(err){
           console.log(err.message)
         }
         else{
           console.log(friend)
-          res.locals.friendName = friend["friendname"]
+          res.locals.friendName = friend["name"]
           console.log(res.locals.friendName)
           next();
         }
@@ -85,6 +86,8 @@ exports.update_event_get = function(req, res){
         } else {
           console.log(doc)
           if(doc){
+            console.log("before show sending")
+            console.log(friendName)
             res.render('show_sending',{friendName: friendName, event_id: event_id, event_doc: doc, friend_id: friend_id})
           } else {
             res.status(404);
@@ -166,7 +169,7 @@ exports.send_event = function(req, res){
    console.log("in send_event666")
    console.log("friendID = " + req.params.friend_id)
    const fId = new mongo.ObjectId(req.params.friend_id)
-   Friend.findOne(fId)
+   Profile.findOne(fId)
     .exec()
     .then( (fff) =>{
       var ad = req.body.allday;
@@ -180,8 +183,8 @@ exports.send_event = function(req, res){
       let friendEvent =
        new Notification({
         type:"event invitation",
-        to:fff.friend,
-        toname:fff.friendname,
+        to:fff.email,
+        toname:fff.name,
         content: "You received an event shared from " + res.locals.profile.name,
         from: res.locals.user.googleemail,
         fromname: res.locals.profile.name,

@@ -124,7 +124,7 @@ exports.updateRequest = ( req, res )=> {
   }
 };
 
-exports.getFriend = ( req, res ) => {
+exports.getFriend = ( req, res, next ) => {
   console.log('in getAllNoti')
   console.log('checkStatus=' + res.locals.checkStatus)
   console.log('checkStatus1=' + res.checkStatus)
@@ -134,7 +134,7 @@ exports.getFriend = ( req, res ) => {
       res.locals.friend = friend_list
       res.locals.userEmail = res.locals.user.googleemail
       res.locals.userID = res.locals.user._id
-      res.render( 'friend');
+      next();
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -144,6 +144,30 @@ exports.getFriend = ( req, res ) => {
       console.log( 'get friend complete' );
     } );
 };
+
+exports.getFriendProfile = (req, res) => {
+  console.log('in get friend profile');
+  console.log(res.locals.friend)
+  var friends = res.locals.friend;
+  var friendEmails = [];
+  for(var i = 0; i < friends.length; i ++){
+    friendEmails.push(friends[i].friend);
+  }
+  console.log(friendEmails);
+  Profile.find({email: {$in : friendEmails}},
+    function(err, profile_list){
+      if(err){
+        console.log(err.message);
+      }
+      else{
+        console.log("after getting friend profiles")
+        console.log(profile_list)
+        res.locals.profiles = profile_list
+        res.render('friend')
+      }
+    }
+  )
+}
 
 exports.getFriend1 = ( req, res ) => {
   console.log('in getAllNoti')

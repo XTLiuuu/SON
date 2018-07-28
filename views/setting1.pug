@@ -1,7 +1,7 @@
 extends layoutBS
 
 block head
-  script(src="/js/secret.js")
+  //script(src="/js/secret.js")
 
 block content
   br
@@ -9,14 +9,14 @@ block content
   br
   br 
   body 
-    .margin
+    .margin 
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
         h4.w3-wide.w3-center 
           i.fa.fa-rocket.w3-large
           |  UPDATE PROFILE
-        br
-        br
         form(method="post" action="/saveProfile" name="myProfile" onclick="return validateForm()")
+          p.w3-center
+            img.w3-circle(src="../images/" +profile.image+ ".png" style="height:106px;width:106px" alt="Avatar")
           .row
             .col-2
               label Name
@@ -69,6 +69,23 @@ block content
               label Secret Code 
             .formGroup.col-6
               input.form-control#secret(name="secret" type="text" value=profile.secret placeholder="include only lowercase letters and numbers")
+          br
+          .form-row
+            .formGroup.col-2
+              label Profile Image 
+            .formGroup.col-6
+              select#image(name="image").form-control
+                option(selected="") #{profile.image}
+                option profile1
+                option profile2
+                option profile3
+                option profile4
+                option profile5
+                option profile6
+                option profile7
+                option profile8
+                option profile9
+                option profile10
             .col-1
             .col-1
               input.w3-button.w3-teal.check-secret(type="submit" value="SAVE")
