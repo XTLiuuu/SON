@@ -30,20 +30,22 @@ block content
             .w3-panel.w3-light-grey
               p #{noti.content}
               br
-              form.form-inline.mr-auto(method="post" action="")                      
+              form(method="post" action="")                      
                 input.form-control(name="from" type="hidden" value=noti.from)
                 input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                br
-                br
-                input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel")     
+                .row
+                  .col-8
+                  .col-2
+                    input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                  .col-1
+                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")     
           if noti.type == "event invitation"
               .w3-panel.w3-light-grey.w3-card-4
                 p #{noti.content}
                 p
                 form.form-inline.mr-auto(method="post" action="")                      
-                  //-input.form-control(name="from" type="hidden" value=noti.from)
-                  //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  input.form-control(name="from" type="hidden" value=noti.from)
+                  input.form-control(name="fromname" type="hidden" value=noti.fromname)
                   .row
                     .col-12
                       p.font-weight-bold #{noti.title}
@@ -55,19 +57,18 @@ block content
       #FriendRequest.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "friend request"
-            .card.bg-light.mb-3(style="max-width: 50rem;")
-              .card-header 
-                | Friend request
-                .alignright.text-monospace now
-              .card-body
-                form.form-inline.mr-auto(method="post" action="")                      
-                  input.form-control(name="from" type="hidden" value=noti.from)
-                  input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                  h5 #{noti.content}
-                    br
-                    br
+            .w3-panel.w3-light-grey
+              p #{noti.content}
+              br
+              form(method="post" action="")                      
+                input.form-control(name="from" type="hidden" value=noti.from)
+                input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                .row
+                  .col-8
+                  .col-2
                     input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
-                    input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel") 
+                  .col-1
+                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")  
       #EventInvitation.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "event invitation"

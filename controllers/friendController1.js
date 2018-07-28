@@ -36,7 +36,7 @@ exports.sendFrequest = ( req, res ) =>{
                   type: "friend request",
                   to:req.body.friendemail,
                   toname:req.body.friendname,
-                  content: "You have a friend request from "+ res.locals.user.googleemail,
+                  content: "You have a friend request from "+ res.locals.user.name,
                   from: res.locals.user.googleemail,
                   fromname: res.locals.profile.name})
   request.save(function(err, doc){
