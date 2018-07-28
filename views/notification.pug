@@ -11,6 +11,9 @@ block content
   body
 
     nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-white.w3-animate-left.w3-card(style="z-index:3;width:320px;")
+      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'AllNotifications')") 
+        i.fa.fa-table.w3-margin-right 
+        | All Notifications
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'ScheduleReminder')") 
         i.fa.fa-table.w3-margin-right 
         | Scehdule Reminder
@@ -21,6 +24,8 @@ block content
         i.fa.fa-bell-o.w3-margin-right
         | Event Invitation
     div(style='margin-left:330px')
+      #AllNotifications.w3-container.tab(style='display:none')
+        | In schedule reminder
       #ScheduleReminder.w3-container.tab(style='display:none')
         | In schedule reminder
       #FriendRequest.w3-container.tab(style='display:none')

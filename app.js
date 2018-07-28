@@ -6,6 +6,8 @@ var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
 var HashSet = require('hashset');
+var notiNum = new Map();
+
 
 
 var usersRouter = require('./routes/users');
@@ -191,6 +193,38 @@ app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res)
     res.json(err);
   })
 
+})
+
+
+
+app.get('/countNoti', isLoggedIn, usersController.attachUser, function(req, res){
+  console.log("in count noti 1")
+  const Notification = require('./models/Notification.js')
+  console.log("here")
+  console.log(req.user.googleemail)
+  Notification.find({
+    to: req.user.googleemail
+  }).exec().then((noti_list)=> {
+    console.log("count notification here")
+    console.log(noti_list.length)
+    var newNoti = noti_list.length;
+    var prevNoti = 0;
+    console.log(notiNum)
+    if(notiNum.has(req.user.googleemail)){
+      console.log("exist user")
+      prevNoti = notiNum.get(req.user.googleemail)
+      notiNum.set(req.user.googleemail, newNoti);
+    }
+    else{
+      notiNum.set(req.user.googleemail, newNoti);
+    }
+    var diff = newNoti - prevNoti;
+    res.json(diff);
+  }).catch((err) => {
+    console.log("in count notification err")
+    res.status(err.status || 500);
+    res.json(err);
+  })
 })
 
 
