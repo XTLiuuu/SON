@@ -188,58 +188,75 @@ exports.getFriend1 = ( req, res ) => {
 };
 
 exports.check_avail = (req, res) =>{
-  console.log("in check availability")
-  console.dir(req.body)
-  console.log(req.body.friendEmail);
-  console.log(req.body.checkDate)
-  console.log(req.body.checkTime)
-  var s = new Date(req.body.checkDate);
-  var friendName = req.body.friendName
-  var checkDate = req.body.checkDate
-  var checkTime = req.body.checkTime
-  s.setDate(s.getDate()+1)
-  var index = req.body.checkTime.indexOf(":")
-  s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
-  console.log("s = " + s)
-  var start = req.body.checkDate + " " + req.body.checkTime
-  console.log(start)
-  Input.find({email:req.body.friendEmail},
-    function(err, input_list){
-      if(err){
-        console.log(err.message);
-      } else{
-        console.log("after getting friend's events")
-        console.log("length = " + input_list.length)
-        var checkStatus;
-        for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].start)
-          console.log("list " + i + " endTime = " + input_list[i].end)
-          if(input_list[i].endTime != ""){
-            if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
-              console.log("input meet is " + input_list[i]);
-              checkStatus = "BUSY";
+  if(req.body.check_avail == "Start Checking"){
+    console.log("in check availability")
+    console.dir(req.body)
+    console.log(req.body.friendEmail);
+    console.log(req.body.checkDate)
+    console.log(req.body.checkTime)
+    var s = new Date(req.body.checkDate);
+    var friendName = req.body.friendName
+    var checkDate = req.body.checkDate
+    var checkTime = req.body.checkTime
+    s.setDate(s.getDate()+1)
+    var index = req.body.checkTime.indexOf(":")
+    s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
+    console.log("s = " + s)
+    var start = req.body.checkDate + " " + req.body.checkTime
+    console.log(start)
+    Input.find({email:req.body.friendEmail},
+      function(err, input_list){
+        if(err){
+          console.log(err.message);
+        } else{
+          console.log("after getting friend's events")
+          console.log("length = " + input_list.length)
+          var checkStatus;
+          for(var i = 0; i < input_list.length; i ++){
+            console.log("list " + i + " startTime = " + input_list[i].start)
+            console.log("list " + i + " endTime = " + input_list[i].end)
+            if(input_list[i].endTime != ""){
+              if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
+                console.log("input meet is " + input_list[i]);
+                checkStatus = "BUSY";
+              }
+            }
+            else{
+              console.log(input_list[i].start == s)
+              console.log(input_list[i].start.getTime() == s.getTime())
+              if(input_list[i].start.getTime() == s.getTime()){
+                console.log("input1 meet is " + input_list[i]);
+                checkStatus = "BUSY";
+              }
             }
           }
-          else{
-            console.log(input_list[i].start == s)
-            console.log(input_list[i].start.getTime() == s.getTime())
-            if(input_list[i].start.getTime() == s.getTime()){
-              console.log("input1 meet is " + input_list[i]);
-              checkStatus = "BUSY";
-            }
+          console.log("checkStatus at end is " + checkStatus)
+          if(checkStatus != "BUSY"){
+            checkStatus = "FREE"
           }
+          var answer = {checkStatus: checkStatus, friendName: friendName, checkDate: checkDate, checkTime: checkTime}
+          console.dir(answer)
+          console.log("checkStatus at end1 is " + checkStatus)
+          res.json(answer);
         }
-        console.log("checkStatus at end is " + checkStatus)
-        if(checkStatus != "BUSY"){
-          checkStatus = "FREE"
-        }
-        var answer = {checkStatus: checkStatus, friendName: friendName, checkDate: checkDate, checkTime: checkTime}
-        console.dir(answer)
-        console.log("checkStatus at end1 is " + checkStatus)
-        res.json(answer);
       }
-    }
-  )
+    )
+  }
+  else{
+    console.log("in delete friends")
+    var friendEmail = req.body.friendEmail
+    var userEmail = req.body.userEmail
+    console.log(userEmail)
+    Friend.deleteOne({
+      user: userEmail,
+      friend: friendEmail
+    }).exec()
+    Friend.deleteOne({
+      friend: userEmail,
+      user: friendEmail
+    }).exec()
+    res.redirect('/friend')
+  }
 }
 
 exports.attachFriend = (req, res, next) => {

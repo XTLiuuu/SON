@@ -1,8 +1,7 @@
-var secrets = new Set();
-
 function validateForm(){
   console.log("in validate form1")
   console.log(secrets)
+  var email = document.myProfile.email.value
   var secret = document.myProfile.secret.value;
   secret = secret.trim();
   if(secret == ""){
@@ -13,12 +12,8 @@ function validateForm(){
     window.alert("Please enter a valid code. Include only lowercase letters and numbers")
     return false;
   }
-  if(secrets.has(secret)){
-    window.alert("The secret code has been used. Please try a new one.")
-    return false;
-  }
   else{
-    secrets.add(secret)
+    secrets.set(secret, email)
     return true;
   }
 }

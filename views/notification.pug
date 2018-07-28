@@ -14,9 +14,9 @@ block content
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'AllNotifications')") 
         i.fa.fa-table.w3-margin-right 
         | All Notifications
-      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'ScheduleReminder')") 
-        i.fa.fa-table.w3-margin-right 
-        | Scehdule Reminder
+      //- a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'ScheduleReminder')") 
+      //-   i.fa.fa-table.w3-margin-right 
+      //-   | Scehdule Reminder
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'FriendRequest')")
         i.fa.fa-vcard-o.w3-margin-right
         | Friend Request
@@ -24,10 +24,34 @@ block content
         i.fa.fa-bell-o.w3-margin-right
         | Event Invitation
     div(style='margin-left:330px')
-      #AllNotifications.w3-container.tab(style='display:none')
-        | In schedule reminder
-      #ScheduleReminder.w3-container.tab(style='display:none')
-        | In schedule reminder
+      #AllNotifications.w3-container.tab
+        each noti in notis
+          if noti.type == "friend request"
+            .w3-panel.w3-light-grey
+              p #{noti.content}
+              br
+              form.form-inline.mr-auto(method="post" action="")                      
+                input.form-control(name="from" type="hidden" value=noti.from)
+                input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                br
+                br
+                input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
+                input.w3-button.w3-teal(type='submit' name = "cancel" value="Cancel")     
+          if noti.type == "event invitation"
+              .w3-panel.w3-light-grey.w3-card-4
+                p #{noti.content}
+                p
+                form.form-inline.mr-auto(method="post" action="")                      
+                  //-input.form-control(name="from" type="hidden" value=noti.from)
+                  //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  .row
+                    .col-12
+                      p.font-weight-bold #{noti.title}
+                      p #{noti.description}
+                    .col-12
+                      p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
+      //- #ScheduleReminder.w3-container.tab(style='display:none')
+      //-   | In schedule reminder
       #FriendRequest.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "friend request"
@@ -51,11 +75,9 @@ block content
       #EventInvitation.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "event invitation"
-            .card.bg-light.mb-3(style="max-width: 50rem;")
-              .card-header 
-                | Event Invitation
-                .alignright.text-monospace now
-              .card-body
+              .w3-panel.w3-light-grey.w3-card-4
+                p #{noti.content}
+                p
                 form.form-inline.mr-auto(method="post" action="")                      
                   input.form-control(name="from" type="hidden" value=noti.from)
                   input.form-control(name="fromname" type="hidden" value=noti.fromname)
@@ -79,6 +101,7 @@ block content
                       input.w3-button.w3-teal(type='submit' name = "add" value="Add") 
                     .col-6
                       input.w3-button.w3-teal(type='submit' name = "decline" value="Decline") 
+
           
   script.
     function openTab(evt, tabName) {
