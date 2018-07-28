@@ -76,14 +76,29 @@ block content
                 p #{noti.content}
                 p
                 form.form-inline.mr-auto(method="post" action="")                      
-                  //-input.form-control(name="from" type="hidden" value=noti.from)
-                  //-input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  input.form-control(name="from" type="hidden" value=noti.from)
+                  input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                  input.form-control(name="title" type="hidden" value=noti.title)
+                  input.form-control(name="description" type="hidden" value=noti.description)
+                  input.form-control(name="startDate" type="hidden" value=noti.sDate)
+                  input.form-control(name="startTime" type="hidden" value=noti.sTime)
+                  input.form-control(name="endDate" type="hidden" value=noti.eDate)
+                  input.form-control(name="endTime" type="hidden" value=noti.eTime)
                   .row
                     .col-12
-                      p.font-weight-bold #{noti.title}
-                      p #{noti.description}
+                      h5 #{noti.content}
                     .col-12
-                      p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
+                      h5.font-weight-bold #{noti.title}
+                        h5 #{noti.description}
+                    .col-12
+                      h5 Start Time: &nbsp #{noti.sDate} #{noti.sTime}
+                      h5 End Time: &nbsp #{noti.eDate} #{noti.eTime}
+                  .row
+                    .col-6
+                      input.w3-button.w3-teal(type='submit' name = "add" value="Add") 
+                    .col-6
+                      input.w3-button.w3-teal(type='submit' name = "decline" value="Decline") 
+
           
   script.
     function openTab(evt, tabName) {
