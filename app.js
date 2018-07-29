@@ -6,7 +6,6 @@ var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
 var HashSet = require('hashset');
-var notiNum = new Map();
 
 
 
@@ -205,21 +204,10 @@ app.get('/countNoti', isLoggedIn, usersController.attachUser, function(req, res)
   Notification.find({
     to: req.user.googleemail
   }).exec().then((noti_list)=> {
+    console.log(noti_list)
     console.log("count notification here")
-    console.log(noti_list.length)
-    var newNoti = noti_list.length;
-    var prevNoti = 0;
-    console.log(notiNum)
-    if(notiNum.has(req.user.googleemail)){
-      console.log("exist user")
-      prevNoti = notiNum.get(req.user.googleemail)
-      notiNum.set(req.user.googleemail, newNoti);
-    }
-    else{
-      notiNum.set(req.user.googleemail, newNoti);
-    }
-    var diff = newNoti - prevNoti;
-    res.json(diff);
+    console.log("noti number" + noti_list.length)
+    res.json(noti_list.length);
   }).catch((err) => {
     console.log("in count notification err")
     res.status(err.status || 500);

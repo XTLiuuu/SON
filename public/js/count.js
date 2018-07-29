@@ -3,8 +3,12 @@ function countNoti(){
       type: "GET",
       url: "/countNoti", // return notification
       success: function(data){
+        console.log("success count")
         console.log(data)
-        $("#noti").text(data);
+        if(data > 0){
+          $("#noti").text(data);
+          // document.getElementById("noti").style.display = "block";
+        }
       },
       dataType: "json",
     });

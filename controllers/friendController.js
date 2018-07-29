@@ -71,56 +71,77 @@ exports.updateRequest = ( req, res )=> {
     newf2.save()
     newf.save()
 
-    Notification.deleteOne({
-                type:"friend request",
-                to: res.locals.user.googleemail,
-                from:req.body.from})
-                .then( () => {
-                  res.redirect('/notification');
-                })
-                .catch( error => {
-                  res.send( error );
-                });
-  }else if(req.body.cancel == 'Cancel'){
+    Notification.deleteMany({
+      type:"friend request",
+      to: res.locals.user.googleemail,
+      from:req.body.from})
+      .then( () => {
+        res.redirect('/notification');
+      })
+      .catch( error => {
+        res.send( error );
+      });
+  } else if(req.body.cancel == 'Cancel'){
     console.log("in deleteRequest"+req.body.from);
-    Notification.deleteOne({type:"friend request",
-                            to: res.locals.user.googleemail,
-                            from:req.body.from})
-                .exec()
-                .then(()=>{res.redirect('/notification')})
-                .catch((error)=>{res.send(error)})
+    Notification.deleteMany(
+      {type:"friend request",
+        to: res.locals.user.googleemail,
+        from:req.body.from})
+    .exec()
+    .then(()=>{res.redirect('/notification')})
+    .catch((error)=>{res.send(error)})
   }
   else if(req.body.add == 'Add'){
     console.log("in acceptaInvitation");
+    var sd = req.body.startDate;
+    var sd1 = sd.toString();
+    var st = req.body.startTime;
+    var sd2 = sd.slice(0,10);
+    var st = req.body.startTime
+    var start = sd1 + " " + st + " "
+    console.log("start = " + start)
+    var ed = req.body.endDate;
+    var ed1 = ed.toString();
+    if(ed1 == ""){
+      ed1 = sd1;
+    }
+    var ed2 = ed.slice(0,10);
+    var et = req.body.endTime
+    var end = ed1 + " " + et
+    console.log("end = " + end)
     let newi = new Input({
       email: res.locals.user.googleemail,
-      title:req.body.title + " with " + req.body.fromname,
+      title:req.body.title.trim() + " from " + req.body.fromname,
       startDate: req.body.startDate,
       startTime: req.body.startTime,
+      start: start,
+      end: end,
       endDate: req.body.endDate,
       endTime:req.body.endTime,
       description: req.body.description
     });
     newi.save();
+    console.log(newi)
     Notification.deleteOne({
-                type:"event invitation",
-                to: res.locals.user.googleemail,
-                from:req.body.from})
-                .then( () => {
-                  res.redirect('/notification');
-                })
-                .catch( error => {
-                  res.send( error );
-                });
+      type:"event invitation",
+      to: res.locals.user.googleemail,
+      from:req.body.from})
+      .then( () => {
+        res.redirect('/notification');
+      })
+      .catch( error => {
+        res.send( error );
+      });
   }
   else if(req.body.decline == 'Decline'){
     console.log("in deleteInvitation"+req.body.from);
-    Notification.deleteOne({type:"event invitation",
-                            to: res.locals.user.googleemail,
-                            from:req.body.from})
-                .exec()
-                .then(()=>{res.redirect('/notification')})
-                .catch((error)=>{res.send(error)})
+    Notification.deleteOne
+    ({type:"event invitation",
+      to: res.locals.user.googleemail,
+      from:req.body.from})
+    .exec()
+    .then(()=>{res.redirect('/notification')})
+    .catch((error)=>{res.send(error)})
   }
 };
 

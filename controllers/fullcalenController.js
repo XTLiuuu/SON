@@ -202,7 +202,7 @@ exports.send_event = function(req, res){
           res.json(err);
         } else {
           console.log("The event has been sent")
-          res.redirect('/calendar/sendCalendar/ + friend_id');
+          res.redirect('/friend');
         }
       })
 
