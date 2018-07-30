@@ -13,6 +13,15 @@ exports.searchProfile_post = ( req, res ) => {
     //this is a function takes one parameter (function) and does this
     .then( ( friend ) => {
       //console.log("friend"+friend);
+      /*Profile.findOne({email: req.body.friendemail})
+                  .exec()
+                  .then( (rr) => {
+                    if(rr==null){
+                      console.log("Sorry, the email your searched has not registered yet.")
+                      res.redirect( '/friend' );
+                    }
+                  })
+      */
       res.render('searchProfile', {friend: friend});
       //next()
     } )
@@ -30,24 +39,49 @@ exports.searchProfile_get = ( req, res  ) => {
 };
 
 exports.sendFrequest = ( req, res ) =>{
-  console.log("send friend request");
-  //if req.body.searchfriend = null
-  let request = new Notification({
-                  type: "friend request",
-                  to:req.body.friendemail,
-                  toname:req.body.friendname,
-                  content: "You have a friend request from "+ res.locals.user.googleemail,
-                  from: res.locals.user.googleemail,
-                  fromname: res.locals.profile.name})
-  request.save(function(err, doc){
+  console.log("send friend request1");
+  console.log(req.body.friendemail)
+  console.log(res.locals.profile.email)
+  //console.log(req.locals.user.googleemail)
+  if(req.body.friendemail == res.locals.profile.email){
+    console.log("same")
+    res.json("same");
+    return;
+  }
+  Friend.find({
+    user: res.locals.profile.email,
+    friend: req.body.friendemail,
+  },function(err, result){
+    console.log("after finding")
+    console.log(result)
     if(err){
-      res.json(err);
-    } else {
-      console.log("The invitation has been sent")
-      res.redirect( '/friend1' );
-    }
-  })
-};
+      console.log("err")
+      res.status(err.status || 500)
+      console.log(err.message);
+      return;
+    } else{
+      if(result.length != 0){
+        res.json("exist")
+        return;
+      }
+      else{
+        let request =
+          new Notification({
+            type: "friend request",
+            to:req.body.friendemail,
+            toname:req.body.friendname,
+            content: "You have a friend request from "+ res.locals.user.googleemail,
+            from: res.locals.user.googleemail,
+            fromname: res.locals.profile.name
+          })
+        request.save();
+        res.json("done")
+        return;
+      };
+      }
+    })
+  }
+
 
 exports.updateRequest = ( req, res )=> {
   if(req.body.accept == 'Accept'){

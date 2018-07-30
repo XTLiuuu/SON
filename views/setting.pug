@@ -10,7 +10,10 @@ block content
             .w3-container
               h4.w3-center My Profile
               p.w3-center
-                img.w3-circle(src="../images/" +profile.image+ ".png" style="height:106px;width:106px" alt="Avatar")
+                if profile.image
+                  img.w3-circle(src="../images/" +profile.image+ ".png" style="height:106px;width:106px" alt="Avatar")
+                else
+                  img.w3-circle(src="../images/profile1.png" style="height:106px;width:106px" alt="Avatar")
               hr
               p
                 i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme

@@ -1,12 +1,6 @@
 extends layoutBS
 block head
-  script.
-    $(document).ready(function(){
-      $("#friendqbutton").click(function(){
-        alert("The invitation has been sent");
-      });
-    });
-
+  script(src="/js/send-invitation.js")
 block content
   body
     br
@@ -32,13 +26,13 @@ block content
             br
             br
         form(method="post" action="sendFrequest")
-          input.form-control(name="friendemail" type="hidden" value=friend.email)
-          input.form-control(name="friendname" type="hidden" value=friend.name)
+          input.form-control#email(name="friendemail" type="hidden" value=friend.email)
+          input.form-control#name(name="friendname" type="hidden" value=friend.name)
           //-input.form-control(name="friendid" type="hidden" value=friend.id)
           .row
             .col-4
             .col-2
-              input.w3-button.w3-teal(type="submit" value="Send invitation")
+              input.w3-button.w3-teal.send-invitation(type="submit" value="Send invitation")
             .col-2
               a.w3-button.w3-grey(href="/friend1") Back
           
