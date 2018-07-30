@@ -8,7 +8,7 @@ block content
   br
   br
   br 
-  body 
+  body  
     .margin 
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
         h4.w3-wide.w3-center 
@@ -18,7 +18,10 @@ block content
           h1 #{message}
         form(method="post" name="myProfile" action="saveProfile" onsubmit="return validateForm()")
           p.w3-center
-            img.w3-circle(src="../images/" +profile.image+ ".png" style="height:106px;width:106px" alt="Avatar")
+            if profile.image
+              img.w3-circle(src="../images/" +profile.image+ ".png" style="height:106px;width:106px" alt="Avatar")
+            else
+              img.w3-circle(src="../images/profile1.png" style="height:106px;width:106px" alt="Avatar")
           .row
             .col-2
               label Name
