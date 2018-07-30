@@ -1,19 +1,40 @@
-function validateForm(){
-  console.log("in validate form1")
-  console.log(secrets)
-  var email = document.myProfile.email.value
-  var secret = document.myProfile.secret.value;
-  secret = secret.trim();
-  if(secret == ""){
-    window.alert("Please enter a secret code for your voice functions")
-    return false;
-  }
-  if(secret.indexOf(" ") > 0){
-    window.alert("Please enter a valid code. Include only lowercase letters and numbers")
-    return false;
-  }
-  else{
-    secrets.set(secret, email)
-    return true;
-  }
-}
+$(document).ready(function(){
+  $("input.save-profile").on('click', function(event){
+    event.preventDefault();
+    console.log("clicked!")
+    const theData = {
+      name: $("#name").val(),
+      email: $("#email").val(),
+      phone: $("#phone").val(),
+      dob: $("#dob").val(),
+      gender: $("#gender").val(),
+      home: $("#home").val(),
+      about: $("#about").val(),
+      secret: $("#secret").val(),
+      image: $("#image").val(),
+    }
+    console.log(theData)
+    $.ajax({
+      type: "POST",
+      url:"/saveProfile",
+      data: theData,
+      success: function(data){
+        console.log("inside success")
+        console.log(data)
+        if(data.type == "exist"){
+          console.log("exist problem")
+          window.alert(data.message);
+        }
+        else if(data.type == "empty"){
+          console.log("empty problem")
+          window.alert(data.message);
+        }
+        else{
+          window.alert("Your changes have been saved");
+          window.open('/setting')
+        }
+      },
+      dataType: "json",
+    })
+  })
+})

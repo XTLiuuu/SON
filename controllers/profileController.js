@@ -44,25 +44,29 @@ exports.getProfile1 = ( req, res ) => {
 };
 
 exports.checkSecret = (req, res, next) =>{
-  console.log("in check Secret");
-  if(req.body.secret.trim() == null){
-    res.locals.message = "Please enter a secret code"
-    res.redirect('/updateProfile')
+  console.log("in check Secret1");
+  console.log("secret = " + req.body.secret.trim())
+  console.log(req.body.secret.trim() == null)
+  console.log(req.body.secret.trim() == "")
+  console.log(req.body.secret.trim() == undefined)
+  if(req.body.secret.trim() == ""){
+    console.log("here1")
+    //res.status(400);
+    res.json({message: "Please enter a secret.", type: "empty"})
+    return;
   }
-  else if(req.body.secret.indexOf(" ") > 0){
-    res.locals.message = "Please enter a valid code. Include only lowercase letters and numbers"
-    res.redirect('/updateProfile')
-  }
-  Profile.findOne({secret: req.body.secret},
+  Profile.findOne({secret: req.body.secret.trim()},
   function(err, profile){
     if(err){
-      console.log(err.message)
+      res.status(err.status || 500);
+      res.json(err.message)
     }
     else{
-      if(profile != null){
-        var message = "The secret code has been used. Please enter a new one."
-        res.locals.message = message;
-        res.redirect('/updateProfile')
+      console.log("user = " + res.locals.user.googleemail)
+      if(profile != null && profile.email != res.locals.user.googleemail){
+        console.log(profile.email)
+        res.json({message: "The secret code has been used. Please try a new one.", type: "exist"})
+        return;
       }
       next();
     }
@@ -107,14 +111,14 @@ exports.saveProfile = ( req, res ) => {
            home: req.body.home,
            image: req.body.image,
            secret: req.body.secret.toLowerCase().trim(),
+         }, function(err){
+           if(err){
+             res.status(err.status || 500);
+             res.json(err);
+           } else {
+             res.json({});
+           }
          })
-        .exec()
-        .then( () => {
-          res.redirect( '/setting' );
-        } )
-        .catch( error => {
-          res.send( error );
-        });
       }
     });
   };
@@ -152,40 +156,3 @@ exports.attachProfile = ( req, res, next ) => {
       console.log( 'attachProfile promise complete' );
     } );
 };
-
-exports.check_secret = (req, res) =>{
-  if(!req.body.keycode.trim()){
-    res.status(400);
-    res.json({message: "Please enter a keycode."})
-  }
-
-  Profile.findOne({keycode: req.body.keycode.trim()}, function(err, result){
-    if(err){
-      res.status(err.status || 500);
-      res.json(err);
-    } else {
-      if(result){
-        // keycode has been used
-        res.status(400);
-        res.json({});
-      } else {
-        //update keycode
-
-        result.keycode = req.body.keycode.trim();
-      }
-    }
-  })
-
-
-  console.log("in check_secret");
-  var secret = req.body.secret;
-  var response;
-  if(secrets.contains(secret)){
-    response = "exist"
-    res.json(response)
-  }
-  else{
-    response = 'new'
-    res.json(response)
-  }
-}
