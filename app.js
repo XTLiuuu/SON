@@ -7,8 +7,6 @@ const mongoose = require( 'mongoose' );
 var moment = require('moment');
 var HashSet = require('hashset');
 
-
-
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
@@ -166,7 +164,6 @@ app.post('/notification', isLoggedIn, profileController.attachProfile, friendCon
 //app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
 //app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
-app.post('/check_secret', profileController.check_secret);
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
