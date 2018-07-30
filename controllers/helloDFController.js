@@ -87,7 +87,7 @@ exports.process_request =  (req, res) => {
             console.log("user7 = " + profile.amazon)
             profile.amazon = req.body.context.System.user["userId"];
             profile.save();
-            console.log(profile)
+            console.log(profile.amazon)
             output_string = "Hi, " + name + ". I'm your personal secretary. What can I do for you?"
           }
           result.response.outputSpeech.text = output_string;

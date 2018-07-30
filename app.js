@@ -16,10 +16,6 @@ var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
 
-var server = app.listen(3000, function(){
-  console.log('API server listening...');
-})
-
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
@@ -72,6 +68,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+var server = app.listen(3000, function(){
+  console.log('API server listening...');
+})
+
 
 // The following changes are made for dialogflow
 app.use((req,res,next) => {
