@@ -42,7 +42,8 @@ configPassport(passport)
 const calendarD = require('./routes/calendarD');
 
 // here is where we connect to the database!
-mongoose.connect( 'mongodb://localhost:27017/SON', {useNewUrlParser: true});
+const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
+mongoose.connect(mongoDB, {useNewUrlParser: true});
 const db = mongoose.connection;
 mongoose.Promise = global.Promise;
 db.on('error', console.error.bind(console, 'connection error:'));
