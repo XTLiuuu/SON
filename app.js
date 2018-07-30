@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
 var HashSet = require('hashset');
+const cool = require('cool-ascii-faces')
 
 
 
@@ -69,6 +70,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('/cool', (req, res) => res.send(cool()))
 
 // The following changes are made for dialogflow
 
