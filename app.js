@@ -71,11 +71,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // The following changes are made for dialogflow
-
-var server = app.listen(3000, function(){
-  console.log('API server listening...');
-})
-
 app.use((req,res,next) => {
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
