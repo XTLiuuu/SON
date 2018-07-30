@@ -16,6 +16,10 @@ var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
 var app = express();
 
+var server = app.listen(3000, function(){
+  console.log('API server listening...');
+})
+
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
