@@ -152,7 +152,8 @@ exports.updateRequest = ( req, res )=> {
       end: end,
       endDate: req.body.endDate,
       endTime:req.body.endTime,
-      description: req.body.description
+      description: req.body.description,
+      noti: "false"
     });
     newi.save();
     console.log(newi)

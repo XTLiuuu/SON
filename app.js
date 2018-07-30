@@ -179,10 +179,16 @@ app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res)
   const User = require('./models/user.js')
   Input.find({
     start: {$gte: current_date_start},
-    email: req.user.googleemail
+    email: req.user.googleemail,
+    noti: "false"
   }).exec().then((input_list)=> {
-    console.log("in test_json again")
+    console.log("in test_json again12")
     console.dir(input_list)
+    for(var i = 0; i < input_list.length; i ++){
+      input_list[i].noti = "true"
+      input_list[i].save()
+    }
+    console.log("here123")
     res.json(input_list);
   }).catch((err) => {
     console.log("in test_json err")

@@ -686,7 +686,8 @@ function addEvent(req, user){
     title: text.trim(),
     start: start1,
     startDate: sd,
-    startTime: time
+    startTime: time,
+    noti: "false", 
   })
   newInput.save()
   console.log(newInput);

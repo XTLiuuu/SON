@@ -85,7 +85,8 @@ exports.saveInput = ( req, res ) => {
     overlap: true,
     color: req.body.color,
     description: req.body.description,
-    adCheck: req.body.allDay
+    adCheck: req.body.allDay,
+    noti: "false"
   } )
 
 

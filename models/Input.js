@@ -15,7 +15,8 @@ var inputSchema = mongoose.Schema( {
   overlap: Boolean,
   color: String,
   adCheck: String,
-  description: String, 
+  description: String,
+  noti: String, 
 } );
 
 module.exports = mongoose.model( 'Input', inputSchema );
