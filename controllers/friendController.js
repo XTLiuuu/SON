@@ -13,6 +13,15 @@ exports.searchProfile_post = ( req, res ) => {
     //this is a function takes one parameter (function) and does this
     .then( ( friend ) => {
       //console.log("friend"+friend);
+      /*Profile.findOne({email: req.body.friendemail})
+                  .exec()
+                  .then( (rr) => {
+                    if(rr==null){
+                      console.log("Sorry, the email your searched has not registered yet.")
+                      res.redirect( '/friend' );
+                    }
+                  })
+      */
       res.render('searchProfile', {friend: friend});
       //next()
     } )
