@@ -12,6 +12,7 @@ var profileSchema = mongoose.Schema( {
   friendEmail: Array,
   secret: String,
   image: String,
+  amazon: String, 
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

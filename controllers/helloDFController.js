@@ -13,10 +13,6 @@ var output_string = "Sorry, " + name + ". Can you say that again?";
 exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
-
-  //console.log("user = " + req.locals.user)
-  //console.log("req.user.goo = " + req.locals.user)
- // this is how we define the result
   var result = {
     "version": "beta",
 
@@ -37,12 +33,33 @@ exports.process_request =  (req, res) => {
       "shouldEndSession": true
     }
   };
-
   if(name == undefined && req.body.request.intent.name != "ask_secret"){
     console.log("no name yet");
-    output_string = "Hi! Who are you? Please tell me your secret code."
-    result.response.outputSpeech.text = output_string;
-    res.json(result);
+    console.log("userId = " + req.body.context.System.user["userId"])
+    Profile.findOne({amazon: req.body.context.System.user["userId"]},
+      function(err, profile){
+        console.log("after finding profile")
+        if(err){
+          console.log(err.message)
+        }
+        else{
+          console.log("after finding profile")
+          console.log(profile)
+          if(profile == null){
+            output_string = "Hi! Who are you? Please tell me your secret code."
+          }
+          else{
+            userEmail = profile.email;
+            name = profile.name;
+            console.log(userEmail)
+            console.log(name)
+            console.log("user6 = " + userEmail)
+            output_string = "Hi, " + name + ". I'm your personal secretary. What can I do for you?"
+          }
+          result.response.outputSpeech.text = output_string;
+          res.json(result);
+        }
+      })
   }
 
   else if(req.body.request.intent.name == "ask_secret"){
@@ -67,7 +84,11 @@ exports.process_request =  (req, res) => {
             console.log(userEmail)
             console.log(name)
             console.log("user6 = " + userEmail)
-            output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
+            console.log("user7 = " + profile.amazon)
+            profile.amazon = req.body.context.System.user["userId"];
+            profile.save();
+            console.log(profile)
+            output_string = "Hi, " + name + ". I'm your personal secretary. What can I do for you?"
           }
           result.response.outputSpeech.text = output_string;
           res.json(result);
