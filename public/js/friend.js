@@ -11,7 +11,8 @@ $(document).ready(function(){
       friendName: $("#friendName"+fid).val(),
       friendEmail: $("#friendEmail"+fid).val(),
       checkDate: $("#checkDate"+fid).val(),
-      checkTime: $("#checkTime"+fid).val()
+      checkTime: $("#checkTime"+fid).val(),
+      check_avail: $("#check").val()
     }
     console.dir(theData)
     $.ajax({
