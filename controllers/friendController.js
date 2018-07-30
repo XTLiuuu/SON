@@ -13,6 +13,15 @@ exports.searchProfile_post = ( req, res ) => {
     //this is a function takes one parameter (function) and does this
     .then( ( friend ) => {
       //console.log("friend"+friend);
+      /*Profile.findOne({email: req.body.friendemail})
+                  .exec()
+                  .then( (rr) => {
+                    if(rr==null){
+                      console.log("Sorry, the email your searched has not registered yet.")
+                      res.redirect( '/friend' );
+                    }
+                  })
+      */
       res.render('searchProfile', {friend: friend});
       //next()
     } )
@@ -31,7 +40,16 @@ exports.searchProfile_get = ( req, res  ) => {
 
 exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request");
-  //if req.body.searchfriend = null
+  /*
+  Friend.findOne({friend:req.body.friendemail, user:res.locals.user.googleemail})
+        .exec()
+        .then( (ff) => {
+          if(ff!=null){
+            console.log("You are already friends. Please check friend profile.")
+            res.redirect( '/friend' );
+          }
+        })
+  */
   let request = new Notification({
                   type: "friend request",
                   to:req.body.friendemail,
@@ -47,6 +65,7 @@ exports.sendFrequest = ( req, res ) =>{
       res.redirect( '/friend1' );
     }
   })
+
 };
 
 exports.updateRequest = ( req, res )=> {
