@@ -10,29 +10,36 @@ block content
       
     .margin
       .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
-        h4.w3-wide.w3-center 
-          |  User Information
-        .form-row
-          .col-12
-            label #{friend.name}
-            br
-            label #{friend.email}
-            br
-            label #{friend.phone}
-            br
-            label #{friend.gender}
-            br
-            label #{friend.dob}
-            br
-            br
-        form(method="post" action="sendFrequest")
-          input.form-control#email(name="friendemail" type="hidden" value=friend.email)
-          input.form-control#name(name="friendname" type="hidden" value=friend.name)
-          //-input.form-control(name="friendid" type="hidden" value=friend.id)
-          .row
-            .col-4
-            .col-2
-              input.w3-button.w3-teal.send-invitation(type="submit" value="Send invitation")
-            .col-2
-              a.w3-button.w3-grey(href="/friend1") Back
-          
+        if friend != null
+          h4.w3-wide.w3-center 
+            |  User Information
+          .form-row
+            .col-12
+              label #{friend.name}
+              br
+              label #{friend.email}
+              br
+              label #{friend.phone}
+              br
+              label #{friend.gender}
+              br
+              label #{friend.dob}
+              br
+              br
+          form(method="post" action="sendFrequest")
+            input.form-control#email(name="friendemail" type="hidden" value=friend.email)
+            input.form-control#name(name="friendname" type="hidden" value=friend.name)
+            //-input.form-control(name="friendid" type="hidden" value=friend.id)
+            .row
+              .col-4
+              .col-2
+                input.w3-button.w3-teal.send-invitation(type="submit" value="Send invitation")
+              .col-2
+                a.w3-button.w3-grey(href="/friend1") Back
+        
+        else 
+          | Email does not exist. Please enter valid email address. 
+          br  
+          br
+          br
+          a.w3-button.w3-teal.w3-center(href="/friend1") Back  
