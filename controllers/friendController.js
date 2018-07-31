@@ -278,7 +278,7 @@ exports.check_avail = (req, res) =>{
           for(var i = 0; i < input_list.length; i ++){
             console.log("list " + i + " startTime = " + input_list[i].start)
             console.log("list " + i + " endTime = " + input_list[i].end)
-            if(input_list[i].endTime != ""){
+            if(input_list[i].endTime != null){
               if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
                 console.log("input meet is " + input_list[i]);
                 checkStatus = "BUSY";

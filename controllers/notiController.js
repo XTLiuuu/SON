@@ -89,46 +89,52 @@ exports.generateNoti = (req, res) => {
     start: {$gte: current_date_start},
     email: req.user.googleemail,
     noti: "false"
-  }).exec().then((input_list)=> {
-    console.log("in test_json again12")
-    console.dir(input_list)
-    for(var i = 0; i < input_list.length; i ++){
-      input_list[i].noti = "true"
-      var content1;
-      if(input_list[i].allDay){
-        content1 = "You have an all day event on " + input_list[i].startDate
+  }).exec().then((input_list1)=> {
+    console.log("in test_json again3")
+    console.log(input_list1)
+    for(var i = 0; i < input_list1.length; i ++){
+      const d = new Date(input_list1[i].start)
+      const n = new Date()
+      const dn = (d-n)
+      const title = input_list1[i].title
+      if ((dn<1000*60*5) && (dn>0)) {
+        console.log("in storing notification")
+        input_list1[i].noti = "true"
+        var content1;
+        if(input_list1[i].allDay){
+          content1 = "You have an all day event on " + input_list1[i].startDate
+        }
+         else if(input_list1[i].endTime){
+           if(input_list1[i].endDate == input_list1[i].startDate){
+             content1 = "You have an event from " + input_list1[i].startTime + " to " + input_list1[i].endTime
+           }
+           else{
+             content1 = "You have an event from " +  input_list1[i].startDate + " at " + input_list1[i].startTime + " to " + input_list1[i].endDate + " at " + input_list1[i].endTime
+           }
+        }
+        else{
+          content1 = "You have an event at " + input_list1[i].startTime
+        }
+        console.log("content1 = " + content1)
+        console.log(req.user.googleemail)
+        let notification = new Noti({
+          type: "event reminder",
+          content: content1,
+          to: req.user.googleemail,
+          title: input_list1[i].title,
+          sTime: input_list1[i].startTime,
+          sDate: input_list1[i].startDate,
+          eTime: input_list1[i].endTime,
+          eDate: input_list1[i].endDate,
+          allday: input_list1[i].allDay,
+          description: input_list1[i].description,
+         })
+        console.log(notification)
+        notification.save();
+        input_list1[i].save()
       }
-       else if(input_list[i].endTime){
-         if(input_list[i].endDate == input_list[i].startDate){
-           content1 = "You have an event from " + input_list[i].startTime + " to " + input_list[i].endTime
-         }
-         else{
-           content1 = "You have an event from " +  input_list[i].startDate + " at " + input_list[i].startTime + " to " + input_list[i].endDate + " at " + input_list[i].endTime
-         }
-      }
-      else{
-        content1 = "You have an event at " + input_list[i].startTime
-      }
-      console.log("content1 = " + content1)
-      console.log(req.user.googleemail)
-      let notification = new Noti({
-        type: "event reminder",
-        content: content1,
-        to: req.user.googleemail,
-        title: input_list[i].title,
-        sTime: input_list[i].startTime,
-        sDate: input_list[i].startDate,
-        eTime: input_list[i].endTime,
-        eDate: input_list[i].endDate,
-        allday: input_list[i].allDay,
-        description: input_list[i].description,
-       })
-       console.log(notification)
-      notification.save();
-      input_list[i].save()
     }
-    console.log("here123")
-    res.json(input_list);
+    res.json(input_list1);
   }).catch((err) => {
     console.log("in test_json err")
     res.status(err.status || 500);

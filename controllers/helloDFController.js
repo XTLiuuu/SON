@@ -54,7 +54,7 @@ exports.process_request =  (req, res) => {
             console.log(userEmail)
             console.log(name)
             console.log("user6 = " + userEmail)
-            output_string = "Hi, " + name + ". I'm your personal secretary. What can I do for you?"
+            output_string = "Hi, " + name + ". What can Pipi do for you?"
           }
           result.response.outputSpeech.text = output_string;
           res.json(result);
@@ -88,7 +88,7 @@ exports.process_request =  (req, res) => {
             profile.amazon = req.body.context.System.user["userId"];
             profile.save();
             console.log(profile.amazon)
-            output_string = "Hi, " + name + ". I'm your personal secretary. What can I do for you?"
+            output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
           }
           result.response.outputSpeech.text = output_string;
           res.json(result);
@@ -687,7 +687,7 @@ function addEvent(req, user){
     start: start1,
     startDate: sd,
     startTime: time,
-    noti: "false", 
+    noti: "false",
   })
   newInput.save()
   console.log(newInput);
