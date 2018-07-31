@@ -171,53 +171,9 @@ app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
 
-app.get('/test_json', isLoggedIn, usersController.attachUser, function(req, res){
-  const current_date = new Date();
-  const current_date_start = new Date(current_date.toISOString().substring(0, current_date.toISOString().indexOf("T")));
-  console.dir(current_date_start)
-  const Input = require('./models/Input.js');
-  const User = require('./models/user.js')
-  Input.find({
-    start: {$gte: current_date_start},
-    email: req.user.googleemail,
-    noti: "false"
-  }).exec().then((input_list)=> {
-    console.log("in test_json again12")
-    console.dir(input_list)
-    for(var i = 0; i < input_list.length; i ++){
-      input_list[i].noti = "true"
-      input_list[i].save()
-    }
-    console.log("here123")
-    res.json(input_list);
-  }).catch((err) => {
-    console.log("in test_json err")
-    res.status(err.status || 500);
-    res.json(err);
-  })
+app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
 
-})
-
-
-
-app.get('/countNoti', isLoggedIn, usersController.attachUser, function(req, res){
-  console.log("in count noti 1")
-  const Notification = require('./models/Notification.js')
-  console.log("here")
-  console.log(req.user.googleemail)
-  Notification.find({
-    to: req.user.googleemail
-  }).exec().then((noti_list)=> {
-    console.log(noti_list)
-    console.log("count notification here")
-    console.log("noti number" + noti_list.length)
-    res.json(noti_list.length);
-  }).catch((err) => {
-    console.log("in count notification err")
-    res.status(err.status || 500);
-    res.json(err);
-  })
-})
+app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
 
 
 // catch 404 and forward to error handler

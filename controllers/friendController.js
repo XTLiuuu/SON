@@ -178,6 +178,13 @@ exports.updateRequest = ( req, res )=> {
     .then(()=>{res.redirect('/notification')})
     .catch((error)=>{res.send(error)})
   }
+  else if(req.body.ok == 'OK'){
+    console.log("in delete upcoming events");
+    Notification.deleteOne({_id: req.body.id})
+    .exec()
+    .then(()=>{res.redirect('/notification')})
+    .catch((error)=>{res.send(error)})
+  }
 };
 
 exports.getFriend = ( req, res, next ) => {

@@ -147,7 +147,8 @@ exports.update_event_post = function(req, res){
       overlap: true,
       color: req.body.color,
       description: req.body.description,
-      adCheck: req.body.allDay
+      adCheck: req.body.allDay,
+      noti: "false"
     }).exec()
     .then( () => {
       res.redirect( '/calendar/calendarD' );

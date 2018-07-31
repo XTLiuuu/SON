@@ -14,9 +14,9 @@ block content
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'AllNotifications')") 
         i.fa.fa-table.w3-margin-right 
         | All Notifications
-      //- a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'ScheduleReminder')") 
-      //-   i.fa.fa-table.w3-margin-right 
-      //-   | Scehdule Reminder
+      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'UpcomingEvents')") 
+        i.fa.fa-table.w3-margin-right 
+        | Upcoming Events
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'FriendRequest')")
         i.fa.fa-vcard-o.w3-margin-right
         | Friend Request
@@ -66,6 +66,21 @@ block content
                       input.w3-button.w3-teal(type='submit' name = "add" value="Add")
                     .col-2
                       input.w3-button.w3-red(type='submit' name = "decline" value="Decline")
+              
+          if noti.type == "event reminder"
+            .w3-panel.w3-light-grey.w3-card-4
+              p #{noti.content}
+              form(method="post" action="")
+                input.form-control(name="id" type="hidden" value=noti._id)
+                .row
+                  .col-12
+                    p.font-weight-bold Title: #{noti.title}
+                    if noti.description
+                      p Description: #{noti.description}
+                .row
+                  .col-10
+                  .col-2
+                    input.w3-button.w3-teal(type='submit' name = "ok" value="OK")
       //- #ScheduleReminder.w3-container.tab(style='display:none')
       //-   | In schedule reminder
       #FriendRequest.w3-container.tab(style='display:none')
@@ -82,7 +97,24 @@ block content
                   .col-2
                     input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
                   .col-1
-                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")  
+                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")                    
+      #UpcomingEvents.w3-container.tab(style='display:none')
+        each noti in notis
+          if noti.type == "event reminder"
+            .w3-panel.w3-light-grey.w3-card-4
+              p #{noti.content}
+              form(method="post" action="")
+                input.form-control(name="id" type="hidden" value=noti._id)
+                .row
+                  .col-12
+                    p.font-weight-bold Title: #{noti.title}
+                    if noti.description
+                      p Description: #{noti.description}
+                .row
+                  .col-10
+                  .col-2
+                    input.w3-button.w3-teal(type='submit' name = "ok" value="OK")
+                        
       #EventInvitation.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "event invitation"

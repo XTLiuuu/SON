@@ -3,14 +3,14 @@ const mongoose = require( 'mongoose' );
 
 var notificationSchema = mongoose.Schema( {
   type: String,
-  //for friend request
+  // for friend request
   to: String,
   toname: String,
   content: String,
   from: String,
   fromname: String,
 
-  //for event invitation
+  // for event invitation
   toid: String,
   title: String,
   sDate: String,
@@ -18,7 +18,8 @@ var notificationSchema = mongoose.Schema( {
   eDate: String,
   eTime: String,
   allday: Boolean,
-  description: String
+  description: String,
+
 } );
 
 module.exports = mongoose.model( 'Notification', notificationSchema );
