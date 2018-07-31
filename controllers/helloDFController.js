@@ -33,9 +33,7 @@ exports.process_request =  (req, res) => {
       "shouldEndSession": true
     }
   };
-  if(name == undefined && req.body.request.intent.name != "ask_secret"){
-    console.log("no name yet");
-    console.log("userId = " + req.body.context.System.user["userId"])
+  if(req.body.request.intent.name == "open_skill"){
     Profile.findOne({amazon: req.body.context.System.user["userId"]},
       function(err, profile){
         console.log("after finding profile")
@@ -54,7 +52,27 @@ exports.process_request =  (req, res) => {
             console.log(userEmail)
             console.log(name)
             console.log("user6 = " + userEmail)
-            output_string = "Hi, " + name + ". What can Pipi do for you?"
+            output_string = "Hi, " + name + ". What can I do for you?"
+          }
+          result.response.outputSpeech.text = output_string;
+          res.json(result);
+        }
+      })
+  }
+  else if(name == undefined && req.body.request.intent.name != "ask_secret"){
+    console.log("no name yet");
+    console.log("userId = " + req.body.context.System.user["userId"])
+    Profile.findOne({amazon: req.body.context.System.user["userId"]},
+      function(err, profile){
+        console.log("after finding profile")
+        if(err){
+          console.log(err.message)
+        }
+        else{
+          console.log("after finding profile")
+          console.log(profile)
+          if(profile == null){
+            output_string = "Hi! Who are you? Please tell me your secret code."
           }
           result.response.outputSpeech.text = output_string;
           res.json(result);
@@ -108,14 +126,21 @@ exports.process_request =  (req, res) => {
         } else{
           console.log("after finding friends")
           var num = friend_list.length;
+          var names = "";
+          if(num != 0){
+            names = name + friend_list[0].friendname;
+          }
+          for(var x = 1; x < num; x ++){
+            names = names + ", " + friend_list[x].friendname;
+          }
           if(num == 0){
             output_string = "Oh! You have no friend in SON. Please add more friends, and have fun with Pipi."
           }
           if(num == 1){
-            output_string = "You have only one friend."
+            output_string = "You have only one friend. The name is " + names
           }
           else{
-            output_string = "You currently have " + num + " friends."
+            output_string = "You currently have " + num + " friends. Their names are " + names
           }
         }
         result.response.outputSpeech.text = output_string;
@@ -164,7 +189,12 @@ exports.process_request =  (req, res) => {
                 output_string = "I'm sorry, " + name + ". You don't have any friends available on " + date + " at " + time
               }
               else{
-                output_string = "Free friends on " + date + " at " + time + ": " + free;
+                if(date){
+                  output_string = "Free friends on " + date + " at " + time + ": " + free;
+                }
+                else{
+                  output_string = "Free friends at " + time + ": " + free;
+                }
               }
               console.log("output_string = " + output_string)
               result.response.outputSpeech.text = output_string;
@@ -456,7 +486,6 @@ exports.process_request =  (req, res) => {
           Input.deleteOne({_id:input._id}).exec()
         }
       }
-
       result.response.outputSpeech.text = output_string;
       res.json(result);
     })
@@ -481,15 +510,6 @@ exports.process_request =  (req, res) => {
     console.log("prevTime = " + prevTime)
     var prevDate = update_event.prevDate["value"]
     console.log("prevDate = " + prevDate)
-    var newText = update_event.newText["value"]
-    console.log("newText = " + newText)
-    if(newText != null && newText.slice(-2) == "at"){
-      newText = newText.slice(0, -2)
-    }
-    if(newText != null && newText.slice(-2) == "on"){
-      newText = newText.slice(0, -2)
-    }
-    console.log("newText1 = " + newText)
     var newTime = update_event.newTime["value"]
     console.log("newTime = " + newTime)
     var newDate = update_event.newDate["value"]
@@ -506,10 +526,6 @@ exports.process_request =  (req, res) => {
     if(newTime == null){
       newTime = prevTime;
       console.log("newTime1 = " + newTime)
-    }
-    if(newText == null){
-      newText = prevText;
-      console.log("newText1= " + newText)
     }
     var start1 = prevDate + " " + prevTime
     console.log("start1 = " + start1)
@@ -537,17 +553,17 @@ exports.process_request =  (req, res) => {
         console.log(input)
         if(input == null){
           console.log("input is empty")
-          output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found, " + name + ". "
+          output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found."
         }
         else{
           console.log("Input1 " + input);
           Input.update({_id: input._id},{
-            title: newText.trim(),
+            title: prevText.trim(),
             start: start2,
             startDate: sd,
             startTime: newTime,
           }).exec()
-          output_string = name + ", " + prevText + " at " + prevTime + " on " + prevDate + " has been changed to " + newText + " at " + newTime + " on " + newDate;
+          output_string = name + ", " + prevText + " on " + prevDate + " on " + prevTime + " has been changed to " + newDate + " at " + newTime;
         }
       }
       console.log(output_string)
@@ -560,7 +576,7 @@ exports.process_request =  (req, res) => {
 
   else{
     console.log("in no intent")
-    result.response.outputSpeech.text = name + ", what are you talking about?"
+    result.response.outputSpeech.text = "Sorry, " + name + ", I cannot understand what you said. Can you rephrase it?"
     res.json(result);
   }
 };
@@ -772,8 +788,14 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
         if(checkStatus != "BUSY"){
           checkStatus = "FREE"
         }
+        var response
+        if(date){
+          response = friendName + " is " + checkStatus + " on " + date + " at " + time
+        }
+        else{
+          response = friendName + " is " + checkStatus + " at " + time
+        }
         console.log("checkStatus at end is " + checkStatus)
-        var response = friendName + " is " + checkStatus + " on " + date + " at " + time
         console.log(response)
         callback(null, response);
       }
