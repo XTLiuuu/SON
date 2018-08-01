@@ -98,13 +98,15 @@ exports.process_request =  (req, res) => {
           }
           else{
             userEmail = profile.email;
-            name = profile.name;
-            console.log(userEmail)
-            console.log(name)
-            console.log("user6 = " + userEmail)
-            console.log("user7 = " + profile.amazon)
-            profile.amazon = req.body.context.System.user["userId"];
-            profile.save();
+            if(name == null){
+              name = profile.name;
+              console.log(userEmail)
+              console.log(name)
+              console.log("user6 = " + userEmail)
+              console.log("user7 = " + profile.amazon)
+              profile.amazon = req.body.context.System.user["userId"];
+              profile.save();
+            }
             console.log(profile.amazon)
             output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
           }
