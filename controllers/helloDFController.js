@@ -136,7 +136,7 @@ exports.process_request =  (req, res) => {
             names = names + ", " + friend_list[x].friendname;
           }
           if(num == 0){
-            output_string = "Oh! You have no friend in SON. Please add more friends, and have fun with Pipi."
+            output_string = "Oh! You have no friend in SON. Please add more friends, and have fun with me."
           }
           if(num == 1){
             output_string = "You have only one friend. The name is " + names
