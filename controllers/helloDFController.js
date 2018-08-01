@@ -140,7 +140,7 @@ exports.process_request =  (req, res) => {
             output_string = "You have only one friend. The name is " + names
           }
           else{
-            output_string = "You currently have " + num + " friends. Their names are " + names
+            output_string = name + "You currently have " + num + " friends. Their names are " + names
           }
         }
         result.response.outputSpeech.text = output_string;
