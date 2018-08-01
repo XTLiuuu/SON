@@ -108,7 +108,7 @@ exports.process_request =  (req, res) => {
               profile.save();
             }
             console.log(profile.amazon)
-            output_string = "Hi, " + name + ". I'm your personal secretary, Pipi. What can I do for you?"
+            output_string = "Hi, I know you are" + name + ". What can I do for you?"
           }
           result.response.outputSpeech.text = output_string;
           res.json(result);
