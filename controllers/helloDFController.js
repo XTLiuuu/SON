@@ -128,7 +128,7 @@ exports.process_request =  (req, res) => {
           var num = friend_list.length;
           var names = "";
           if(num != 0){
-            names = name + friend_list[0].friendname;
+            names = friend_list[0].friendname;
           }
           for(var x = 1; x < num; x ++){
             names = names + ", " + friend_list[x].friendname;
