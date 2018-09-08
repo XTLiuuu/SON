@@ -14,26 +14,19 @@ exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
   var result = {
-    "version": "beta",
-
-    "sessionAttributes":{
-      "key":"value"
-    },
-    "response": {
-      "outputSpeech": {
-        "type": "PlainText",
-        //"text": output_string
-      },
-      "reprompt": {
-        "outputSpeech": {
-          "type": "PlainText",
-          "text": "Plain text string to speak reprompt"
-        }
-      },
-      "shouldEndSession": true
-    }
+    "fulfillmentMessages": [],
+    "payload": {"slack":{"text":output_string}},
+    "outputContexts": [],
+    "source": "Text Source",
+    "followupEventInput": {}
   };
-  if(req.body.request.intent.name == "open_skill"){
+  if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/9deb94c8-c91c-4033-aec3-b753a4f59870"){
+    console.log("lalal")
+    output_string = "hello dear"
+    result.fulfillmentText = output_string;
+    res.json(result);
+  }
+  else if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/9deb94c8-c91c-4033-aec3-b753a4f59870"){
     Profile.findOne({amazon: req.body.context.System.user["userId"]},
       function(err, profile){
         console.log("after finding profile")
