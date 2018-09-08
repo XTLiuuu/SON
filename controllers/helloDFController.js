@@ -4,6 +4,7 @@ const Input = require( '../models/Input' );
 const Friend = require( '../models/Friend' );
 const Profile = require( '../models/Profile' );
 
+
 console.log("loading the hell0 Controller")
 var result1;
 var name;
