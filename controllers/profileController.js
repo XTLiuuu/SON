@@ -3,16 +3,15 @@ const Profile = require( '../models/Profile' );
 const mongo = require('mongodb');
 console.log("loading the profile Controller")
 
-// this displays all of the hotel reviews
+// display the user's profile
 exports.getProfile = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in getprofile')
   Profile.findOne(objId)
     .exec()
-    //this is a function takes one parameter (function) and does this
     .then( ( profile ) => {
       profile: profile
-      res.render('setting');
+      next() // call getSetting 
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -123,10 +122,10 @@ exports.saveProfile = ( req, res ) => {
     });
   };
 
+// attach the current login profile
 exports.attachProfile = ( req, res, next ) => {
   console.log('in attachProfile')
-  //const objId = new mongo.ObjectId(req.params.id)
-  Profile.findOne({email:res.locals.user.googleemail}) //{"_id": objId})
+  Profile.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( profile ) => {
       if (profile == null){
@@ -152,7 +151,7 @@ exports.attachProfile = ( req, res, next ) => {
       return [];
     } )
     .then( () => {
-      console.log("profile1=" + res.locals.profile);
+      console.log("profile=" + res.locals.profile);
       console.log( 'attachProfile promise complete' );
     } );
 };

@@ -18,7 +18,6 @@
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
     "fullcalendar": "^3.9.0",
-    "hashset": "0.0.6",
     "http-errors": "~1.6.2",
     "jquery": "^3.3.1",
     "jquery-confirm": "^3.3.2",

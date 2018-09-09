@@ -5,15 +5,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
-var HashSet = require('hashset');
 
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var addRouter = require('./routes/add');
-var welcomeRouter = require('./routes/welcome');
+var homeRouter = require('./routes/home');
 var calendarDRouter = require('./routes/calendarD');
 var settingRouter = require('./routes/setting');
 var notificationRouter = require('./routes/notification');
+const friend = require('./routes/friend')
+const addfriend = require('./routes/addfriend')
+const calendarD = require('./routes/calendarD')
 var app = express();
 
 const usersController = require('./controllers/usersController')
@@ -26,20 +28,14 @@ const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
 const settingController = require('./controllers/settingController');
-const User = require( './models/user' )
 
-//friend function
-const friend = require('./routes/friend')
-const addfriend = require('./routes/addfriend')
+const User = require( './models/user' )
 
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
 const configPassport = require('./config/passport')
 configPassport(passport)
-
-//routes
-const calendarD = require('./routes/calendarD');
 
 // here is where we connect to the database!
 const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
@@ -73,7 +69,6 @@ var server = app.listen(3000, function(){
   console.log('API server listening...');
 })
 
-
 // The following changes are made for dialogflow
 app.use((req,res,next) => {
   res.locals.loggedIn = false
@@ -98,20 +93,16 @@ app.use((req,res,next) => {
 app.get('/loginerror', function(req,res){
   res.render('loginerror',{})
 })
-// app.get('/login', function(req,res){
-//   res.render('login',{})
-//     })
 app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
-//app.use('/login', loginRouter);
+  req.logout();
+  res.redirect('/');
+});
 app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-app.get('/login/authorized',
-        passport.authenticate('google', {
-                successRedirect : '/',
-                failureRedirect : '/loginerror'
+app.get('/login/authorized',passport.authenticate('google', {
+    successRedirect : '/',
+    failureRedirect : '/loginerror'
 }));
+
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
     console.log("checking to see if they are authenticated!")
@@ -125,24 +116,17 @@ function isLoggedIn(req, res, next) {
     res.redirect('/auth/google');
 }
 
-console.log("before the users routes...")
-console.dir(usersController)
-
-app.use('/', welcomeRouter);
-
+// the home page route
+app.use('/', homeRouter);
+// routes related to manage users
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
-
-//app.use('/setting', settingRouter);
-app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser,
-                    profileController.attachProfile,settingController.attachSetting,
-                    settingController.getSetting,profileController.getProfile);
+app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting,
+  profileController.getProfile, settingController.getSetting);
 app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
-//app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting, profileController.getProfile);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
 app.post('/saveProfile', isLoggedIn, profileController.checkSecret, profileController.saveProfile );
-//app.get('saveSetting', isLoggedIn,)
 
 app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
@@ -162,19 +146,14 @@ app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendCont
 
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
 app.post('/notification', isLoggedIn, profileController.attachProfile, friendController.updateRequest);
-//app.use('/notification', isLoggedIn,usersController.attachUser, notiController.attachNoti, notiController.getAllNotis);
-//app.post('/acceptRequest', isLoggedIn, friendController.acceptRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);
 app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
 app.post('/hook', helloDFController.process_request);
 
-
 app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
-
 app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -186,7 +165,6 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');

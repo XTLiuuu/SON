@@ -4,7 +4,7 @@ const mongo = require('mongodb');
 console.log("loading the users Controller")
 
 
-// this displays all of the skills
+// display all users on the user page when host login
 exports.getAllUsers = ( req, res ) => {
   console.log('in getAllUsers')
   User.find( {} )
@@ -41,10 +41,11 @@ exports.getUser = ( req, res ) => {
     } );
 };
 
+// attach the current login user 
 exports.attachUser = ( req, res, next ) => {
   console.log('in attachUser')
   const objId = new mongo.ObjectId(req.params.id)
-  User.findOne(objId) //{"_id": objId})
+  User.findOne(objId)
     .exec()
     .then( ( user ) => {
       res.locals.user = req.user
@@ -60,7 +61,7 @@ exports.attachUser = ( req, res, next ) => {
     } );
 };
 
-
+// delete user when the host login
 exports.deleteUser = (req, res) => {
   console.log("in deleteUser")
   let userName = req.body.deleteName
