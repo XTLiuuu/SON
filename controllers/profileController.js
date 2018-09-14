@@ -4,14 +4,13 @@ const mongo = require('mongodb');
 console.log("loading the profile Controller")
 
 // display the user's profile
-exports.getProfile = ( req, res, next ) => {
+exports.getProfile = ( req, res ) => {
   const objId = new mongo.ObjectId(req.params.id)
-  console.log('in getprofile')
   Profile.findOne(objId)
     .exec()
     .then( ( profile ) => {
       profile: profile
-      next() // call getSetting 
+      res.render('profile');
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -22,38 +21,15 @@ exports.getProfile = ( req, res, next ) => {
     } );
 };
 
-// this displays all of the hotel reviews
-exports.getProfile1 = ( req, res ) => {
-  const objId = new mongo.ObjectId(req.params.id)
-  console.log('in getprofile')
-  Profile.findOne(objId)
-    .exec()
-    //this is a function takes one parameter (function) and does this
-    .then( ( profile ) => {
-      profile: profile
-      res.render('setting1');
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'profile promise complete' );
-    } );
-};
-
+// check whether the user input a valid secret to use the voice function
 exports.checkSecret = (req, res, next) =>{
-  console.log("in check Secret1");
-  console.log("secret = " + req.body.secret.trim())
-  console.log(req.body.secret.trim() == null)
-  console.log(req.body.secret.trim() == "")
-  console.log(req.body.secret.trim() == undefined)
+  console.log("in check secret")
+  // the secret code is empty
   if(req.body.secret.trim() == ""){
-    console.log("here1")
-    //res.status(400);
     res.json({message: "Please enter a secret.", type: "empty"})
     return;
   }
+  // the user inputs a secret code
   Profile.findOne({secret: req.body.secret.trim()},
   function(err, profile){
     if(err){
@@ -61,9 +37,8 @@ exports.checkSecret = (req, res, next) =>{
       res.json(err.message)
     }
     else{
-      console.log("user = " + res.locals.user.googleemail)
+      // avoid repetitive secret
       if(profile != null && profile.email != res.locals.user.googleemail){
-        console.log(profile.email)
         res.json({message: "The secret code has been used. Please try a new one.", type: "exist"})
         return;
       }
@@ -72,13 +47,13 @@ exports.checkSecret = (req, res, next) =>{
   })
 }
 
+// save user's profile
 exports.saveProfile = ( req, res ) => {
   console.log("in saveProfile!")
-  Profile.findOne({email:res.locals.user.googleemail}) //{"_id": objId})
+  Profile.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( profile ) => {
       if(profile==null){
-        console.log("in save!")
         let profile = new Profile ({
           name: req.user.googlename,
           email: req.user.googleemail,
@@ -90,7 +65,6 @@ exports.saveProfile = ( req, res ) => {
           image: req.body.image,
           secret: req.body.secret.toLowerCase().trim(),
         })
-        //console.log("profile = "+ newProfile)
         profile.save()
           .then( () => {
             res.redirect( '/setting' );
@@ -99,10 +73,8 @@ exports.saveProfile = ( req, res ) => {
             res.send( error );
           });
       } else{
-        console.log("in update!")
-        var uProfile = Profile.findOne({email:res.locals.user.googleemail})
-        //console.log(uProfile)
-        uProfile.update({email:res.locals.user.googleemail},
+        var curProfile = Profile.findOne({email:res.locals.user.googleemail})
+        curProfile.update({email:res.locals.user.googleemail},
           {phone: req.body.phone,
            gender: req.body.gender,
            dob: req.body.dob,
@@ -124,10 +96,10 @@ exports.saveProfile = ( req, res ) => {
 
 // attach the current login profile
 exports.attachProfile = ( req, res, next ) => {
-  console.log('in attachProfile')
   Profile.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( profile ) => {
+      // when the user does not store a profile object yet
       if (profile == null){
         console.log("666");
         profile = new Profile ({
@@ -143,6 +115,7 @@ exports.attachProfile = ( req, res, next ) => {
           friendEmail: req.body.friendEmail
         } )
       }
+      // attach the old profile or the newly constructed profile
       res.locals.profile = profile
       next()
     } )
@@ -150,8 +123,4 @@ exports.attachProfile = ( req, res, next ) => {
       console.log( error.message );
       return [];
     } )
-    .then( () => {
-      console.log("profile=" + res.locals.profile);
-      console.log( 'attachProfile promise complete' );
-    } );
 };

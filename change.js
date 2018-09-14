@@ -1,9 +1,3 @@
-app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
-app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
-app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
-app.post('/saveProfile', isLoggedIn, profileController.checkSecret, profileController.saveProfile );
-
-app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
 app.use('/saveinput',isLoggedIn, inputController.saveInput);
 app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
 

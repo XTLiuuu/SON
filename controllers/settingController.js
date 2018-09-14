@@ -2,12 +2,10 @@
 const Setting = require( '../models/Setting' );
 const Profile = require( '../models/Profile' );
 const mongo = require('mongodb');
-console.log("loading the setting Controller")
 
 // display user's setting
 exports.getSetting = ( req, res, next ) => {
   const objId = new mongo.ObjectId(req.params.id)
-  console.log('in getSetting')
   Setting.findOne(objId)
     .exec()
     .then( ( setting ) => {
@@ -18,45 +16,26 @@ exports.getSetting = ( req, res, next ) => {
       console.log( error.message );
       return [];
     } )
-    .then( () => {
-      console.log( 'getSetting promise complete' );
-    } );
 };
 
+// include save setting for the first time and update it later
 exports.saveSetting = ( req, res ) => {
-  console.log("hh24567" + req.body.timeFormat)
-  console.log(req.body)
-  console.log("in saveSetting!")
   Setting.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( setting ) => {
+      // change the "on" and "off" of the checkbox to boolean
       var enablev = false;
       if(req.body.voice == 'on') enablev = true
-
       var weekend = false;
       if(req.body.weekend == 'on') weekend = true
-
       var weeknumber = false;
       if(req.body.weeknumber == 'on') weeknumber = true
-
-      var eve = req.body.eventEnd;
-      var eventEnd;
-      if(eve == 'on'){
-        eventEnd = true;
-      } else {
-        eventEnd = false;
-      }
-
-      var fw = req.body.fixedWeek;
-      var fixedWeek;
-      if(fw == 'on'){
-        fixedWeek = true;
-      } else {
-        fixedWeek = false;
-      }
-
+      var eventEnd = false;
+      if(req.body.eventEnd == 'on') eventEnd = true
+      var fixedWeek = false
+      if(req.body.fixedWeek == 'on') fixedWeek = true
+      // create a new setting object when the user saves the first time
       if(setting==null){
-        console.log("in save!")
         let setting = new Setting ({
           email: res.locals.user.googleemail,
           voice: enablev,
@@ -71,19 +50,19 @@ exports.saveSetting = ( req, res ) => {
           view : req.body.view,
           color : req.body.color
         } )
-        //console.log("profile = "+ newProfile)
-        setting.save()
-          .then( () => {
-            res.redirect( '/setting' );
-          } )
-          .catch( error => {
-            res.send( error );
-          } );
-      }else{
-        console.log("in update!")
-        var uSetting = Setting.findOne({email:res.locals.user.googleemail})
-        //console.log(uProfile)
-        uSetting.update({email:res.locals.user.googleemail},
+      // save the new setting and redirect
+      setting.save()
+        .then( () => {
+          res.redirect( '/setting' );
+        } )
+        .catch( error => {
+          res.send( error );
+        } );
+      }
+      // update the existing setting
+      else{
+        var curSetting = Setting.findOne({email:res.locals.user.googleemail})
+        curSetting.update({email:res.locals.user.googleemail},
           { voice: enablev,
           timeFormat : req.body.timeFormat,
           durationSet : req.body.durationSet,
@@ -104,12 +83,11 @@ exports.saveSetting = ( req, res ) => {
             res.send( error );
           });
         }
-        });
-      };
+      });
+    };
 
 // attach the current login user's setting
 exports.attachSetting = ( req, res, next ) => {
-  console.log('in attachSetting')
   Setting.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( setting ) => {
@@ -137,8 +115,5 @@ exports.attachSetting = ( req, res, next ) => {
     .catch( ( error ) => {
       console.log( error.message );
       return [];
-    } )
-    .then( () => {
-      console.log( 'attachSetting promise complete' );
-    } );
+    })
 };

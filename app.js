@@ -122,18 +122,17 @@ app.use('/', homeRouter);
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
+// routes related to setting and profile
 app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting,
-  profileController.getProfile, settingController.getSetting);
+  profileController.attachProfile, settingController.getSetting);
 app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
-app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile1);
+app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.checkSecret, profileController.saveProfile );
-
-app.use('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, usersController.getUser);
-app.use('/saveinput',isLoggedIn, inputController.saveInput);
-app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
-
+// routes related to event management
+app.get('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, inputController.getAllInputs);
+app.post('/saveinput',isLoggedIn, inputController.saveInput);
+app.post('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
-
 // friend function
 app.get('/friend',isLoggedIn, friendController.getFriend, friendController.getFriendProfile);
 app.get('/friend1',isLoggedIn, friendController.getFriend1);

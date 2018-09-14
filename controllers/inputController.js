@@ -2,8 +2,6 @@
 const Input = require( '../models/Input' );
 console.log("loading the input Controller")
 
-
-// this displays all of the skills
 exports.getAllInputs = ( req, res ) => {
   console.log('in getAllInput')
   Input.find( {} )
@@ -22,14 +20,12 @@ exports.getAllInputs = ( req, res ) => {
     } );
 };
 
-
+// attach the current users events
 exports.attachInputs = ( req, res, next ) => {
-  console.log('in attachInputs')
   Input.find( {email:res.locals.user.googleemail} )
     .exec()
     .then( ( inputs ) => {
       res.locals.inputs = inputs
-      console.dir(res.locals)
       next()
     } )
     .catch( ( error ) => {
@@ -43,8 +39,6 @@ exports.attachInputs = ( req, res, next ) => {
 
 
 exports.saveInput = ( req, res ) => {
-  console.log("in save input!")//after user save the input
-  //console.dir(req)
   var sd = req.body.startDate;
   var sd1 = sd.toString();
   var st = req.body.startTime;
@@ -80,7 +74,6 @@ exports.saveInput = ( req, res ) => {
     startTime: req.body.startTime,
     endDate: ed2,
     endTime: req.body.endTime,
-    url:req.body.url,
     editable: true,
     overlap: true,
     color: req.body.color,

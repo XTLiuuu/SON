@@ -1,8 +1,6 @@
 'use strict';
 const User = require( '../models/user' );
 const mongo = require('mongodb');
-console.log("loading the users Controller")
-
 
 // display all users on the user page when host login
 exports.getAllUsers = ( req, res ) => {
@@ -23,27 +21,8 @@ exports.getAllUsers = ( req, res ) => {
     } );
 };
 
-exports.getUser = ( req, res ) => {
-  const objId = new mongo.ObjectId(req.params.id)
-  User.findOne(objId) //{"_id": objId})
-    .exec()
-    .then( ( user ) => {
-      res.render( 'add', {
-        user: user
-      } );
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'getUser promise complete' );
-    } );
-};
-
-// attach the current login user 
+// attach the current login user
 exports.attachUser = ( req, res, next ) => {
-  console.log('in attachUser')
   const objId = new mongo.ObjectId(req.params.id)
   User.findOne(objId)
     .exec()
@@ -54,10 +33,9 @@ exports.attachUser = ( req, res, next ) => {
     .catch( ( error ) => {
       console.log( error.message );
       return [];
-    } )
+    })
     .then( () => {
-      console.log(res.locals.user.googleemail);
-      console.log( 'attachUser promise complete' );
+      console.log( 'attach user complete' );
     } );
 };
 

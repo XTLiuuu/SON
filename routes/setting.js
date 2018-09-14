@@ -1,4 +1,4 @@
-// This is the setting page router 
+// This is the setting page router
 var express = require('express');
 var router = express.Router();
 
@@ -7,3 +7,4 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+ 
