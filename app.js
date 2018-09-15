@@ -6,15 +6,8 @@ var logger = require('morgan');
 const mongoose = require( 'mongoose' );
 var moment = require('moment');
 
-var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-var addRouter = require('./routes/add');
 var homeRouter = require('./routes/home');
-var calendarDRouter = require('./routes/calendarD');
-var settingRouter = require('./routes/setting');
-var notificationRouter = require('./routes/notification');
-const friend = require('./routes/friend')
-const addfriend = require('./routes/addfriend')
+const settingRouter = require('./routes/setting');
 const calendarD = require('./routes/calendarD')
 var app = express();
 

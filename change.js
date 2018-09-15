@@ -1,6 +1,3 @@
-app.use('/saveinput',isLoggedIn, inputController.saveInput);
-app.use('/deleteinput',isLoggedIn, inputController.deleteInput);
-
 app.use('/calendar', calendarD);
 
 // friend function

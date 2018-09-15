@@ -2,7 +2,6 @@
 const mongoose = require( 'mongoose' );
 var inputSchema = mongoose.Schema( {
   email: String,
-  id: String,
   title: String,
   allDay: Boolean,
   start: Date, // include date and time
@@ -16,7 +15,7 @@ var inputSchema = mongoose.Schema( {
   color: String,
   adCheck: String,
   description: String,
-  noti: String, 
+  noti: String,
 } );
 
 module.exports = mongoose.model( 'Input', inputSchema );

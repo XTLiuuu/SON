@@ -37,42 +37,25 @@ exports.attachInputs = ( req, res, next ) => {
     } );
 };
 
-
+// save new event
 exports.saveInput = ( req, res ) => {
   var sd = req.body.startDate;
-  var sd1 = sd.toString();
-  var st = req.body.startTime;
-  var sd2 = sd.slice(0,10);
-  var st = req.body.startTime
-  var start = sd1 + " " + st + " "
-  console.log("start = " + start)
+  var start = sd.toString() + " " + req.body.startTime
   var ed = req.body.endDate;
-  var ed1 = ed.toString();
-  if(ed1 == ""){
-    ed1 = sd1;
-  }
-  var ed2 = ed.slice(0,10);
-  var et = req.body.endTime
-  var end = ed1 + " " + et
-  console.log("end = " + end)
-  var ad = req.body.allDay
-  var allDay;
-  if(ad == 'on'){
-    allDay = true;
-  }
-  else{
-    allDay = false;
-  }
+  if(ed == "") ed = sd
+  var end = ed.toString() + " " + req.body.endTime
+  var allDay = false;
+  if(req.body.allDay == 'on') allDay = true
+
   let newInput = new Input( {
     email: req.user.googleemail,
-    id: req.body.id,
     title: req.body.title,
     allDay: allDay,
-    start: start,
+    start: start, // include both date and time
     end:end,
-    startDate: sd2,
+    startDate: sd.slice(0,10),
     startTime: req.body.startTime,
-    endDate: ed2,
+    endDate: ed.slice(0,10),
     endTime: req.body.endTime,
     editable: true,
     overlap: true,
@@ -81,7 +64,6 @@ exports.saveInput = ( req, res ) => {
     adCheck: req.body.allDay,
     noti: "false"
   } )
-
 
   newInput.save()
     .then( () => {
@@ -92,27 +74,16 @@ exports.saveInput = ( req, res ) => {
     } );
 };
 
+// delete events
 exports.deleteInput = (req, res) => {
-  console.log("in deleteInput")
   let input = req.body.deleteInput
-  if (typeof(input)=='string') {
-    console.log("in delete one")
-    Input.deleteOne({_id:input})
-         .exec()
-         .then(()=>{res.redirect('/add')})
-         .catch((error)=>{res.send(error)})
-  } else if(typeof(input)=='object'){
-    console.log("in delete many")
-    Input.deleteMany({_id:{$in:input}})
-         .exec()
-         .then(()=>{res.redirect('/add')})
-         .catch((error)=>{res.send(error)})
-  } else if (typeof(inputName)=='undefined'){
-      console.log("This is if they didn't select a input")
-      res.redirect('/add')
-  } else {
-    console.log("This shouldn't happen!")
-    res.send(`unknown inputName: ${inputName}`)
-  }
-
+  console.log("in delete one")
+  Input.deleteOne({_id:input})
+   .exec()
+   .then(() => {
+     res.redirect('/add')
+   })
+   .catch((error) => {
+     res.send(error)
+   })
 };
