@@ -1,9 +1,3 @@
-app.use('/calendar', calendarD);
-
-// friend function
-app.get('/friend',isLoggedIn, friendController.getFriend, friendController.getFriendProfile);
-app.get('/friend1',isLoggedIn, friendController.getFriend1);
-app.post('/check_avail',isLoggedIn, friendController.check_avail);
 app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
 
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);

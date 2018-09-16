@@ -10,20 +10,8 @@ exports.searchProfile_post = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
-    //this is a function takes one parameter (function) and does this
     .then( ( friend ) => {
-      //console.log("friend"+friend);
-      /*Profile.findOne({email: req.body.friendemail})
-                  .exec()
-                  .then( (rr) => {
-                    if(rr==null){
-                      console.log("Sorry, the email your searched has not registered yet.")
-                      res.redirect( '/friend' );
-                    }
-                  })
-      */
       res.render('searchProfile', {friend: friend});
-      //next()
     } )
     .catch( ( error ) => {
       console.log( error.message );
@@ -42,7 +30,6 @@ exports.sendFrequest = ( req, res ) =>{
   console.log("send friend request1");
   console.log(req.body.friendemail)
   console.log(res.locals.profile.email)
-  //console.log(req.locals.user.googleemail)
   if(req.body.friendemail == res.locals.profile.email){
     console.log("same")
     res.json("same");
@@ -187,10 +174,8 @@ exports.updateRequest = ( req, res )=> {
   }
 };
 
+// get the current user's friend list
 exports.getFriend = ( req, res, next ) => {
-  console.log('in getAllNoti')
-  console.log('checkStatus=' + res.locals.checkStatus)
-  console.log('checkStatus1=' + res.checkStatus)
   Friend.find( {user:res.locals.user.googleemail} )
     .exec()
     .then( ( friend_list ) => {
@@ -208,23 +193,19 @@ exports.getFriend = ( req, res, next ) => {
     } );
 };
 
+// get those friends' profile information and display
 exports.getFriendProfile = (req, res) => {
-  console.log('in get friend profile');
-  console.log(res.locals.friend)
   var friends = res.locals.friend;
   var friendEmails = [];
   for(var i = 0; i < friends.length; i ++){
     friendEmails.push(friends[i].friend);
   }
-  console.log(friendEmails);
   Profile.find({email: {$in : friendEmails}},
     function(err, profile_list){
       if(err){
         console.log(err.message);
       }
       else{
-        console.log("after getting friend profiles")
-        console.log(profile_list)
         res.locals.profiles = profile_list
         res.render('friend')
       }
@@ -232,31 +213,14 @@ exports.getFriendProfile = (req, res) => {
   )
 }
 
-exports.getFriend1 = ( req, res ) => {
-  console.log('in getAllNoti')
-  Friend.find( {user:res.locals.user.googleemail} )
-    .exec()
-    .then( ( friend ) => {
-      res.render( 'friend1', {
-        friend: friend
-      } );
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'get friend complete' );
-    } );
+// go the search friend box
+exports.searchPage = ( req, res ) => {
+  res.render('searchPage');
 };
 
+// on  friend page, check availability by person or delete friend
 exports.check_avail = (req, res) =>{
   if(req.body.check_avail == "Start Checking"){
-    console.log("in check availability")
-    console.dir(req.body)
-    console.log(req.body.friendEmail);
-    console.log(req.body.checkDate)
-    console.log(req.body.checkTime)
     var s = new Date(req.body.checkDate);
     var friendName = req.body.friendName
     var checkDate = req.body.checkDate
@@ -264,54 +228,38 @@ exports.check_avail = (req, res) =>{
     s.setDate(s.getDate()+1)
     var index = req.body.checkTime.indexOf(":")
     s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
-    console.log("s = " + s)
     var start = req.body.checkDate + " " + req.body.checkTime
-    console.log(start)
     Input.find({email:req.body.friendEmail},
       function(err, input_list){
         if(err){
           console.log(err.message);
         } else{
-          console.log("after getting friend's events")
-          console.log("length = " + input_list.length)
           var checkStatus;
           for(var i = 0; i < input_list.length; i ++){
-            console.log("list " + i + " startTime = " + input_list[i].start)
-            console.log("list " + i + " endTime = " + input_list[i].end)
             if(input_list[i].endTime != null){
               if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
-                console.log("input meet is " + input_list[i]);
                 checkStatus = "BUSY";
               }
             }
             else{
-              console.log(input_list[i].start == s)
-              console.log(input_list[i].start.getTime() == s.getTime())
               if(input_list[i].start.getTime() == s.getTime()){
-                console.log("input1 meet is " + input_list[i]);
                 checkStatus = "BUSY";
               }
             }
           }
-          console.log("checkStatus at end is " + checkStatus)
           if(checkStatus != "BUSY"){
             checkStatus = "FREE"
           }
           var answer = {checkStatus: checkStatus, friendName: friendName, checkDate: checkDate, checkTime: checkTime}
-          console.dir(answer)
-          console.log("checkStatus at end1 is " + checkStatus)
           res.json(answer);
         }
       }
     )
   }
   else{
-    console.log("in delete friends")
     var friendEmail = req.body.friendEmail
     var userEmail = req.body.userEmail
     var pair = [friendEmail, userEmail];
-    console.log(pair)
-    console.log(userEmail)
     Friend.deleteMany({
       user: {$in:pair},
       friend: {$in:pair}
@@ -355,10 +303,10 @@ exports.attachFriend = ( req, res, next ) => {
     })
   }
 
+// check free friends by time
+// problem: if the number of friends and the number of events are large
+// it will take long time to finish
 exports.guess_free = (req, res) => {
-  console.log('in guess_free')
-  console.dir(req.body)
-  console.log(res.locals["friend_list"])
   var freeFriend = [];
   var s = new Date(req.body.checkDate);
   var checkDate = req.body.checkDate
@@ -366,77 +314,49 @@ exports.guess_free = (req, res) => {
   s.setDate(s.getDate()+1)
   var index = req.body.checkTime.indexOf(":")
   s.setHours(req.body.checkTime.slice(0, index), req.body.checkTime.slice(index + 1, req.body.checkTime.length));
-  console.log("s = " + s)
   var friend_list = res.locals["friend_list"];
-  console.log(friend_list.length)
   var freeFriend = []
   var x = 0;
   checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime);
 }
 
+// recursive function 
 function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime){
-  console.log("in check with friend" + x)
   var length = friend_list.length
-  console.log("length 12 = " + length);
   Input.find({email: friend_list[x]["friend"]},
     function(err, input_list){
       if(err){
         console.log(err.message);
       } else{
-        console.log("after getting friend " + x);
-        console.log("length = " + input_list.length);
         var checkStatus;
-        console.log("s = " + s)
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].start)
-          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
-            console.log("have end time")
             if(input_list[i].start <= s && s <= input_list[i].end){
-              console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            console.log("do not have end time")
-            console.log(input_list[i].start == s)
-            console.log(input_list[i].start.getTime() == s.getTime())
             if(input_list[i].start.getTime() == s.getTime()){
-              console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
         }
         if(x == friend_list.length - 1 && checkStatus == "BUSY"){
-          console.log("the final free friend_list0 = ")
-          console.log(freeFriend)
-          //res.locals.freeFriend = freeFriend
           var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
           res.json(response)
         }
-        console.log("checkStatus at end is " + checkStatus)
         if(checkStatus != "BUSY"){
-          console.log(friend_list[x])
-          console.log(friend_list[x].friendname)
-          console.log(friend_list[x]["friendname"])
           freeFriend.push(friend_list[x].friendname);
-          console.log("before freefriend")
-          console.log(freeFriend)
           if(x == friend_list.length - 1){
-            console.log("the final free friend_list1 = ")
-            console.log(freeFriend)
             var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
-            //res.locals.freeFriend = freeFriend
             res.json(response)
           }
           if(x < friend_list.length - 1){
-            console.log("call again in free")
             checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
           }
         }
         else{
           if(x < friend_list.length - 1){
-            console.log("call again in busy")
             checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
           }
         }
