@@ -1,5 +1,4 @@
 'use strict';
-console.log("in full calendar controller")
 const Input = require( '../models/Input' );
 const Notification = require('../models/Notification');
 const Friend = require('../models/Friend');
@@ -104,7 +103,6 @@ exports.update_event_post = function(req, res){
     var ed2 = ed.slice(0,10);
     var et = req.body.endTime
     var end = ed1 + " " + et
-    console.log("end = " + end)
     var ad = req.body.allDay
     var allDay;
     if(ad == 'on'){

@@ -1,14 +1,13 @@
 'use strict';
-const Noti = require( '../models/Notification' );
 const mongo = require('mongodb');
-const Input = require('../models/Input');
+const Input = require('../models/Input')
 const User = require('../models/user')
-console.log("loading the notification Controller")
+const Friend = require('../models/Friend')
+const Noti = require( '../models/Notification' )
 
 // this displays all of the skills
 exports.getAllNotis = ( req, res ) => {
-  console.log('in getAllNoti')
-  Noti.find( {to:res.locals.user.googleemail})
+  Noti.find({to:res.locals.user.googleemail})
     .exec()
     .then( ( notis ) => {
       res.render( 'notification', {
@@ -40,26 +39,6 @@ exports.getNoti = ( req, res ) => {
     } )
     .then( () => {
       console.log( 'notification promise complete' );
-    } );
-};
-
-
-exports.attachNoti = ( req, res, next ) => {
-  console.log('in attachNoti')
-  //const objId = new mongo.ObjectId(req.params.id)
-  Input.find({}) //{"_id": objId})
-    .exec()
-    .then( ( noti ) => {
-      res.locals.noti = noti
-      next()
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      //console.log("profile1=" + res.locals.profile);
-      console.log( 'attach notification promise complete' );
     } );
 };
 
@@ -140,4 +119,117 @@ exports.generateNoti = (req, res) => {
     res.status(err.status || 500);
     res.json(err);
   })
+}
+
+exports.updateRequest = ( req, res )=> {
+  // the user accept the friend request
+  if(req.body.accept == 'Accept'){
+    addFriend(req, res)
+  }
+  // if the user decline the friend's request
+  else if(req.body.cancel == 'Cancel'){
+    declineFriend(req, res)
+  }
+  else if(req.body.add == 'Add'){
+    addEvent(req, res)
+  }
+  else if(req.body.decline == 'Decline'){
+    declineEvent(req, res)
+  }
+  else if(req.body.ok == 'OK'){
+    Notification.deleteOne({_id: req.body.id})
+    .exec()
+    .then(()=>{res.redirect('/notification')})
+    .catch((error)=>{res.send(error)})
+  }
+};
+
+function addFriend(req, res){
+  // add friend object to both side
+  let friend1 = new Friend({
+    user:res.locals.user.googleemail,
+    username: res.locals.profile.name,
+    friend:req.body.from,
+    friendname:req.body.fromname,
+    status:"friend",
+  })
+  let friend2 = new Friend({
+    user:req.body.from,
+    username:req.body.fromname,
+    friend:res.locals.user.googleemail,
+    friendname:res.locals.profile.name,
+    status:"friend"
+  })
+  friend1.save()
+  friend2.save()
+  // delete notification
+  Notification.deleteMany({
+    type:"friend request",
+    to: res.locals.user.googleemail,
+    from:req.body.from
+  }).then( () => {
+      res.redirect('/notification');
+  })
+  .catch( error => {
+    res.send( error );
+  });
+}
+
+function declineFriend(req, res){
+  Notification.deleteMany(
+    {type:"friend request",
+      to: res.locals.user.googleemail,
+      from:req.body.from
+  }).exec()
+  .then(()=>{res.redirect('/notification')})
+  .catch((error)=>{res.send(error)})
+}
+
+function addEvent(req, res){
+  var sd = req.body.startDate;
+  var start = sd.toString() + " " + req.body.startTime
+  var ed = req.body.endDate;
+  if(ed == "") ed = sd
+  var end = ed.toString() + " " + req.body.endTime
+  var allDay = false;
+  if(req.body.allDay == 'on') allDay = true
+
+  let newInput = new Input( {
+    email: req.user.googleemail,
+    title: req.body.title,
+    allDay: allDay,
+    start: start, // include both date and time
+    end:end,
+    startDate: sd.slice(0,10),
+    startTime: req.body.startTime,
+    endDate: ed.slice(0,10),
+    endTime: req.body.endTime,
+    editable: true,
+    overlap: true,
+    color: req.body.color,
+    description: req.body.description,
+    adCheck: req.body.allDay,
+    noti: "false"
+  } )
+  newInput.save();
+  Notification.deleteOne({
+    type:"event invitation",
+    to: res.locals.user.googleemail,
+    from:req.body.from})
+    .then( () => {
+      res.redirect('/notification');
+    })
+    .catch( error => {
+      res.send( error );
+  });
+}
+
+function declineEvent(req, res){
+  Notification.deleteOne
+    ({type:"event invitation",
+      to: res.locals.user.googleemail,
+      from:req.body.from})
+    .exec()
+    .then(()=>{res.redirect('/notification')})
+    .catch((error)=>{res.send(error)})
 }

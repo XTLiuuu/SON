@@ -1,6 +1,3 @@
-app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
-app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
-app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
 
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
 app.post('/notification', isLoggedIn, profileController.attachProfile, friendController.updateRequest);

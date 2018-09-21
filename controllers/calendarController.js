@@ -1,5 +1,4 @@
 'use strict';
-console.log("in calendar controller")
 
 exports.getCalendar = (req, res) => {
   /**

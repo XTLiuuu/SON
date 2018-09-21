@@ -1,7 +1,6 @@
 'use strict';
 const Profile = require( '../models/Profile' );
 const mongo = require('mongodb');
-console.log("loading the profile Controller")
 
 // display the user's profile
 exports.getProfile = ( req, res ) => {
@@ -101,7 +100,6 @@ exports.attachProfile = ( req, res, next ) => {
     .then( ( profile ) => {
       // when the user does not store a profile object yet
       if (profile == null){
-        console.log("666");
         profile = new Profile ({
           name: req.user.googlename,
           email: req.user.googleemail,

@@ -4,11 +4,9 @@ const Profile = require('../models/Profile');
 const Input = require('../models/Input');
 const Notification = require('../models/Notification');
 const mongo = require('mongodb');
-console.log("loading the friend Controller")
 
 // use to add new friend
 exports.searchProfile_post = ( req, res ) => {
-  console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
     .exec()
     .then( ( friend ) => {
@@ -29,11 +27,8 @@ exports.searchProfile_get = ( req, res  ) => {
 };
 
 exports.sendFrequest = ( req, res ) =>{
-  console.log("send friend request1");
-  console.log(req.body.friendemail)
-  console.log(res.locals.profile.email)
   if(req.body.friendemail == res.locals.profile.email){
-    console.log("same")
+    // when the input email is the same as the current user's email
     res.json("same");
     return;
   }
@@ -41,19 +36,18 @@ exports.sendFrequest = ( req, res ) =>{
     user: res.locals.profile.email,
     friend: req.body.friendemail,
   },function(err, result){
-    console.log("after finding")
-    console.log(result)
     if(err){
-      console.log("err")
       res.status(err.status || 500)
       console.log(err.message);
       return;
     } else{
       if(result.length != 0){
+        // when these two people have been friends already
         res.json("exist")
         return;
       }
       else{
+        // the friend request can be sent
         let request =
           new Notification({
             type: "friend request",
@@ -70,111 +64,6 @@ exports.sendFrequest = ( req, res ) =>{
       }
     })
   }
-
-
-exports.updateRequest = ( req, res )=> {
-  if(req.body.accept == 'Accept'){
-    console.log("in acceptRequest");
-    let newf = new Friend({
-      user:res.locals.user.googleemail,
-      username: res.locals.profile.name,
-      friend:req.body.from,
-      friendname:req.body.fromname,
-      status:"friend",
-    })
-
-    let newf2 = new Friend({
-      user:req.body.from,
-      username:req.body.fromname,
-      friend:res.locals.user.googleemail,
-      friendname:res.locals.profile.name,
-      status:"friend"
-    })
-
-    newf2.save()
-    newf.save()
-
-    Notification.deleteMany({
-      type:"friend request",
-      to: res.locals.user.googleemail,
-      from:req.body.from})
-      .then( () => {
-        res.redirect('/notification');
-      })
-      .catch( error => {
-        res.send( error );
-      });
-  } else if(req.body.cancel == 'Cancel'){
-    console.log("in deleteRequest"+req.body.from);
-    Notification.deleteMany(
-      {type:"friend request",
-        to: res.locals.user.googleemail,
-        from:req.body.from})
-    .exec()
-    .then(()=>{res.redirect('/notification')})
-    .catch((error)=>{res.send(error)})
-  }
-  else if(req.body.add == 'Add'){
-    console.log("in acceptaInvitation");
-    var sd = req.body.startDate;
-    var sd1 = sd.toString();
-    var st = req.body.startTime;
-    var sd2 = sd.slice(0,10);
-    var st = req.body.startTime
-    var start = sd1 + " " + st + " "
-    console.log("start = " + start)
-    var ed = req.body.endDate;
-    var ed1 = ed.toString();
-    if(ed1 == ""){
-      ed1 = sd1;
-    }
-    var ed2 = ed.slice(0,10);
-    var et = req.body.endTime
-    var end = ed1 + " " + et
-    console.log("end = " + end)
-    let newi = new Input({
-      email: res.locals.user.googleemail,
-      title:req.body.title.trim() + " from " + req.body.fromname,
-      startDate: req.body.startDate,
-      startTime: req.body.startTime,
-      start: start,
-      end: end,
-      endDate: req.body.endDate,
-      endTime:req.body.endTime,
-      description: req.body.description,
-      noti: "false"
-    });
-    newi.save();
-    console.log(newi)
-    Notification.deleteOne({
-      type:"event invitation",
-      to: res.locals.user.googleemail,
-      from:req.body.from})
-      .then( () => {
-        res.redirect('/notification');
-      })
-      .catch( error => {
-        res.send( error );
-      });
-  }
-  else if(req.body.decline == 'Decline'){
-    console.log("in deleteInvitation"+req.body.from);
-    Notification.deleteOne
-    ({type:"event invitation",
-      to: res.locals.user.googleemail,
-      from:req.body.from})
-    .exec()
-    .then(()=>{res.redirect('/notification')})
-    .catch((error)=>{res.send(error)})
-  }
-  else if(req.body.ok == 'OK'){
-    console.log("in delete upcoming events");
-    Notification.deleteOne({_id: req.body.id})
-    .exec()
-    .then(()=>{res.redirect('/notification')})
-    .catch((error)=>{res.send(error)})
-  }
-};
 
 // get the current user's friend list
 exports.getFriend = ( req, res, next ) => {

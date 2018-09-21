@@ -66,15 +66,12 @@ var server = app.listen(3000, function(){
 app.use((req,res,next) => {
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
-    console.log("user has been Authenticated")
     res.locals.user = req.user
     res.locals.loggedIn = true
     if (req.user){
       if (req.user.googleemail=='lxt@brandeis.edu'){
-        console.log("Owner has logged in")
         res.locals.status = '0211'
       } else {
-        console.log('User has logged in')
         res.locals.status = 'user'
       }
     }
@@ -98,13 +95,10 @@ app.get('/login/authorized',passport.authenticate('google', {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    console.log("checking to see if they are authenticated!")
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated()){
-      console.log("user has been Authenticated")
       return next();
     }
-    console.log("user has not been authenticated...")
     // if they aren't redirect them to the home page
     res.redirect('/auth/google');
 }
@@ -136,8 +130,8 @@ app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
 
-app.get('/notification', isLoggedIn, usersController.attachUser,notiController.attachNoti,notiController.getAllNotis);
-app.post('/notification', isLoggedIn, profileController.attachProfile, friendController.updateRequest);
+app.get('/notification', isLoggedIn, usersController.attachUser,notiController.getAllNotis);
+app.post('/notification', isLoggedIn, profileController.attachProfile, notiController.updateRequest);
 
 app.get('/test', helloDFController.getAllSchedule);
 app.post('/deleteSchedule', helloDFController.deleteSchedule);

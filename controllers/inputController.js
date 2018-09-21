@@ -1,6 +1,5 @@
 'use strict';
 const Input = require( '../models/Input' );
-console.log("loading the input Controller")
 
 exports.getAllInputs = ( req, res ) => {
   console.log('in getAllInput')
