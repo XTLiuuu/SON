@@ -104,9 +104,25 @@ exports.getFriendProfile = (req, res) => {
   )
 }
 
+exports.attachCurrFriend = ( req, res, next ) => {
+  const friend_id = req.params.friend_id;
+  Profile.findOne({_id: friend_id},
+    function(err, friend){
+      if(err){
+        console.log(err.message)
+      }
+      else{
+        console.log(friend)
+        res.locals.friendName = friend["name"]
+        console.log(res.locals.friendName)
+        next();
+      }
+    })
+  }
+
 // go the search friend box
 exports.searchPage = ( req, res ) => {
-  res.render('searchPage');
+  res.render('addFriends');
 };
 
 // on  friend page, check availability by person or delete friend
@@ -157,23 +173,6 @@ exports.check_avail = (req, res) =>{
     }).exec()
     res.redirect('/friend')
   }
-}
-
-exports.attachFriend = (req, res, next) => {
-  console.log('in attachFriend')
-  console.log("currUser = " + req.body.currUser)
-  console.log("currUserID = " + req.body.currUserID)
-  console.log(req.body.currUserID)
-  Friend.find({user: req.body.currUser},
-    function(err, friend_list){
-      if(err){
-        console.log(err.message);
-      } else{
-        res.locals.friends = friend_list;
-        next();
-      }
-    }
-  ).exec()
 }
 
 // find the current user's friends

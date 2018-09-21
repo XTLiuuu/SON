@@ -14,10 +14,9 @@ var app = express();
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
-const helloDFController = require('./controllers/helloDFController');
-const helloDFController1 = require('./controllers/helloDFController1');
+const dialogController = require('./controllers/dialogController');
+const alexaController = require('./controllers/alexaController');
 const notiController = require('./controllers/notiController');
-const calendarController = require( './controllers/calendarController' );
 const fullcalenController = require('./controllers/fullcalenController')
 const friendController = require('./controllers/friendController');
 const settingController = require('./controllers/settingController');
@@ -105,39 +104,28 @@ function isLoggedIn(req, res, next) {
 
 // the home page route
 app.use('/', homeRouter);
-// routes related to manage users
 app.get('/users', isLoggedIn, usersController.getAllUsers );
 app.get('/users/:id', isLoggedIn, usersController.getAllUsers );
 app.post('/deleteUser', isLoggedIn, usersController.deleteUser);
-// routes related to setting and profile
 app.get('/setting', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, settingController.attachSetting,
   profileController.attachProfile, settingController.getSetting);
 app.post('/saveSetting', isLoggedIn, settingController.saveSetting);
 app.get('/updateProfile', isLoggedIn, settingRouter, usersController.attachUser, profileController.attachProfile, profileController.getProfile);
 app.post('/saveProfile', isLoggedIn, profileController.checkSecret, profileController.saveProfile );
-// routes related to event management
 app.get('/add', isLoggedIn, usersController.attachUser, inputController.attachInputs, inputController.getAllInputs);
 app.post('/saveinput',isLoggedIn, inputController.saveInput);
 app.post('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
-// friend function
 app.get('/friend',isLoggedIn, friendController.getFriend, friendController.getFriendProfile);
 app.get('/searchPage',isLoggedIn, friendController.searchPage);
 app.post('/check_avail',isLoggedIn, friendController.check_avail);
 app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
-
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
-
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.getAllNotis);
 app.post('/notification', isLoggedIn, profileController.attachProfile, notiController.updateRequest);
-
-app.get('/test', helloDFController.getAllSchedule);
-app.post('/deleteSchedule', helloDFController.deleteSchedule);
-app.get('/hook', usersController.attachUser, helloDFController.getAllSchedule);
-app.post('/hook', helloDFController.process_request);
-
+app.post('/hook', alexaController.process_request);
 app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
 app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
 

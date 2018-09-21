@@ -4,6 +4,7 @@ const Input = require( '../models/Input' );
 const Friend = require( '../models/Friend' );
 const Profile = require( '../models/Profile' );
 
+console.log("loading the hell0 Controller")
 var result1;
 var name;
 var userEmail;
@@ -13,19 +14,26 @@ exports.process_request =  (req, res) => {
   console.dir(req.body)
   console.log("in process_request")
   var result = {
-    "fulfillmentMessages": [],
-    "payload": {"slack":{"text":output_string}},
-    "outputContexts": [],
-    "source": "Text Source",
-    "followupEventInput": {}
+    "version": "beta",
+
+    "sessionAttributes":{
+      "key":"value"
+    },
+    "response": {
+      "outputSpeech": {
+        "type": "PlainText",
+        //"text": output_string
+      },
+      "reprompt": {
+        "outputSpeech": {
+          "type": "PlainText",
+          "text": "Plain text string to speak reprompt"
+        }
+      },
+      "shouldEndSession": true
+    }
   };
-  if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/9deb94c8-c91c-4033-aec3-b753a4f59870"){
-    console.log("lalal")
-    output_string = "hello dear"
-    result.fulfillmentText = output_string;
-    res.json(result);
-  }
-  else if(req.body.queryResult.intent.name == "projects/son-bjwhqg/agent/intents/9deb94c8-c91c-4033-aec3-b753a4f59870"){
+  if(req.body.request.intent.name == "open_skill"){
     Profile.findOne({amazon: req.body.context.System.user["userId"]},
       function(err, profile){
         console.log("after finding profile")
@@ -52,17 +60,12 @@ exports.process_request =  (req, res) => {
       })
   }
   else if(name == undefined && req.body.request.intent.name != "ask_secret"){
-    console.log("no name yet");
-    console.log("userId = " + req.body.context.System.user["userId"])
     Profile.findOne({amazon: req.body.context.System.user["userId"]},
       function(err, profile){
-        console.log("after finding profile")
         if(err){
           console.log(err.message)
         }
         else{
-          console.log("after finding profile")
-          console.log(profile)
           if(profile == null){
             output_string = "Hi! Who are you? Please tell me your secret code."
           }
@@ -73,18 +76,13 @@ exports.process_request =  (req, res) => {
   }
 
   else if(req.body.request.intent.name == "ask_secret"){
-    console.log("in ask_secret")
     var secret = req.body.request.intent.slots.secret["value"];
-    console.log("[" + secret + "]")
     Profile.findOne({secret: secret},
       function(err, profile){
-        console.log("after finding profile")
         if(err){
           console.log(err.message)
         }
         else{
-          console.log("after finding profile")
-          console.log(profile)
           if(profile == null){
             output_string = "Sorry, " + secret + " is not a correct secret code"
           }
@@ -92,14 +90,9 @@ exports.process_request =  (req, res) => {
             userEmail = profile.email;
             if(name == null){
               name = profile.name;
-              console.log(userEmail)
-              console.log(name)
-              console.log("user6 = " + userEmail)
-              console.log("user7 = " + profile.amazon)
               profile.amazon = req.body.context.System.user["userId"];
               profile.save();
             }
-            console.log(profile.amazon)
             output_string = "Hi, I know you are" + name + ". What can I do for you?"
           }
           result.response.outputSpeech.text = output_string;
@@ -118,7 +111,6 @@ exports.process_request =  (req, res) => {
           res.status(err.status || 500);
           res.json(err);
         } else{
-          console.log("after finding friends")
           var num = friend_list.length;
           var names = "";
           if(num != 0){
@@ -142,20 +134,14 @@ exports.process_request =  (req, res) => {
       })
    }
 
-
-
    else if(req.body.request.intent.name == "guess_free"){
-     console.log("in guess_free")
      var time = req.body.request.intent.slots.time["value"];
      var date = req.body.request.intent.slots.date["value"];
      var freeFriend = [];
-     console.log(time)
-     console.log(date)
      var s = new Date(date);
      s.setDate(s.getDate() + 1);
      var index = time.indexOf(":")
      s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
-     console.log("s = " + s)
      Friend.find({user: userEmail},
       function(err, friend_list){
         if(err){
@@ -163,8 +149,6 @@ exports.process_request =  (req, res) => {
           res.status(err.status || 500);
           res.json(err);
         } else{
-          console.log("after attaching friends")
-          console.log(friend_list)
           var x = 0;
           checkWithFriend(friend_list, s, freeFriend, x, function(err, freeResult){
             if(err){
@@ -172,12 +156,10 @@ exports.process_request =  (req, res) => {
               res.status(err.status || 500);
               res.json(err);
             } else {
-              console.log("get result of free friend back")
               var free = "";
               for(var a = 0; a < freeResult.length; a ++){
                 free = free + freeResult[a] + ", "
               }
-              console.log("free = " + free)
               free = free.slice(0, free.length-2)
               if(freeResult.length == 0){
                 output_string = "I'm sorry, " + name + ". You don't have any friends available on " + date + " at " + time
@@ -190,7 +172,6 @@ exports.process_request =  (req, res) => {
                   output_string = "Free friends at " + time + ": " + free;
                 }
               }
-              console.log("output_string = " + output_string)
               result.response.outputSpeech.text = output_string;
               res.json(result);
             }
@@ -200,15 +181,11 @@ exports.process_request =  (req, res) => {
    }
 
 
-
    else if(req.body.request.intent.name == "check_inFriend"){
-     console.log("in check_inFriend")
      var friendName =  req.body.request.intent.slots.name["value"];
      friendName = friendName.trim();
-     console.log("friendName = " + friendName)
      var index = friendName.indexOf(" ")
      friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
-     console.log("friendName = " + friendName)
      Friend.findOne({
        user: userEmail,
        friendname: friendName
@@ -217,8 +194,6 @@ exports.process_request =  (req, res) => {
         if(err){
           console.log(err.message)
         } else{
-          console.log("after checking friends")
-          console.log(friend)
           if(friend == null){
             output_string = "I'm sorry. " + friendName + " is not your friend."
           }
@@ -232,20 +207,16 @@ exports.process_request =  (req, res) => {
    }
 
    else if(req.body.request.intent.name == "ask_friend_avail"){
-     console.log("in ask_friend_avail")
      var friendName =  req.body.request.intent.slots.name["value"];
      var date =  req.body.request.intent.slots.date["value"];
      var time =  req.body.request.intent.slots.time["value"];
      friendName = friendName.trim();
-     console.log("friendName = " + friendName)
      var index = friendName.indexOf(" ")
      friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
-     console.log("friendName = " + friendName)
      var s = new Date(date);
      s.setDate(s.getDate()+1)
      var index1 = time.indexOf(":")
      s.setHours(time.slice(0, index1), time.slice(index1 + 1, time.length));
-     console.log("s = " + s)
      Friend.findOne({friendname: friendName},
        function(err, friend){
          if(err){
@@ -254,20 +225,17 @@ exports.process_request =  (req, res) => {
          else{
            if(friend == null){
              output_string = "I'm sorry. " + friendName + " is not your friend."
-             console.log("output_string = " + output_string)
              result.response.outputSpeech.text = output_string;
              res.json(result);
            }
            else{
              var friendEmail = friend["friend"]
-             console.log("friendEmail = " + friendEmail)
              checkFriendStatus(friendName, friendEmail, s, date, time, function(err, output_string){
                if(err){
                  console.log(err.message)
                  res.status(err.status || 500);
                  res.json(err);
                } else {
-                 console.log("output_string = " + output_string)
                  result.response.outputSpeech.text = output_string;
                  res.json(result);
                }
@@ -277,36 +245,25 @@ exports.process_request =  (req, res) => {
        })
    }
 
-
-
   // needs to figure out how to extract event
   else if(req.body.request.intent.name == "add_event"){
-    console.log("in Add_Event");
     output_string = addEvent(req.body.request, req.user);
-    console.log("output_string1 = " + output_string)
     result.response.outputSpeech.text = output_string;
     res.json(result);
   }
 
-
-
-
   // ask what event will happen at some time
   else if(req.body.request.intent.name == "ask_event"){
     result1 = [];
-    console.log("in Ask_Event1");
     var time = req.body.request.intent.slots.time["value"];
     var date = req.body.request.intent.slots.date["value"];
     var constraint = req.body.request.intent.slots.constraint["value"];
-    console.log("constraint = " + constraint)
     // if the user does not include time - e.g. What am I going to do before three p.m.
     // the default time is today
     if(date == null){
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     }
-    console.log("date = " + date)
-    console.log("time = " + time)
     var time1;
     if(constraint){
       if(time == null){
@@ -319,25 +276,18 @@ exports.process_request =  (req, res) => {
         var index = time.indexOf(":")
         s.setHours(time.slice(0, index), time.slice(index + 1, time.length));
       }
-      console.log("s = " + s)
       if(constraint == "before"){
         Input.find({email: userEmail,},
         function(err, schedule_list){
           if(err){
             console.log(err.message);
           } else{
-            console.log("after finding results")
-            console.log("list length = " + schedule_list.length)
             for(var i = 0; i < schedule_list.length; i ++){
-              console.log("i = " + i)
-              console.log("list start " + schedule_list[i].start)
               var today = new Date();
               if(schedule_list[i].start <= s && schedule_list[i].start >= today){
                 result1.push(schedule_list[i]);
               }
-              console.log("result = " + result1)
             }
-            console.log("length= " + result1.length)
             if(result1.length == 0){
               if(time1 == "notime"){
                 output_string = name + ", you have nothing scheduled before " + date
@@ -347,10 +297,6 @@ exports.process_request =  (req, res) => {
               }
             }
             else{
-              console.log("here")
-              console.log(result1[0].title)
-              console.log(result1[0].startTime)
-              console.log(result1[0].startDate)
               if(time1 == "notime"){
                 output_string = "Before " + date + " ," + name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
                 for(var i = 1; i < result1.length; i ++){
@@ -365,7 +311,6 @@ exports.process_request =  (req, res) => {
               }
             }
           }
-          console.log("output_string1 = " + output_string)
           result.response.outputSpeech.text = output_string;
           res.json(result);
         })
@@ -408,19 +353,15 @@ exports.process_request =  (req, res) => {
     // when the user asks a certain date
     // e.g. what am i going to do tomorrow
     else{
-      console.log("in no time")
       Input.find({
         email: userEmail,
         startDate: date,
       }, function(err, schedule_list){
         if(err){
-          console.log( error.message );
         } else {
-          console.log("after finding in no time")
           if(schedule_list.length == 0){
             output_string = name + ", you have nothing scheduled for " + date
           } else {
-            console.log("schedule is " + schedule_list)
             if(schedule_list.length == 1){
               output_string = date + ", " + name + ": "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
             }
@@ -432,23 +373,16 @@ exports.process_request =  (req, res) => {
             }
           }
         }
-        console.log(output_string)
         result.response.outputSpeech.text = output_string;
         res.json(result);
       })
     }
   }
 
-
-
-
   // delete event
   else if(req.body.request.intent.name == "delete_event"){
-    console.log("in delete_event");
     var time = req.body.request.intent.slots.time["value"];
-    console.log("time = " + time)
     var date = req.body.request.intent.slots.date["value"];
-    console.log("date = " + date)
     if(date == null){
       var today = new Date();
       date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -460,8 +394,6 @@ exports.process_request =  (req, res) => {
     if(text.slice(-2) == "on"){
       text = text.slice(0, -2)
     }
-    console.log("text = " + text)
-    console.log("["+text.trim()+"]");
     var start1 = date + " " + time
     Input.findOne({
       email: userEmail,
@@ -471,11 +403,9 @@ exports.process_request =  (req, res) => {
       if(err){
         console.log( err.message );
       } else {
-        console.log("Input is " + input)
         if(input == null){
           output_string = text + " on " + date + " at " + time + " is not found, "
         } else {
-          console.log("Input is " + input)
           output_string =  text + " on " + date + " at " + time + " is cancelled";
           Input.deleteOne({_id:input._id}).exec()
         }
@@ -485,72 +415,47 @@ exports.process_request =  (req, res) => {
     })
   }
 
-
-
-
   else if(req.body.request.intent.name == "update_event"){
     var update_event = req.body.request.intent.slots;
-    console.log("in update event")
     var prevText = update_event.prevText["value"]
-    console.log("prevText = " + prevText)
     if(prevText.slice(-2) == "at"){
       prevText = prevText.slice(0, -2)
     }
     if(prevText.slice(-2) == "on"){
       prevText = prevText.slice(0, -2)
     }
-    console.log("prevText1 = " + prevText)
     var prevTime = update_event.prevTime["value"]
-    console.log("prevTime = " + prevTime)
     var prevDate = update_event.prevDate["value"]
-    console.log("prevDate = " + prevDate)
     var newTime = update_event.newTime["value"]
-    console.log("newTime = " + newTime)
     var newDate = update_event.newDate["value"]
-    console.log("newDate = " + newDate)
     if(prevDate == null){
       var today = new Date();
       prevDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      console.log("prevDate1 = " + prevDate)
     }
     if(newDate == null){
       newDate = prevDate;
-      console.log("newDate1 = " + newDate)
     }
     if(newTime == null){
       newTime = prevTime;
-      console.log("newTime1 = " + newTime)
     }
     var start1 = prevDate + " " + prevTime
-    console.log("start1 = " + start1)
     var s = new Date(prevDate);
     s.setDate(s.getDate() + 1)
     var index = prevTime.indexOf(":")
     s.setHours(prevTime.slice(0, index), prevTime.slice(index + 1, prevTime.length));
-    console.log("s = " + s)
     var start2 = newDate + " " + newTime
-    console.log("start2 = " + start2)
     var sd = newDate.toString().slice(0,10);
-    console.log("sd = " + sd)
-    console.log("[" + prevText.trim() + "]")
     Input.findOne({
       email: userEmail,
       title: prevText.trim(),
       start: s,
     }, function(err, input){
-      console.log("found11")
       if(err){
-        console.log(err.message);
       } else{
-        console.log("found 22")
-        console.dir(input)
-        console.log(input)
         if(input == null){
-          console.log("input is empty")
           output_string = prevText + " on " + prevDate + " at " + prevTime + " is not found."
         }
         else{
-          console.log("Input1 " + input);
           Input.update({_id: input._id},{
             title: prevText.trim(),
             start: start2,
@@ -560,7 +465,6 @@ exports.process_request =  (req, res) => {
           output_string = name + ", " + prevText + " on " + prevDate + " on " + prevTime + " has been changed to " + newDate + " at " + newTime;
         }
       }
-      console.log(output_string)
       result.response.outputSpeech.text = output_string;
       res.json(result);
     })
@@ -569,7 +473,6 @@ exports.process_request =  (req, res) => {
 
 
   else{
-    console.log("in no intent")
     result.response.outputSpeech.text = "Sorry, " + name + ", I cannot understand what you said. Can you rephrase it?"
     res.json(result);
   }
@@ -578,22 +481,15 @@ exports.process_request =  (req, res) => {
 
 // save event
 function addEvent(req, user){
-  console.log("in addEvent1")
   var response;
   var time = req.intent.slots.time["value"];
-  console.log("time = " + time)
   var date = req.intent.slots.date["value"];
-  console.log("date = " + date)
   var duration = req.intent.slots.duration["value"];
-  console.log("duration = " + duration)
   var text = req.intent.slots.eventText["value"];
-  console.log("text =" + text)
   if(time){
-    console.log("add by time")
     if(date == null){
       var today = new Date();
       if(today.getMonth().toString().length == 1){
-        console.log("here1")
         date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
       }
       else{
@@ -604,7 +500,6 @@ function addEvent(req, user){
   }
 
   if(duration){
-    console.log("in duration")
     if(text.slice(-2) == 'in'){
       text = text.slice(0, -2)
     }
@@ -612,46 +507,30 @@ function addEvent(req, user){
     var end1 = duration.indexOf('T');
     var num = duration.slice(end1 + 1, -1);
     if(type == "M"){
-      if(num > 1){
-        type = "minutes"
-      }
-      else{
-        type = "minute"
-      }
+      type = "minute"
+      if(num > 1) type = "minutes"
       var d = new Date();
       var now = new Date(d.getTime() + num*60000);
     }
     else if(type == "H"){
-      if(num > 1){
-        type = "hours"
-      }
-      else{
-        type = "hour"
-      }
+      type = "hour"
+      if(num > 1) type = "hours"
       var d = new Date();
       var now = new Date(d.getTime() + num*60*60000);
     }
     else if(type == "D"){
       end1 = duration.indexOf('P');
       num = duration.slice(end1 + 1, -1);
-      if(num > 1){
-        type = "days"
-      }
-      else{
-        type = "day"
-      }
+      type = "day"
+      if(num > 1) type = "days"
       var d = new Date();
       var now = new Date(d.getTime() + num*24*60*60000);
     }
     else if(type == "W"){
       end1 = duration.indexOf('P');
       num = duration.slice(end1 + 1, -1);
-      if(num > 1){
-        type = "weeks"
-      }
-      else{
-        type = "week"
-      }
+      type = "week"
+      if(num > 1) type = "weeks"
       var d = new Date();
       var now = new Date(d.getTime() + num*7*24*60*60000);
     }
@@ -700,59 +579,10 @@ function addEvent(req, user){
     noti: "false",
   })
   newInput.save()
-  console.log(newInput);
-  console.log(response)
   return response;
 }
 
-// this displays all of the skills
-exports.getAllSchedule = ( req, res ) => {
-  console.log('in getAllSchedule')
-  Input.find( {email: userEmail,} )
-    .exec()
-    .then( ( schedule ) => {
-      res.render( 'test', {
-        schedule: schedule
-      } );
-      console.log(schedule.length)
-    })
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'getAllSchedule promise complete' );
-    } );
-};
-
-exports.deleteSchedule = (req, res) => {
-  console.log("in deleteSchedule")
-  let schedule = req.body.deleteSchedule
-  //check what schedule select to delete
-  if (typeof(schedule)=='string') {
-    console.log("in delete one")
-    Schedule.deleteOne({_id:schedule})
-         .exec()
-         .then(()=>{res.redirect('/test')})
-         .catch((error)=>{res.send(error)})
-  } else if (typeof(schedule)=='object'){
-      console.log("in delete many")
-      Schedule.deleteMany({_id:{$in:schedule}})
-           .exec()
-           .then(()=>{res.redirect('/test')})
-           .catch((error)=>{res.send(error)})
-  } else if (typeof(schedule)=='undefined'){
-      console.log("This is if they didn't select an event")
-      res.redirect('/test')
-  } else {
-    console.log("This shouldn't happen!")
-    res.send(`unknown event: ${schedule}`)
-  }
-
-};
-
 function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
-  console.log("in check friend status function");
   Input.find({email: friendEmail},
     function(err, input_list){
       if(err){
@@ -760,21 +590,15 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
         callback(err, null);
       }
       else{
-        console.log("after getting inputs of this friend");
-        console.log("length = " + input_list.length)
         var checkStatus;
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].start)
-          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
             if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
-              console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
             if(input_list[i].start.getTime() == s.getTime()){
-              console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
@@ -789,8 +613,6 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
         else{
           response = friendName + " is " + checkStatus + " at " + time
         }
-        console.log("checkStatus at end is " + checkStatus)
-        console.log(response)
         callback(null, response);
       }
     }
@@ -798,63 +620,40 @@ function checkFriendStatus(friendName, friendEmail, s, date, time, callback){
 }
 
 function checkWithFriend(friend_list, s, freeFriend, x, callback){
-  console.log("in check with friend" + x)
   var length = friend_list.length
-  console.log("length 12 = " + length);
   Input.find({email: friend_list[x]["friend"]},
     function(err, input_list){
       if(err){
-        console.log(err.message);
         callback(err, null);
       } else{
-        console.log("after getting friend " + x);
-        console.log("length = " + input_list.length);
         var checkStatus;
         for(var i = 0; i < input_list.length; i ++){
-          console.log("list " + i + " startTime = " + input_list[i].start)
-          console.log("list " + i + " endTime = " + input_list[i].end)
           if(input_list[i].endTime != ""){
-            console.log("have end time")
             if(input_list[i].start.getTime() <= s.getTime() && s.getTime() <= input_list[i].end.getTime()){
-              console.log("input meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
           else{
-            console.log("do not have end time")
             if(input_list[i].start.getTime() == s.getTime()){
-              console.log("input1 meet is " + input_list[i]);
               checkStatus = "BUSY";
             }
           }
         }
         if(x == friend_list.length - 1 && checkStatus == "BUSY"){
-          console.log("the final free friend_list = ")
-          console.log(freeFriend)
           callback(null, freeFriend);
         }
-        console.log("checkStatus at end is " + checkStatus)
         if(checkStatus != "BUSY"){
-          console.log(friend_list[x])
-          console.log(friend_list[x].friendname)
-          console.log(friend_list[x]["friendname"])
           freeFriend.push(friend_list[x].friendname);
-          console.log("before freefriend")
-          console.log(freeFriend)
           if(x == friend_list.length - 1){
-            console.log("the final free friend_list = ")
-            console.log(freeFriend)
             callback(null, freeFriend);
 
           }
           if(x < friend_list.length - 1){
-            console.log("call again lala")
             checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
           }
         }
         else{
           if(x < friend_list.length - 1){
-            console.log("call again in busy")
             checkWithFriend(friend_list, s, freeFriend, x + 1, callback)
           }
         }

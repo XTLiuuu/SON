@@ -6,7 +6,7 @@ exports.getAllInputs = ( req, res ) => {
   Input.find( {} )
     .exec()
     .then( ( inputs ) => {
-      res.render( 'add', {
+      res.render( 'addEvent', {
         inputs: inputs
       } );
     } )
@@ -63,7 +63,6 @@ exports.saveInput = ( req, res ) => {
     adCheck: req.body.allDay,
     noti: "false"
   } )
-
   newInput.save()
     .then( () => {
       res.redirect( '/calendar/calendarD' );

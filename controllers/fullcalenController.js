@@ -22,14 +22,13 @@ exports.get_events_post = function(req, res){
 
 // normal get calendar
 exports.getCalendar = (req, res) => {
-  res.render('calendarD');
+  res.render('calendar');
 };
 
 // get calendar for sending events to friend
-exports.getCalendar1 = (req, res) => {
+exports.sendCalendar = (req, res) => {
   const f_id = req.params.friend_id;
-  console.log("id = " + f_id)
-  res.render('calendarDS', {f_id: f_id});
+  res.render('sendCalendar', {f_id: f_id});
 };
 
 exports.update_event_get = function(req, res){
@@ -49,22 +48,6 @@ exports.update_event_get = function(req, res){
       }
     })
   }
-
-exports.attachCurrFriend = ( req, res, next ) => {
-  console.log('in attach curr Friend')
-  const friend_id = req.params.friend_id;
-  Profile.findOne({_id: friend_id},
-    function(err, friend){
-      if(err){
-        console.log(err.message)
-      }
-      else{
-        res.locals.friendName = friend["name"]
-        next();
-      }
-    })
-  }
-
 
 exports.show_sending_event = function(req, res){
   const event_id = req.params.event_id;
@@ -91,39 +74,22 @@ exports.update_event_post = function(req, res){
   const event_id = req.params.event_id;
   if(req.body.update == 'Update'){
     var sd = req.body.startDate;
-    var sd1 = sd.toString();
-    var sd2 = sd.slice(0,10);
-    var st = req.body.startTime
-    var start = sd1 + " " + st + " "
+    var start = sd.toString() + " " + req.body.startTime
     var ed = req.body.endDate;
-    var ed1 = ed.toString();
-    if(ed1 == ""){
-      ed1 = sd1;
-    }
-    var ed2 = ed.slice(0,10);
-    var et = req.body.endTime
-    var end = ed1 + " " + et
-    var ad = req.body.allDay
-    var allDay;
-    if(ad == 'on'){
-      allDay = true;
-    }
-    else{
-      allDay = false;
-    }
-    var curr = Input.findOne({_id: event_id})
-    curr.update({_id: event_id}, {
+    if(ed == "") ed = sd
+    var end = ed.toString() + " " + req.body.endTime
+    var allDay = false;
+    if(req.body.allDay == 'on') allDay = true
+    let newInput = new Input( {
       email: req.user.googleemail,
-      id: req.body.id,
       title: req.body.title,
       allDay: allDay,
-      start: start,
+      start: start, // include both date and time
       end:end,
-      startDate: sd2,
+      startDate: sd.slice(0,10),
       startTime: req.body.startTime,
-      endDate: ed2,
+      endDate: ed.slice(0,10),
       endTime: req.body.endTime,
-      url:req.body.url,
       editable: true,
       overlap: true,
       color: req.body.color,
@@ -147,12 +113,10 @@ exports.update_event_post = function(req, res){
 
 
 exports.send_event = function(req, res){
- console.log("in send_event666")
- console.log("friendID = " + req.params.friend_id)
  const fId = new mongo.ObjectId(req.params.friend_id)
  Profile.findOne(fId)
   .exec()
-  .then( (fff) =>{
+  .then( (friend) =>{
     var ad = req.body.allday;
     var allDay;
     if(ad == 'on'){
@@ -164,12 +128,11 @@ exports.send_event = function(req, res){
     let friendEvent =
      new Notification({
       type:"event invitation",
-      to:fff.email,
-      toname:fff.name,
+      to:friend.email,
+      toname:friend.name,
       content: "You received an event shared from " + res.locals.profile.name,
       from: res.locals.user.googleemail,
       fromname: res.locals.profile.name,
-
       title: req.body.title,
       sDate: req.body.startDate,
       sTime: req.body.startTime,

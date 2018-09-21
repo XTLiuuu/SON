@@ -43,18 +43,11 @@ exports.getNoti = ( req, res ) => {
 };
 
 exports.countNoti = (req, res) => {
-  console.log("in count noti 1")
-  console.log("here")
-  console.log(req.user.googleemail)
   Noti.find({
     to: req.user.googleemail
   }).exec().then((noti_list)=> {
-    console.log(noti_list)
-    console.log("count notification here")
-    console.log("noti number" + noti_list.length)
     res.json(noti_list.length);
   }).catch((err) => {
-    console.log("in count notification err")
     res.status(err.status || 500);
     res.json(err);
   })
@@ -63,21 +56,17 @@ exports.countNoti = (req, res) => {
 exports.generateNoti = (req, res) => {
   const current_date = new Date();
   const current_date_start = new Date(current_date.toISOString().substring(0, current_date.toISOString().indexOf("T")));
-  console.dir(current_date_start)
   Input.find({
     start: {$gte: current_date_start},
     email: req.user.googleemail,
     noti: "false"
   }).exec().then((input_list1)=> {
-    console.log("in test_json again3")
-    console.log(input_list1)
     for(var i = 0; i < input_list1.length; i ++){
       const d = new Date(input_list1[i].start)
       const n = new Date()
       const dn = (d-n)
       const title = input_list1[i].title
       if ((dn<1000*60*5) && (dn>0)) {
-        console.log("in storing notification")
         input_list1[i].noti = "true"
         var content1;
         if(input_list1[i].allDay){
@@ -94,8 +83,6 @@ exports.generateNoti = (req, res) => {
         else{
           content1 = "You have an event at " + input_list1[i].startTime
         }
-        console.log("content1 = " + content1)
-        console.log(req.user.googleemail)
         let notification = new Noti({
           type: "event reminder",
           content: content1,
@@ -108,7 +95,6 @@ exports.generateNoti = (req, res) => {
           allday: input_list1[i].allDay,
           description: input_list1[i].description,
          })
-        console.log(notification)
         notification.save();
         input_list1[i].save()
       }
