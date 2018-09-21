@@ -6,6 +6,7 @@ const Notification = require('../models/Notification');
 const mongo = require('mongodb');
 console.log("loading the friend Controller")
 
+// use to add new friend
 exports.searchProfile_post = ( req, res ) => {
   console.log('in searchprofile'+req.body.searchfriend)
   Profile.findOne({email:req.body.searchfriend})
@@ -22,6 +23,7 @@ exports.searchProfile_post = ( req, res ) => {
     } );
 };
 
+// used to add new friend
 exports.searchProfile_get = ( req, res  ) => {
   res.render('searchProfile');
 };
@@ -285,12 +287,8 @@ exports.attachFriend = (req, res, next) => {
   ).exec()
 }
 
-
+// find the current user's friends
 exports.attachFriend = ( req, res, next ) => {
-  console.log('in attachFriend')
-  console.log("currUser = " + req.body.currUser)
-  console.log("currUserID = " + req.body.currUserID)
-  console.log(req.body.currUserID)
   Friend.find({user: req.body.currUser},
     function(err, friend_list){
       if(err){
@@ -320,9 +318,10 @@ exports.guess_free = (req, res) => {
   checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime);
 }
 
-// recursive function 
+// recursive function
 function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTime){
   var length = friend_list.length
+  // check the friend's events (the current friend is the one with index x)
   Input.find({email: friend_list[x]["friend"]},
     function(err, input_list){
       if(err){
@@ -345,16 +344,20 @@ function checkWithFriend(friend_list, s, freeFriend, x, res, checkDate, checkTim
           var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
           res.json(response)
         }
+        // if the current friend is free, we push it
         if(checkStatus != "BUSY"){
           freeFriend.push(friend_list[x].friendname);
+          // if this is the last person
           if(x == friend_list.length - 1){
             var response = {freeFriend: freeFriend, checkDate: checkDate, checkTime: checkTime }
             res.json(response)
           }
+          // if this is not the last person
           if(x < friend_list.length - 1){
             checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)
           }
         }
+        // if he is busy, we go to check the next person
         else{
           if(x < friend_list.length - 1){
             checkWithFriend(friend_list, s, freeFriend, x + 1, res, checkDate, checkTime)

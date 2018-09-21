@@ -1,5 +1,3 @@
-app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
-
 app.post('/searchProfile', isLoggedIn, friendController.searchProfile_post);
 app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
