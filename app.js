@@ -125,7 +125,7 @@ app.get('/searchProfile',isLoggedIn, friendController.searchProfile_get)
 app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendController.sendFrequest);
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.getAllNotis);
 app.post('/notification', isLoggedIn, profileController.attachProfile, notiController.updateRequest);
-app.post('/hook', alexaController.process_request);
+app.post('/hook', dialogController.process_request);
 app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
 app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
 

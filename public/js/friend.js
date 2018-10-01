@@ -4,7 +4,6 @@
 $(document).ready(function(){
   $("input.check-avail-submit").on('click', function(event){
     event.preventDefault();
-    console.dir(event)
     const fid = event.currentTarget.attributes["fid"].nodeValue
     console.log("clicked!")
     const theData = {
@@ -14,21 +13,16 @@ $(document).ready(function(){
       checkTime: $("#checkTime"+fid).val(),
       check_avail: $("#check").val()
     }
-    console.dir(theData)
     $.ajax({
       type: "POST",
       url:"/check_avail",
       data: theData,
       success: function(data){
-        console.log("inside success")
         var name = data["friendName"]
         var date = data["checkDate"]
         var time = data["checkTime"]
         var status = data["checkStatus"]
         $("#check-result").text(name + " is " + status + " on " + date + " at " + time + "!");
-        console.log("data is")
-        console.dir(data)
-        console.dir(document.getElementById("check-result"));
         document.getElementById("check-result").style.display = "block";
         document.getElementById(fid+"modal").style.display = "none";
         setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 5000)
@@ -41,8 +35,6 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("input.guess-free").on('click', function(event){
     event.preventDefault();
-    console.dir(event)
-    console.log("gues-free clicked!")
     const theData = {
       currUser: $("#currUser").val(),
       currUserID: $("currUserID").val(),
@@ -55,7 +47,6 @@ $(document).ready(function(){
       url:"/guess_free",
       data: theData,
       success: function(data){
-        console.log("guess success")
         var freeFriend = data["freeFriend"]
         var date = data["checkDate"]
         var time = data["checkTime"]
@@ -63,18 +54,13 @@ $(document).ready(function(){
         for(var i = 0; i < freeFriend.length; i ++){
           response = response + freeFriend[i] + ", "
         }
-        console.log("response1 = " + response)
         response = response.slice(0, response.length-2)
-        console.log("response = " + response)
         if(freeFriend.length == 0){
           $("#check-result").text("NO FREE FRIENDS on " + date + " at " + time);
         }
         else{
           $("#check-result").text("FREE FRIENDS on " + date + " at " + time + ": " + response);
         }
-        console.log("data is")
-        console.dir(data)
-        console.dir(document.getElementById("check-result"));
         document.getElementById("check-result").style.display = "block";
         document.getElementById("id0211").style.display = "none";
         setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 5000)
@@ -116,12 +102,9 @@ function openMail(event) {
        x[i].style.display = "none";
     }
     x = document.getElementsByClassName("test");
-    console.log("test length = "  + x.length)
     for (i = 0; i < x.length; i++) {
-      console.log("x = " + x[i].className)
        x[i].className = x[i].className.replace("w3-light-grey", "");
     }
-    console.log("personname = " + personName)
     document.getElementById(personName).style.display = "block";
     event.currentTarget.className += " w3-light-grey";
     document.getElementById("021").style.display = "none";
@@ -131,15 +114,11 @@ function openMail(event) {
 function openModal(event) {
     event.preventDefault();
     const personName = event.currentTarget.attributes[1].nodeValue;
-    console.log("personname = " + personName)
     document.getElementById(personName+"modal").style.display = "block";
 }
 
 function closeModal(event) {
     event.preventDefault();
     const personName = event.currentTarget.attributes[1].nodeValue;
-    console.log("personname = " + personName)
     document.getElementById(personName+"modal").style.display = "none";
 }
-//var openTab = document.getElementById("firstTab");
-//openTab.click();

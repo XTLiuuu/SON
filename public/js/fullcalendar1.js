@@ -1,4 +1,3 @@
-console.log('in full calendar 1')
 $(function() {
   var containerEl = $('#calendar');
   containerEl.fullCalendar({
