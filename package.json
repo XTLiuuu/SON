@@ -7,6 +7,7 @@
     "devstart": "nodemon ./bin/www"
   },
   "dependencies": {
+    "actions-on-google": "^2.4.1",
     "alexa-sdk": "^1.0.25",
     "angular": "^1.7.2",
     "angular-bootstrap-calendar": "^1.0.0",
@@ -14,6 +15,7 @@
     "clndr": "^1.4.7",
     "cookie-parser": "^1.4.3",
     "debug": "~2.6.9",
+    "dialogflow-fulfillment": "^0.6.0",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",

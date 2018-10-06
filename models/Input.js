@@ -6,6 +6,7 @@ var inputSchema = mongoose.Schema( {
   allDay: Boolean,
   start: Date, // include date and time
   end: Date,
+  recurence: String,
   startDate: String,
   startTime: String,
   endDate: String,

@@ -3,6 +3,7 @@ const Schedule = require( '../models/Schedule' );
 const Input = require( '../models/Input' );
 const Friend = require( '../models/Friend' );
 const Profile = require( '../models/Profile' );
+const WebhookClient = require('dialogflow-fulfillment')
 
 var result1;
 var name;
@@ -11,19 +12,23 @@ var output_string = "Sorry, " + name + ". Can you say that again?";
 
 exports.process_request =  (req, res) => {
   console.dir(req.body)
-   var result = {
-     "fulfillmentMessages": [],
-     "payload": {"slack":{"text":output_string}},
-     "outputContexts": [],
-     "source": "Text Source",
-     "followupEventInput": {}
-   };
+  const agent = new WebhookClient({ req, res });
+  console.log("agent")
+  console.log(agent);
+  // var result = {
+  //   "fulfillmentMessages": [],
+  //   "payload": {"slack":{"text":output_string}},
+  //   "outputContexts": [],
+  //   "source": "Text Source",
+  //   "followupEventInput": {}
+  // };
 
   if(req.body.result.metadata.intentId == "bfdfafa6-9302-412b-9e6b-5b3d8a966735"){
     output_string = addEvent(req.body.result.parameters);
     console.log(output_string);
-    result.speech = output_string;
-    res.json(result);
+    // result.speech = output_string;
+    // res.json(result);
+    agent.add(output_string);
   }
 }
 
@@ -34,6 +39,12 @@ function addEvent(req){
    var recurence = req.recurence;
    var date = "";
    var response;
+   if(name == null){
+     return "Give your reminder a name";
+   }
+   if(time == null){
+     return "What time";
+   }
    if(time.charAt(2) == ':'){
      var today = new Date();
       if(today.getMonth().toString().length == 1){
