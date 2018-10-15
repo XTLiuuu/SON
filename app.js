@@ -14,6 +14,7 @@ var app = express();
 const usersController = require('./controllers/usersController')
 const inputController = require('./controllers/inputController');
 const profileController = require('./controllers/profileController');
+const dialogController1 = require('./controllers/dialogController1');
 const dialogController = require('./controllers/dialogController');
 const alexaController = require('./controllers/alexaController');
 const notiController = require('./controllers/notiController');
@@ -126,6 +127,7 @@ app.post('/sendFrequest',isLoggedIn, profileController.attachProfile, friendCont
 app.get('/notification', isLoggedIn, usersController.attachUser,notiController.getAllNotis);
 app.post('/notification', isLoggedIn, profileController.attachProfile, notiController.updateRequest);
 app.post('/hook', dialogController.process_request);
+//app.post('/hook', dialogController1.dialogflowFirebaseFulfillment);
 app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
 app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
 
