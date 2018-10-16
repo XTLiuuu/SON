@@ -17,6 +17,7 @@ var inputSchema = mongoose.Schema( {
   adCheck: String,
   description: String,
   noti: String,
+  sessionID: String,
 } );
 
 module.exports = mongoose.model( 'Input', inputSchema );

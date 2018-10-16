@@ -13,7 +13,7 @@ var profileSchema = mongoose.Schema( {
   secret: String,
   image: String,
   amazon: String,
-  dialogflow: String 
+  dialogflow: String, 
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

@@ -3,11 +3,11 @@ const mongo = require('mongodb');
 const Input = require('../models/Input')
 const User = require('../models/user')
 const Friend = require('../models/Friend')
-const Noti = require( '../models/Notification' )
+const Notification = require( '../models/Notification' )
 
 // this displays all of the skills
 exports.getAllNotis = ( req, res ) => {
-  Noti.find({to:res.locals.user.googleemail})
+  Notification.find({to:res.locals.user.googleemail})
     .exec()
     .then( ( notis ) => {
       res.render( 'notification', {
@@ -26,7 +26,7 @@ exports.getAllNotis = ( req, res ) => {
 exports.getNoti = ( req, res ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get notification')
-  Noti.findOne(objId)
+  Notification.findOne(objId)
     .exec()
     //this is a function takes one parameter (function) and does this
     .then( ( noti) => {
@@ -43,7 +43,7 @@ exports.getNoti = ( req, res ) => {
 };
 
 exports.countNoti = (req, res) => {
-  Noti.find({
+  Notification.find({
     to: req.user.googleemail
   }).exec().then((noti_list)=> {
     res.json(noti_list.length);
@@ -83,7 +83,7 @@ exports.generateNoti = (req, res) => {
         else{
           content1 = "You have an event at " + input_list1[i].startTime
         }
-        let notification = new Noti({
+        let notification = new Notification({
           type: "event reminder",
           content: content1,
           to: req.user.googleemail,
