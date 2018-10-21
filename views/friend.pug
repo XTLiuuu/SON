@@ -13,36 +13,9 @@ block content
   body
     // Side Navigation
     nav#mySidebar.w3-sidebar.w3-bar-block.w3-collapse.w3-white.w3-animate-left.w3-card(style="z-index:3;width:320px;")
-      a.w3-bar-item.w3-button(href="/friend")
+      a#021.w3-bar-item.w3-button(onclick="document.getElementById('id0211').style.display='block'")
         i.fa.fa-reddit-alien.w3-margin-right
-        | MY FRIENDS
-      a.w3-bar-item.w3-button(href="/searchPage")
-        i.fa.fa-hourglass-end.w3-margin-right
-        | Add new friends
-      a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('Demo1')" href="javascript:void(0)")
-        i.fa.fa-inbox.w3-margin-right
-        | All friends
-        i.fa.fa-caret-down.w3-margin-left
-      #Demo1.w3-hide.w3-animate-left
-        .w3-container
-          each p in profiles
-            // now onclick is passed into as a string, how to give it the value
-            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id= p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
-              .w3-container
-                img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
-                span.w3-text-dark-grey #{p.name}
-    // Overlay effect when opening the side navigation on small screens
-    #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
-    // Page content
-    .w3-main(style="margin-left:320px;")
-      div#check-result.alert.alert-info(role="alert" style="display:none")
-        | I'm not stupid.
-      br
-      .row
-        .col-3
-        .col-8
-          button#021.w3-button.w3-wide.w3-block.w3-teal(onclick="document.getElementById('id0211').style.display='block'" style="width:60%;") CHECK AVAILABLE FRIENDS
-        .col-1
+        | CHECK AVAILABLE FRIENDS
       #id0211.w3-modal
         .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
           .w3-center
@@ -64,13 +37,37 @@ block content
                     br
                     input.w3-button.w3-block.w3-teal.w3-section.w3-padding.guess-free(type="button" value="Start Checking")
                     br
+      a.w3-bar-item.w3-button(href="/searchPage")
+        i.fa.fa-hourglass-end.w3-margin-right
+        | Add new friends
+      a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('Demo1')" href="javascript:void(0)")
+        i.fa.fa-inbox.w3-margin-right
+        | All friends
+        i.fa.fa-caret-down.w3-margin-left
+      #Demo1.w3-hide.w3-animate-left.w3-show
+        .w3-container
+          each p in profiles
+            // now onclick is passed into as a string, how to give it the value
+            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id= p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
+              .w3-container
+                img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
+                span.w3-text-dark-grey #{p.name}
+    // Overlay effect when opening the side navigation on small screens
+    #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
+    // Page content
+    .w3-main(style="margin-left:320px;") 
+      div#check-result.alert.alert-info(role="alert" style="display:none")
+          | I'm not stupid.
+      br
       each p in profiles
         form(method="post" action="check_avail")
           .w3-container.person(id= p._id style="display:none")
             br
             img.w3-round.w3-animate-top(src="../images/" +p.image+ ".png" style="width:20%;")
             .row
-              .col-7
+              .col-5
+              .col-2
+                a.w3-button.w3-teal(role="button" name = "history" href="interact_history/"+p._id value = "history") Check History 
               .col-2
                 a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
               .col-             

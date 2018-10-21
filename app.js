@@ -117,6 +117,7 @@ app.get('/add', isLoggedIn, usersController.attachUser, inputController.attachIn
 app.post('/saveinput',isLoggedIn, inputController.saveInput);
 app.post('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
+app.use('/interact_history/:friend_id', isLoggedIn, notiController.interact_history);
 app.get('/friend',isLoggedIn, friendController.getFriend, friendController.getFriendProfile);
 app.get('/searchPage',isLoggedIn, friendController.searchPage);
 app.post('/check_avail',isLoggedIn, friendController.check_avail);

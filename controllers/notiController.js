@@ -23,6 +23,11 @@ exports.getAllNotis = ( req, res ) => {
     } );
 };
 
+exports.interact_history = (req, res) =>{
+   const fId = new mongo.ObjectId(req.params.friend_id)
+   res.render('history');
+}
+
 exports.getNoti = ( req, res ) => {
   const objId = new mongo.ObjectId(req.params.id)
   console.log('in get notification')

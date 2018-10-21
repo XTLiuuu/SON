@@ -122,7 +122,7 @@ exports.attachCurrFriend = ( req, res, next ) => {
 
 // go the search friend box
 exports.searchPage = ( req, res ) => {
-  res.render('addFriends');
+  res.render('addFriend');
 };
 
 // on  friend page, check availability by person or delete friend
