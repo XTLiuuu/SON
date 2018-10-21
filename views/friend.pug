@@ -48,7 +48,7 @@ block content
         .w3-container
           each p in profiles
             // now onclick is passed into as a string, how to give it the value
-            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id= p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
+            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
               .w3-container
                 img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
                 span.w3-text-dark-grey #{p.name}
@@ -60,61 +60,85 @@ block content
           | I'm not stupid.
       br
       each p in profiles
-        form(method="post" action="check_avail")
-          .w3-container.person(id= p._id style="display:none")
+        .w3-container.person(id= p._id style="display:none")
+          form(method="post" action="check_avail")
+            button.w3-button.w3-padding.w3-light-grey.w3-hover-teal(friend_id= p._id onclick="openModal1(event);w3_close();") 
+              b #{p.name}
+            .container
+              img(src = "../images/" +p.image+ ".png" alt = "Avatar" width = "20%")
+              p Hello. How are you today 
+              span.time-right 11:00
+            .container.darker
+              img.right(src = "../images/" +profile.image+ ".png" alt = "Avatar" width = "20%")
+              p Hey. I'm fine 
+              span.time-left 11:01
             br
-            img.w3-round.w3-animate-top(src="../images/" +p.image+ ".png" style="width:20%;")
-            .row
-              .col-5
-              .col-2
-                a.w3-button.w3-teal(role="button" name = "history" href="interact_history/"+p._id value = "history") Check History 
-              .col-2
-                a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
-              .col-             
-                .w3-container
-                  button.w3-button.w3-teal(friend_id= p._id onclick="openModal(event)") Check Availability
-                  .w3-modal(id= p._id+"modal")
-                    .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
-                      .w3-center
-                        span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(friend_id= p._id title="Close Modal" onclick="closeModal(event)") X
-                        img.w3-circle.w3-margin-top(src="../images/" +p.image+ ".png" alt="Avatar" style="width:30%")
-                        br
-                        label #{p.name}
-                        .w3-container
-                          .margin
-                            .w3-section
-                              b Check Time
-                              .row
-                                input(type="hidden" name="friendEmail" id="friendEmail"+p._id value=p.email)
-                                input(type="hidden" name="friendName" id="friendName"+p._id value=p.name)
-                                .col-6
-                                  input.w3-input.w3-border(type="date" name="checkDate" id="checkDate"+p._id)
-                                .col-6
-                                  input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime"+p._id)
+            br
+            a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
+            .w3-modal(id= p._id+"profile" style="display:none")
+              .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 800px")
+                .margin
+                  br
+                  span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(friend_id= p._id title="Close Modal" onclick="closeModal1(event)") X
+                  img.w3-round.w3-animate-top(src="../images/" +p.image+ ".png" style="width:20%;")
+                  .row
+                    .col-9
+                    //- .col-2
+                    //-   a.w3-button.w3-teal(role="button" name = "history" href="interact_history/"+p._id value = "history") Check History 
+                    //- .col-2
+                    //-   a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
+                    .col-             
+                      .w3-container
+                        button.w3-button.w3-teal(friend_id= p._id onclick="openModal(event)") Check Availability
+                        .w3-modal(id= p._id+"modal")
+                          .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
+                            .w3-center
+                              span.w3-button.w3-xlarge.w3-hover-red.w3-display-topright(friend_id= p._id title="Close Modal" onclick="closeModal(event)") X
+                              img.w3-circle.w3-margin-top(src="../images/" +p.image+ ".png" alt="Avatar" style="width:30%")
                               br
-                              input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit#check(type="button" value="Start Checking" name="check_avail" fid=p._id)
-                              br
-            hr
-            .w3.text-dark-grey
-              p
-                i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.name}
-              p
-                i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.email}
-              p
-                i.fa.fa-home.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.home}
-              p
-                i.fa.fa-birthday-cake.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.dob}
-              p
-                i.fa.fa-phone.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.phone}
-              p
-                i.fa.fa-hand-peace-o.fa-fw.w3-margin-right.w3-text-theme
-                |  #{p.about}
-            br
-            br
-            input(type="hidden" name="userEmail" value=userEmail)
-            input.w3-button.w3-red(type="submit" name = "delete_friend" value = "Delete Friend") 
+                              label #{p.name}
+                              .w3-container
+                                .margin
+                                  .w3-section
+                                    b Check Time
+                                    .row
+                                      input(type="hidden" name="friendEmail" id="friendEmail"+p._id value=p.email)
+                                      input(type="hidden" name="friendName" id="friendName"+p._id value=p.name)
+                                      .col-6
+                                        input.w3-input.w3-border(type="date" name="checkDate" id="checkDate"+p._id)
+                                      .col-6
+                                        input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime"+p._id)
+                                    br
+                                    input.w3-button.w3-block.w3-teal.w3-section.w3-padding.check-avail-submit#check(type="button" value="Start Checking" name="check_avail" fid=p._id)
+                                    br
+                  hr
+                  .w3.text-dark-grey
+                    p
+                      i.fa.fa-pencil.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.name}
+                    p
+                      i.fa.fa-male.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.email}
+                    p
+                      i.fa.fa-home.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.home}
+                    p
+                      i.fa.fa-birthday-cake.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.dob}
+                    p
+                      i.fa.fa-phone.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.phone}
+                    p
+                      i.fa.fa-hand-peace-o.fa-fw.w3-margin-right.w3-text-theme
+                      |  #{p.about}
+                  br
+                  br
+                  input(type="hidden" name="userEmail" value=userEmail)
+                  input.w3-button.w3-red(type="submit" name = "delete_friend" value = "Delete Friend")
+                  br                                         
+      br
+      br
+      br
+      br
+      br
+      br

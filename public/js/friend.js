@@ -25,6 +25,7 @@ $(document).ready(function(){
         $("#check-result").text(name + " is " + status + " on " + date + " at " + time + "!");
         document.getElementById("check-result").style.display = "block";
         document.getElementById(fid+"modal").style.display = "none";
+        document.getElementById(fid+"profile").style.display = "none";
         setTimeout(function(){document.getElementById("check-result").style.display = "none"}, 5000)
       },
       dataType: "json",
@@ -93,8 +94,8 @@ function myFunc(id) {
 
 function openMail(event) {
     event.preventDefault();
+    console.log(event)
     const personName = event.currentTarget.attributes[1].nodeValue;
-
     var i;
     var x = document.getElementsByClassName("person");
     for (i = 0; i < x.length; i++) {
@@ -112,12 +113,27 @@ function openMail(event) {
 
 function openModal(event) {
     event.preventDefault();
+    console.log(event)
     const personName = event.currentTarget.attributes[1].nodeValue;
     document.getElementById(personName+"modal").style.display = "block";
+}
+
+// open profile modal
+function openModal1(event) {
+    event.preventDefault();
+    console.log(event)
+    const personName = event.currentTarget.attributes[1].nodeValue;
+    document.getElementById(personName+"profile").style.display = "block";
 }
 
 function closeModal(event) {
     event.preventDefault();
     const personName = event.currentTarget.attributes[1].nodeValue;
     document.getElementById(personName+"modal").style.display = "none";
+}
+
+function closeModal1(event) {
+    event.preventDefault();
+    const personName = event.currentTarget.attributes[1].nodeValue;
+    document.getElementById(personName+"profile").style.display = "none";
 }
