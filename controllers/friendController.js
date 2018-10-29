@@ -120,6 +120,74 @@ exports.attachNoti = (req, res, next) => {
   )
 }
 
+exports.updateRequest = ( req, res )=> {
+  // the user accept the friend request
+  console.log("in update request")
+  console.log(req.body);
+  addEvent(req, res)
+};
+
+exports.updateRequest_decline = ( req, res )=> {
+  console.log("in update request")
+  console.log(req.body);
+  declineEvent(req, res)
+}
+
+function addEvent(req, res){
+  console.log("in add event")
+  var sd = req.body.startDate;
+  var start = sd.toString() + " " + req.body.startTime
+  var ed = req.body.endDate;
+  if(ed == "") ed = sd
+  var end = ed.toString() + " " + req.body.endTime
+  var allDay = false;
+  if(req.body.allDay == 'on') allDay = true
+
+  let newInput = new Input( {
+    email: req.user.googleemail,
+    title: req.body.title,
+    allDay: allDay,
+    start: start, // include both date and time
+    end:end,
+    startDate: sd.slice(0,10),
+    startTime: req.body.startTime,
+    endDate: ed.slice(0,10),
+    endTime: req.body.endTime,
+    editable: true,
+    overlap: true,
+    color: req.body.color,
+    description: req.body.description,
+    adCheck: req.body.allDay,
+    noti: "false"
+  })
+  console.log(req.body)
+  console.log("this is my current noti")
+  Notification.update({_id: req.body.id},{
+    status: "Accept"
+  }, function(err){
+    if(err){
+      res.status(err.status || 500);
+      res.json(err);
+    } else {
+      res.json({});
+    }
+  })
+}
+
+function declineEvent(req, res){
+  Notification.update({_id: req.body.id},{
+    status: "Decline"
+  }, function(err){
+    if(err){
+      res.status(err.status || 500);
+      res.json(err);
+    } else {
+      res.json({});
+    }
+  })
+}
+
+
 exports.attachCurrFriend = ( req, res, next ) => {
   const friend_id = req.params.friend_id;
   Profile.findOne({_id: friend_id},

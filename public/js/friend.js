@@ -33,6 +33,64 @@ $(document).ready(function(){
   })
 })
 
+
+$(document).ready(function(){
+  $("input.accept-event").on('click', function(event){
+    event.preventDefault();
+    console.log("clicked!")
+    const theData = {
+      id: $("#id").val(),
+      from: $("#from").val(),
+      fromname: $("#fromname").val(),
+      title: $("#title").val(),
+      description: $("#description").val(),
+      startDate: $("#startDate").val(),
+      startTime: $("#startTime").val(),
+      endDate: $("#endDate").val(),
+      endTime: $("#endTime").val(),
+    }
+    console.log(theData)
+    $.ajax({
+      type: "POST",
+      url:"/update_event",
+      data: theData,
+      success: function(data){
+        console.log("Yay!")
+      },
+      dataType: "json",
+    })
+  })
+})
+
+$(document).ready(function(){
+  $("input.decline-event").on('click', function(event){
+    event.preventDefault();
+    console.log("clicked--!")
+    const theData = {
+      id: $("#id").val(),
+      from: $("#from").val(),
+      fromname: $("#fromname").val(),
+      title: $("#title").val(),
+      description: $("#description").val(),
+      startDate: $("#startDate").val(),
+      startTime: $("#startTime").val(),
+      endDate: $("#endDate").val(),
+      endTime: $("#endTime").val(),
+    }
+    console.log(theData)
+    $.ajax({
+      type: "POST",
+      url:"/update_event_decline",
+      data: theData,
+      success: function(data){
+        console.log("Yay!")
+      },
+      dataType: "json",
+    })
+  })
+})
+
+
 $(document).ready(function(){
   $("input.guess-free").on('click', function(event){
     event.preventDefault();

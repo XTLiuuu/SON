@@ -119,6 +119,8 @@ app.post('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
 app.use('/interact_history/:friend_id', isLoggedIn, notiController.interact_history);
 app.get('/friend',isLoggedIn, profileController.attachProfile, friendController.getFriend, friendController.attachNoti, friendController.getFriendProfile);
+app.post('/update_event',isLoggedIn, profileController.attachProfile, friendController.updateRequest);
+app.post('/update_event_decline',isLoggedIn, profileController.attachProfile, friendController.updateRequest_decline);
 app.get('/searchPage',isLoggedIn, friendController.searchPage);
 app.post('/check_avail',isLoggedIn, friendController.check_avail);
 app.post('/guess_free',isLoggedIn, friendController.attachFriend, friendController.guess_free);
