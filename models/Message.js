@@ -1,16 +1,12 @@
 'use strict';
 const mongoose = require( 'mongoose' );
 
-var notificationSchema = mongoose.Schema( {
-  type: String,
-  // for friend request
+var messageSchema = mongoose.Schema( {
   to: String,
   toname: String,
   content: String,
   from: String,
   fromname: String,
-
-  // for event invitation
   toid: String,
   title: String,
   sDate: String,
@@ -19,8 +15,7 @@ var notificationSchema = mongoose.Schema( {
   eTime: String,
   allday: Boolean,
   description: String,
-  status: String, 
 
 } );
 
-module.exports = mongoose.model( 'Notification', notificationSchema );
+module.exports = mongoose.model( 'Message', messageSchema );

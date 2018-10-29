@@ -36,7 +36,7 @@ block content
                         input.w3-input.w3-border.w3-margin-buttom(type="text" placeholder="e.g. 10:20" name="checkTime" id="checkTime")
                     br
                     input.w3-button.w3-block.w3-teal.w3-section.w3-padding.guess-free(type="button" value="Start Checking")
-                    br
+                    br 
       a.w3-bar-item.w3-button(href="/searchPage")
         i.fa.fa-hourglass-end.w3-margin-right
         | Add new friends
@@ -64,14 +64,51 @@ block content
           form(method="post" action="check_avail")
             button.w3-button.w3-padding.w3-light-grey.w3-hover-teal(friend_id= p._id onclick="openModal1(event);w3_close();") 
               b #{p.name}
-            .container
-              img(src = "../images/" +p.image+ ".png" alt = "Avatar" width = "20%")
-              p Hello. How are you today 
+            each noti in notis
+              if noti.from == p.email && noti.to == profile.email
+                .container 
+                  .w3-panel.w3-light-grey.w3-card-4
+                    br
+                    img(src = "../images/" +p.image+ ".png" alt = "Avatar" width = "20%")
+                    form(method="post" action="")
+                      input.form-control(name="from" type="hidden" value=noti.from)
+                      input.form-control(name="fromname" type="hidden" value=noti.fromname)
+                      input.form-control(name="title" type="hidden" value=noti.title)
+                      input.form-control(name="description" type="hidden" value=noti.description)
+                      input.form-control(name="startDate" type="hidden" value=noti.sDate)
+                      input.form-control(name="startTime" type="hidden" value=noti.sTime)
+                      input.form-control(name="endDate" type="hidden" value=noti.eDate)
+                      input.form-control(name="endTime" type="hidden" value=noti.eTime)
+                      .row
+                        .col-12
+                          p.font-weight-bold Title: #{noti.title}
+                          if noti.description
+                            p Description: #{noti.description}
+                        .col-12
+                          p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
+                          if noti.eDate
+                            p End Time: &nbsp #{noti.eDate} #{noti.eTime}
+                      .row
+                        .col-8
+                        .col-2
+                          input.w3-button.w3-teal(type='submit' name = "add" value="Add")
+                        .col-2
+                          input.w3-button.w3-red(type='submit' name = "decline" value="Decline")
+                      br
               span.time-right 11:00
-            .container.darker
-              img.right(src = "../images/" +profile.image+ ".png" alt = "Avatar" width = "20%")
-              p Hey. I'm fine 
-              span.time-left 11:01
+            each noti in notis
+              if noti.from == profile.email && noti.to == p.email 
+                .container.darker
+                  .w3-panel.w3-light-grey.w3-card-1
+                    img.right(src = "../images/" +profile.image+ ".png" alt = "Avatar" width = "20%")
+                    p.font-weight-bold Title: #{noti.title}
+                    if noti.description
+                      p Description: #{noti.description}
+                    p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
+                    if noti.eDate
+                      p End Time: &nbsp #{noti.eDate} #{noti.eTime} 
+                    p Status: #{noti.status}
+                  span.time-left 11:01
             br
             br
             a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event

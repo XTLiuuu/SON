@@ -104,6 +104,22 @@ exports.getFriendProfile = (req, res) => {
   )
 }
 
+exports.attachNoti = (req, res, next) => {
+  console.log("in attach noti")
+  Notification.find({type: "event invitation"},
+    function(err, notis){
+      if(err){
+        console.log(err.message)
+      }
+      else{
+        console.log(notis)
+        res.locals.notis = notis;
+        next();
+      }
+    }
+  )
+}
+
 exports.attachCurrFriend = ( req, res, next ) => {
   const friend_id = req.params.friend_id;
   Profile.findOne({_id: friend_id},

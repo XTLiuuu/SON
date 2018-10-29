@@ -3,6 +3,7 @@ const Input = require( '../models/Input' );
 const Notification = require('../models/Notification');
 const Friend = require('../models/Friend');
 const Profile = require('../models/Profile');
+const Message = require('../models/Message');
 const mongo = require('mongodb');
 
 exports.get_events_post = function(req, res){
@@ -140,6 +141,7 @@ exports.send_event = function(req, res){
     else{
       allDay = false;
     }
+
     let friendEvent =
      new Notification({
       type:"event invitation",
@@ -155,7 +157,9 @@ exports.send_event = function(req, res){
       eTime: req.body.endTime,
       allday: allDay,
       description: req.body.description,
+      status: "Waiting"
     })
+
     friendEvent.save(function(err, doc){
       if(err){
         res.json(err);
