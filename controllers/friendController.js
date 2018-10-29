@@ -160,6 +160,7 @@ function addEvent(req, res){
     adCheck: req.body.allDay,
     noti: "false"
   })
+  newInput.save()
   console.log(req.body)
   console.log("this is my current noti")
   Notification.update({_id: req.body.id},{

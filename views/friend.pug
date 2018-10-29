@@ -71,15 +71,15 @@ block content
                     br
                     img(src = "../images/" +p.image+ ".png" alt = "Avatar" width = "20%")
                     form(method="post" action="update_event")
-                      input(type="hidden" id ="id" value=noti._id)
-                      input.form-control(id ="from" type="hidden" value=noti.from)
-                      input.form-control(id ="fromname" type="hidden" value=noti.fromname)
-                      input.form-control(id ="title" type="hidden" value=noti.title)
-                      input.form-control(id ="description" type="hidden" value=noti.description)
-                      input.form-control(id ="startDate" type="hidden" value=noti.sDate)
-                      input.form-control(id ="startTime" type="hidden" value=noti.sTime)
-                      input.form-control(id ="endDate" type="hidden" value=noti.eDate)
-                      input.form-control(id ="endTime" type="hidden" value=noti.eTime)
+                      input(type="hidden" id ="id"+noti._id value=noti._id)
+                      input.form-control(id ="from"+noti._id type="hidden" value=noti.from)
+                      input.form-control(id ="fromname"+noti._id type="hidden" value=noti.fromname)
+                      input.form-control(id ="title"+noti._id type="hidden" value=noti.title)
+                      input.form-control(id ="description"+noti._id type="hidden" value=noti.description)
+                      input.form-control(id ="startDate"+noti._id type="hidden" value=noti.sDate)
+                      input.form-control(id ="startTime"+noti._id type="hidden" value=noti.sTime)
+                      input.form-control(id ="endDate"+noti._id type="hidden" value=noti.eDate)
+                      input.form-control(id ="endTime"+noti._id type="hidden" value=noti.eTime)
                       .row
                         .col-12
                           p.font-weight-bold Title: #{noti.title}
@@ -89,12 +89,16 @@ block content
                           p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
                           if noti.eDate
                             p End Time: &nbsp #{noti.eDate} #{noti.eTime}
-                      .row
-                        .col-8
-                        .col-2
-                          input.w3-button.w3-teal.accept-event(id = "add" type="button" name = "add" value = "Add")
-                        .col-2
-                          input.w3-button.w3-red.decline-event(id = "decline" type="button" name = "decline" value = "Decline")
+                      if noti.status == "Waiting"
+                        .row
+                          .col-8
+                          .col-2
+                            input.w3-button.w3-teal.accept-event(id = "add"+noti._id type="button" name = "add" value = "Add" nid=noti._id)
+                          .col-2
+                            input.w3-button.w3-red.decline-event(id = "decline"+noti._id type="button" name = "decline" value = "Decline" nid=noti._id)
+                      else 
+                        p Status: &nbsp #{noti.status}
+
                       br
               span.time-right 11:00
             each noti in notis

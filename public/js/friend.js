@@ -38,16 +38,17 @@ $(document).ready(function(){
   $("input.accept-event").on('click', function(event){
     event.preventDefault();
     console.log("clicked!")
+    const nid = event.currentTarget.attributes["nid"].nodeValue
     const theData = {
-      id: $("#id").val(),
-      from: $("#from").val(),
-      fromname: $("#fromname").val(),
-      title: $("#title").val(),
-      description: $("#description").val(),
-      startDate: $("#startDate").val(),
-      startTime: $("#startTime").val(),
-      endDate: $("#endDate").val(),
-      endTime: $("#endTime").val(),
+      id: $("#id" + nid).val(),
+      from: $("#from" + nid).val(),
+      fromname: $("#fromname" + nid).val(),
+      title: $("#title" + nid).val(),
+      description: $("#description" + nid).val(),
+      startDate: $("#startDate" + nid).val(),
+      startTime: $("#startTime" + nid).val(),
+      endDate: $("#endDate" + nid).val(),
+      endTime: $("#endTime" + nid).val(),
     }
     console.log(theData)
     $.ajax({
@@ -55,6 +56,8 @@ $(document).ready(function(){
       url:"/update_event",
       data: theData,
       success: function(data){
+        document.getElementById("add" + nid).style.display = "none";
+        document.getElementById("decline" + nid).style.display = "none";
         console.log("Yay!")
       },
       dataType: "json",
@@ -66,16 +69,17 @@ $(document).ready(function(){
   $("input.decline-event").on('click', function(event){
     event.preventDefault();
     console.log("clicked--!")
+    const nid = event.currentTarget.attributes["nid"].nodeValue
     const theData = {
-      id: $("#id").val(),
-      from: $("#from").val(),
-      fromname: $("#fromname").val(),
-      title: $("#title").val(),
-      description: $("#description").val(),
-      startDate: $("#startDate").val(),
-      startTime: $("#startTime").val(),
-      endDate: $("#endDate").val(),
-      endTime: $("#endTime").val(),
+      id: $("#id" + nid).val(),
+      from: $("#from" + nid).val(),
+      fromname: $("#fromname" + nid).val(),
+      title: $("#title" + nid).val(),
+      description: $("#description" + nid).val(),
+      startDate: $("#startDate" + nid).val(),
+      startTime: $("#startTime" + nid).val(),
+      endDate: $("#endDate" + nid).val(),
+      endTime: $("#endTime" + nid).val(),
     }
     console.log(theData)
     $.ajax({
@@ -83,6 +87,8 @@ $(document).ready(function(){
       url:"/update_event_decline",
       data: theData,
       success: function(data){
+        document.getElementById("add" + nid).style.display = "none";
+        document.getElementById("decline" + nid).style.display = "none";
         console.log("Yay!")
       },
       dataType: "json",
