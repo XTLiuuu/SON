@@ -3,6 +3,8 @@ const mongoose = require( 'mongoose' );
 
 var profileSchema = mongoose.Schema( {
   name: String,
+  firstname: String,
+  lastname: String,
   email: String,
   home: String,
   phone: String,
@@ -13,7 +15,7 @@ var profileSchema = mongoose.Schema( {
   secret: String,
   image: String,
   amazon: String,
-  dialogflow: String, 
+  dialogflow: String,
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

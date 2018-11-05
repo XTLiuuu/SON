@@ -133,6 +133,7 @@ exports.send_event = function(req, res){
  Profile.findOne(fId)
   .exec()
   .then( (friend) =>{
+    var curTime = new Date(); // the current event happening time 
     var ad = req.body.allday;
     var allDay;
     if(ad == 'on'){
@@ -157,7 +158,8 @@ exports.send_event = function(req, res){
       eTime: req.body.endTime,
       allday: allDay,
       description: req.body.description,
-      status: "Waiting"
+      status: "Waiting",
+      time: curTime
     })
 
     friendEvent.save(function(err, doc){

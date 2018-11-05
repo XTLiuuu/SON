@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 const mongoose = require( 'mongoose' );
 
 var friendSchema = mongoose.Schema( {
@@ -6,6 +6,8 @@ var friendSchema = mongoose.Schema( {
   username: String,
   friend: String,
   friendname: String,
+  lastname: String,
+  firstname: String,
   status: String,
 } );
 

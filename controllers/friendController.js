@@ -67,10 +67,11 @@ exports.sendFrequest = ( req, res ) =>{
 
 // get the current user's friend list
 exports.getFriend = ( req, res, next ) => {
-  Friend.find( {user:res.locals.user.googleemail} )
+  Friend.find({user:res.locals.user.googleemail}).sort({ lastname: 1 })
     .exec()
     .then( ( friend_list ) => {
       res.locals.friend = friend_list
+      console.log(res.locals.friend);
       res.locals.userEmail = res.locals.user.googleemail
       res.locals.userID = res.locals.user._id
       next();
@@ -91,22 +92,30 @@ exports.getFriendProfile = (req, res) => {
   for(var i = 0; i < friends.length; i ++){
     friendEmails.push(friends[i].friend);
   }
-  Profile.find({email: {$in : friendEmails}},
-    function(err, profile_list){
-      if(err){
-        console.log(err.message);
-      }
-      else{
-        res.locals.profiles = profile_list
-        res.render('friend')
-      }
-    }
-  )
+  Profile.find({email: {$in : friendEmails}}).sort({ lastname: 1, firstname: 1 })
+    .exec()
+    .then((profile_list) => {
+      res.locals.profiles = profile_list
+      res.render('friend')
+    }).catch( ( error ) => {
+      console.log( error.message );
+      return [];
+    } )
+    .then( () => {
+      console.log( 'get friend complete' );
+    } )
 }
 
 exports.attachNoti = (req, res, next) => {
   console.log("in attach noti")
-  Notification.find({type: "event invitation"},
+  var friends = res.locals.friend;
+  var friendEmails = [];
+  friendEmails.push(res.locals.user.googleemail)
+  for(var i = 0; i < friends.length; i ++){
+    friendEmails.push(friends[i].friend);
+  }
+  console.log(friendEmails);
+  Notification.find({from: {$in : friendEmails}, to: {$in : friendEmails}, type: {$in: ["eventviewed","event invitation"]}},
     function(err, notis){
       if(err){
         console.log(err.message)
@@ -163,6 +172,18 @@ function addEvent(req, res){
   newInput.save()
   console.log(req.body)
   console.log("this is my current noti")
+
+  let acceptMessage =
+   new Notification({
+    type:"eventviewed",
+    to: req.body.from,
+    toname:req.body.fromname,
+    title: res.locals.profile.name + " accepts your event: " + req.body.title + " starting on " + req.body.startDate + " at " + req.body.startTime,
+    from: res.locals.user.googleemail,
+    fromname: res.locals.profile.name,
+    time: new Date(),
+  })
+  acceptMessage.save();
   Notification.update({_id: req.body.id},{
     status: "Accept"
   }, function(err){
@@ -176,6 +197,17 @@ function addEvent(req, res){
 }
 
 function declineEvent(req, res){
+  let declineMessage =
+   new Notification({
+    type:"eventviewed",
+    to: req.body.from,
+    toname:req.body.fromname,
+    title: res.locals.profile.name + " declines your event: " + req.body.title + " starting on " + req.body.startDate + " at " + req.body.startTime,
+    from: res.locals.user.googleemail,
+    fromname: res.locals.profile.name,
+    time: new Date(),
+  })
+  declineMessage.save();
   Notification.update({_id: req.body.id},{
     status: "Decline"
   }, function(err){

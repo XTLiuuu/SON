@@ -53,9 +53,14 @@ exports.saveProfile = ( req, res ) => {
     .exec()
     .then( ( profile ) => {
       if(profile==null){
+        var name = req.user.googlename;
+        var firstname = name.substring(0, name.indexOf(" "));
+        var lastname = name.substring(name.indexOf(" ") + 1);
         let profile = new Profile ({
           name: req.user.googlename,
           email: req.user.googleemail,
+          firstname: firstname,
+          lastname: lastname,
           phone: req.body.phone,
           gender: req.body.gender,
           dob: req.body.dob,
@@ -100,9 +105,14 @@ exports.attachProfile = ( req, res, next ) => {
     .then( ( profile ) => {
       // when the user does not store a profile object yet
       if (profile == null){
+        var name = req.user.googlename;
+        var firstname = name.substring(0, name.indexOf(" "));
+        var lastname = name.substring(name.indexOf(" ") + 1);
         profile = new Profile ({
           name: req.user.googlename,
           email: req.user.googleemail,
+          firstname: firstname,
+          lastname: lastname,
           phone: req.body.phone,
           gender: req.body.gender,
           dob: req.body.dob,

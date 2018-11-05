@@ -66,7 +66,7 @@ block content
               b #{p.name}
             each noti in notis
               if noti.from == p.email && noti.to == profile.email
-                .container 
+                .container
                   .w3-panel.w3-light-grey.w3-card-4
                     br
                     img(src = "../images/" +p.image+ ".png" alt = "Avatar" width = "20%")
@@ -80,28 +80,33 @@ block content
                       input.form-control(id ="startTime"+noti._id type="hidden" value=noti.sTime)
                       input.form-control(id ="endDate"+noti._id type="hidden" value=noti.eDate)
                       input.form-control(id ="endTime"+noti._id type="hidden" value=noti.eTime)
-                      .row
-                        .col-12
-                          p.font-weight-bold Title: #{noti.title}
-                          if noti.description
-                            p Description: #{noti.description}
-                        .col-12
-                          p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
-                          if noti.eDate
-                            p End Time: &nbsp #{noti.eDate} #{noti.eTime}
-                      if noti.status == "Waiting"
+                      if noti.type == "event invitation"
                         .row
-                          .col-8
-                          .col-2
-                            input.w3-button.w3-teal.accept-event(id = "add"+noti._id type="button" name = "add" value = "Add" nid=noti._id)
-                          .col-2
-                            input.w3-button.w3-red.decline-event(id = "decline"+noti._id type="button" name = "decline" value = "Decline" nid=noti._id)
+                          .col-12
+                            p.font-weight-bold Title: #{noti.title}
+                            if noti.description
+                              p Description: #{noti.description}
+                          .col-12
+                            p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
+                            if noti.eDate
+                              p End Time: &nbsp #{noti.eDate} #{noti.eTime}
+                        if noti.status == "Waiting"
+                          .row
+                            .col-8
+                            .col-2
+                              input.w3-button.w3-teal.accept-event(id = "add"+noti._id type="button" name = "add" value = "Add" nid=noti._id)
+                            .col-2
+                              input.w3-button.w3-red.decline-event(id = "decline"+noti._id type="button" name = "decline" value = "Decline" nid=noti._id)
+                        else 
+                          p Status: &nbsp #{noti.status}
+                        br
                       else 
-                        p Status: &nbsp #{noti.status}
-
-                      br
-              span.time-right 11:00
-            each noti in notis
+                        .row
+                          .col-12
+                            p #{noti.title}
+                        br
+                    br
+                  span.time-right #{noti.time}
               if noti.from == profile.email && noti.to == p.email 
                 .container.darker
                   .w3-panel.w3-light-grey.w3-card-1
@@ -113,8 +118,7 @@ block content
                     if noti.eDate
                       p End Time: &nbsp #{noti.eDate} #{noti.eTime} 
                     p Status: #{noti.status}
-                  span.time-left 11:01
-            br
+                  span.time-left #{noti.time}
             br
             a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
             .w3-modal(id= p._id+"profile" style="display:none")

@@ -20,6 +20,7 @@ var notificationSchema = mongoose.Schema( {
   allday: Boolean,
   description: String,
   status: String,
+  time: Date
 });
 
 module.exports = mongoose.model( 'Notification', notificationSchema );

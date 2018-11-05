@@ -137,11 +137,16 @@ exports.updateRequest = ( req, res )=> {
 
 function addFriend(req, res){
   // add friend object to both side
+  var name = req.body.fromname
+  var firstname = name.substring(0, name.indexOf(" "));
+  var lastname = name.substring(name.indexOf(" ") + 1);
   let friend1 = new Friend({
     user:res.locals.user.googleemail,
     username: res.locals.profile.name,
     friend:req.body.from,
     friendname:req.body.fromname,
+    firstname: firstname,
+    lastname: lastname,
     status:"friend",
   })
   let friend2 = new Friend({
@@ -149,6 +154,8 @@ function addFriend(req, res){
     username:req.body.fromname,
     friend:res.locals.user.googleemail,
     friendname:res.locals.profile.name,
+    firstname: res.locals.profile.firstname,
+    lastname: res.locals.profile.lastname,
     status:"friend"
   })
   friend1.save()
