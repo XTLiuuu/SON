@@ -22,6 +22,7 @@
     "firebase-functions": "^2.0.5",
     "fs": "0.0.1-security",
     "fullcalendar": "^3.9.0",
+    "googleapis": "^27.0.0",
     "http-errors": "~1.6.2",
     "jquery": "^3.3.1",
     "jquery-confirm": "^3.3.2",

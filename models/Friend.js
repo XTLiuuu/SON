@@ -9,6 +9,7 @@ var friendSchema = mongoose.Schema( {
   lastname: String,
   firstname: String,
   status: String,
+  group: String, 
 } );
 
 module.exports = mongoose.model( 'Friend', friendSchema );

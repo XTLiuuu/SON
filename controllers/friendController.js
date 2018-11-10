@@ -67,7 +67,7 @@ exports.sendFrequest = ( req, res ) =>{
 
 // get the current user's friend list
 exports.getFriend = ( req, res, next ) => {
-  Friend.find({user:res.locals.user.googleemail}).sort({ lastname: 1 })
+  Friend.find({user:res.locals.user.googleemail})
     .exec()
     .then( ( friend_list ) => {
       res.locals.friend = friend_list
