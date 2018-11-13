@@ -23,12 +23,16 @@ const friendController = require('./controllers/friendController');
 const settingController = require('./controllers/settingController');
 
 const User = require( './models/user' )
+const GoogleCal = require( './models/GoogleCal' )
 
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
+var api = require('googleapis')
+const configIndex = require('./config/index')
 const configPassport = require('./config/passport')
 configPassport(passport)
+configIndex(api);
 
 // here is where we connect to the database!
 const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
@@ -68,6 +72,8 @@ app.use((req,res,next) => {
   if (req.isAuthenticated()){
     res.locals.user = req.user
     res.locals.loggedIn = true
+    res.locals.events = req.events;
+    console.log(res.locals.events )
     if (req.user){
       if (req.user.googleemail=='lxt@brandeis.edu'){
         res.locals.status = '0211'
