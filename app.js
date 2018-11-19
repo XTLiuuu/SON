@@ -23,16 +23,16 @@ const friendController = require('./controllers/friendController');
 const settingController = require('./controllers/settingController');
 
 const User = require( './models/user' )
-const GoogleCal = require( './models/GoogleCal' )
+// const GoogleCal = require( './models/GoogleCal' )
 
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
-var api = require('googleapis')
-const configIndex = require('./config/index')
+//var api = require('googleapis')
+//const configIndex = require('./config/index')
 const configPassport = require('./config/passport')
 configPassport(passport)
-configIndex(api);
+//configIndex(api);
 
 // here is where we connect to the database!
 const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
@@ -124,7 +124,7 @@ app.post('/saveinput',isLoggedIn, inputController.saveInput);
 app.post('/deleteinput',isLoggedIn, inputController.deleteInput);
 app.use('/calendar', calendarD);
 app.use('/interact_history/:friend_id', isLoggedIn, notiController.interact_history);
-app.get('/friend',isLoggedIn, profileController.attachProfile, friendController.getFriend, friendController.attachNoti, friendController.getFriendProfile);
+app.get('/friend',isLoggedIn, profileController.attachProfile, friendController.attachNoti, friendController.getFriendProfile);
 app.post('/update_event',isLoggedIn, profileController.attachProfile, friendController.updateRequest);
 app.post('/update_event_decline',isLoggedIn, profileController.attachProfile, friendController.updateRequest_decline);
 app.get('/searchPage',isLoggedIn, friendController.searchPage);

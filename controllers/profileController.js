@@ -63,6 +63,7 @@ exports.saveProfile = ( req, res ) => {
           lastname: lastname,
           phone: req.body.phone,
           gender: req.body.gender,
+          friendEmail: [],
           dob: req.body.dob,
           about: req.body.about,
           home: req.body.home,
@@ -100,6 +101,7 @@ exports.saveProfile = ( req, res ) => {
 
 // attach the current login profile
 exports.attachProfile = ( req, res, next ) => {
+  console.log("in attach profile")
   Profile.findOne({email:res.locals.user.googleemail})
     .exec()
     .then( ( profile ) => {
@@ -120,11 +122,15 @@ exports.attachProfile = ( req, res, next ) => {
           secret: req.body.secret,
           image: req.body.image,
           home: req.body.home,
-          friendEmail: req.body.friendEmail
+          friendEmail: []
         } )
       }
       // attach the old profile or the newly constructed profile
       res.locals.profile = profile
+      res.locals.friend = profile.friendEmail;
+      res.locals.userEmail = res.locals.user.googleemail
+      res.locals.userID = res.locals.user._id
+      console.log(profile)
       next()
     } )
     .catch( ( error ) => {

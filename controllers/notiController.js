@@ -4,6 +4,7 @@ const Input = require('../models/Input')
 const User = require('../models/user')
 const Friend = require('../models/Friend')
 const Notification = require( '../models/Notification' )
+const Profile = require( '../models/Profile' )
 
 // this displays all of the skills
 exports.getAllNotis = ( req, res ) => {
@@ -140,26 +141,42 @@ function addFriend(req, res){
   var name = req.body.fromname
   var firstname = name.substring(0, name.indexOf(" "));
   var lastname = name.substring(name.indexOf(" ") + 1);
-  let friend1 = new Friend({
-    user:res.locals.user.googleemail,
-    username: res.locals.profile.name,
-    friend:req.body.from,
-    friendname:req.body.fromname,
-    firstname: firstname,
-    lastname: lastname,
-    status:"friend",
-  })
-  let friend2 = new Friend({
-    user:req.body.from,
-    username:req.body.fromname,
-    friend:res.locals.user.googleemail,
-    friendname:res.locals.profile.name,
-    firstname: res.locals.profile.firstname,
-    lastname: res.locals.profile.lastname,
-    status:"friend"
-  })
-  friend1.save()
-  friend2.save()
+  Profile.update({email:res.locals.user.googleemail},
+    {
+      $push: {
+        friendEmail: req.body.from
+      }
+    }).exec()
+
+  Profile.update({email:req.body.from},
+    {
+      $push: {
+        friendEmail: res.locals.user.googleemail
+      }
+    }).exec()
+  //
+  // let friend1 = new Friend({
+  //   user:res.locals.user.googleemail,
+  //   username: res.locals.profile.name,
+  //   friend:req.body.from,
+  //   friendname:req.body.fromname,
+  //   firstname: firstname,
+  //   lastname: lastname,
+  //   status:"friend",
+  //   group: "default"
+  // })
+  // let friend2 = new Friend({
+  //   user:req.body.from,
+  //   username:req.body.fromname,
+  //   friend:res.locals.user.googleemail,
+  //   friendname:res.locals.profile.name,
+  //   firstname: res.locals.profile.firstname,
+  //   lastname: res.locals.profile.lastname,
+  //   status:"friend",
+  //   group: "default"
+  // })
+  // friend1.save()
+  // friend2.save()
   // delete notification
   Notification.deleteMany({
     type:"friend request",

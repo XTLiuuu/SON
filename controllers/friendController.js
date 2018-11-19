@@ -65,33 +65,9 @@ exports.sendFrequest = ( req, res ) =>{
     })
   }
 
-// get the current user's friend list
-exports.getFriend = ( req, res, next ) => {
-  Friend.find({user:res.locals.user.googleemail})
-    .exec()
-    .then( ( friend_list ) => {
-      res.locals.friend = friend_list
-      console.log(res.locals.friend);
-      res.locals.userEmail = res.locals.user.googleemail
-      res.locals.userID = res.locals.user._id
-      next();
-    } )
-    .catch( ( error ) => {
-      console.log( error.message );
-      return [];
-    } )
-    .then( () => {
-      console.log( 'get friend complete' );
-    } );
-};
-
 // get those friends' profile information and display
 exports.getFriendProfile = (req, res) => {
-  var friends = res.locals.friend;
-  var friendEmails = [];
-  for(var i = 0; i < friends.length; i ++){
-    friendEmails.push(friends[i].friend);
-  }
+  var friendEmails = res.locals.friend;
   Profile.find({email: {$in : friendEmails}}).sort({ lastname: 1, firstname: 1 })
     .exec()
     .then((profile_list) => {
@@ -105,15 +81,28 @@ exports.getFriendProfile = (req, res) => {
       console.log( 'get friend complete' );
     } )
 }
+//
+// function getComplete(friends, profile_list){
+//   var endProfile = [];
+//   for(var i = 0; i < profile_list.length; i ++){
+//     Friend.find({friend: profile_list[i].email})
+//     .exec()
+//     .then((friend) => {
+//       console.log(friend)
+//       var combination = {profile_list[i], friend.group};
+//       endProfile.push(combination);
+//       if(i == profile_list.length - 1){
+//         console.log("the last one")
+//         console.log(endProfile)
+//         return endProfile
+//       }
+//     })
+//   }
+// }
 
 exports.attachNoti = (req, res, next) => {
   console.log("in attach noti")
-  var friends = res.locals.friend;
-  var friendEmails = [];
-  friendEmails.push(res.locals.user.googleemail)
-  for(var i = 0; i < friends.length; i ++){
-    friendEmails.push(friends[i].friend);
-  }
+  var friendEmails = res.locals.friend;
   console.log(friendEmails);
   Notification.find({from: {$in : friendEmails}, to: {$in : friendEmails}, type: {$in: ["eventviewed","event invitation"]}},
     function(err, notis){
