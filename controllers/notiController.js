@@ -144,14 +144,24 @@ function addFriend(req, res){
   Profile.update({email:res.locals.user.googleemail},
     {
       $push: {
-        friendEmail: req.body.from
+        friend: {
+          friendEmail: req.body.from, group: "default"
+        },
+        friendGroup: {
+          name: "default", member: req.body.from
+        }
       }
     }).exec()
 
   Profile.update({email:req.body.from},
     {
       $push: {
-        friendEmail: res.locals.user.googleemail
+        friend: {
+          friendEmail: res.locals.user.googleemail, group: "default"
+        },
+        friendGroup: {
+          name: "default", member: res.locals.user.googleemail
+        }
       }
     }).exec()
   //

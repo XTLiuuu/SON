@@ -69,6 +69,7 @@ exports.saveProfile = ( req, res ) => {
           home: req.body.home,
           image: req.body.image,
           secret: req.body.secret.toLowerCase().trim(),
+          friendGroup: [],
         })
         profile.save()
           .then( () => {
@@ -122,14 +123,16 @@ exports.attachProfile = ( req, res, next ) => {
           secret: req.body.secret,
           image: req.body.image,
           home: req.body.home,
-          friendEmail: []
+          friendEmail: [],
+          friendGroup: [],
         } )
       }
       // attach the old profile or the newly constructed profile
       res.locals.profile = profile
-      res.locals.friend = profile.friendEmail;
+      res.locals.friend = profile.friend
       res.locals.userEmail = res.locals.user.googleemail
       res.locals.userID = res.locals.user._id
+      res.locals.group = profile.friendGroup
       console.log(profile)
       next()
     } )

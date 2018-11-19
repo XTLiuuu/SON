@@ -11,11 +11,12 @@ var profileSchema = mongoose.Schema( {
   gender: String,
   dob: String,
   about: String,
-  friendEmail: Array,
+  friend: Array,
   secret: String,
   image: String,
   amazon: String,
   dialogflow: String,
+  friendGroup: Array
 } );
 
 module.exports = mongoose.model( 'Profile', profileSchema );

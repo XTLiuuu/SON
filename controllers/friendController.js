@@ -67,7 +67,7 @@ exports.sendFrequest = ( req, res ) =>{
 
 // get those friends' profile information and display
 exports.getFriendProfile = (req, res) => {
-  var friendEmails = res.locals.friend;
+  var friendEmails = res.locals.friendEmails;
   Profile.find({email: {$in : friendEmails}}).sort({ lastname: 1, firstname: 1 })
     .exec()
     .then((profile_list) => {
@@ -102,8 +102,13 @@ exports.getFriendProfile = (req, res) => {
 
 exports.attachNoti = (req, res, next) => {
   console.log("in attach noti")
-  var friendEmails = res.locals.friend;
+  var friend = res.locals.friend;
+  var friendEmails = []
+  for(var i = 0; i < friend.length; i ++){
+    friendEmails.push(friend[i].friendEmail)
+  }
   console.log(friendEmails);
+  res.locals.friendEmails = friendEmails;
   Notification.find({from: {$in : friendEmails}, to: {$in : friendEmails}, type: {$in: ["eventviewed","event invitation"]}},
     function(err, notis){
       if(err){
