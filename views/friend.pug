@@ -40,18 +40,23 @@ block content
       a.w3-bar-item.w3-button(href="/searchPage")
         i.fa.fa-hourglass-end.w3-margin-right
         | Add new friends
-      a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('Demo1')" href="javascript:void(0)")
+      a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('allfriends')" href="javascript:void(0)")
         i.fa.fa-inbox.w3-margin-right
         | All friends
         i.fa.fa-caret-down.w3-margin-left
-      #Demo1.w3-hide.w3-animate-left.w3-show
-        .w3-container
-          each p in profiles
-            // now onclick is passed into as a string, how to give it the value
-            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
-              .w3-container
-                img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
-                span.w3-text-dark-grey #{p.name}
+      #allfriends.w3-hide.w3-show
+        each g in friendsInGroup.keys()
+          a.w3-bar-item.w3-button.w3-blue(onclick="myFunc1('groupFriend')" href="javascript:void(0)" fid=g)
+            | #{g}
+            i.fa.fa-caret-down.w3-margin-left
+          .w3-hide.w3-animate-left.w3-show(id ="groupFriend"+g)
+            .w3-container
+              each p in friendsInGroup.get(g)
+                // now onclick is passed into as a string, how to give it the value
+                a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
+                  .w3-container
+                    img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
+                    span.w3-text-dark-grey #{p.name}
     // Overlay effect when opening the side navigation on small screens
     #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
     // Page content

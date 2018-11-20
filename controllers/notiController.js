@@ -139,8 +139,9 @@ exports.updateRequest = ( req, res )=> {
 function addFriend(req, res){
   // add friend object to both side
   var name = req.body.fromname
-  var firstname = name.substring(0, name.indexOf(" "));
-  var lastname = name.substring(name.indexOf(" ") + 1);
+  var firstname = name.substring(0, name.indexOf(" "))
+  var lastname = name.substring(name.indexOf(" ") + 1)
+  var friendProfile = getProfile(req.body.from)
   Profile.update({email:res.locals.user.googleemail},
     {
       $push: {
@@ -164,29 +165,29 @@ function addFriend(req, res){
         }
       }
     }).exec()
-  //
-  // let friend1 = new Friend({
-  //   user:res.locals.user.googleemail,
-  //   username: res.locals.profile.name,
-  //   friend:req.body.from,
-  //   friendname:req.body.fromname,
-  //   firstname: firstname,
-  //   lastname: lastname,
-  //   status:"friend",
-  //   group: "default"
-  // })
-  // let friend2 = new Friend({
-  //   user:req.body.from,
-  //   username:req.body.fromname,
-  //   friend:res.locals.user.googleemail,
-  //   friendname:res.locals.profile.name,
-  //   firstname: res.locals.profile.firstname,
-  //   lastname: res.locals.profile.lastname,
-  //   status:"friend",
-  //   group: "default"
-  // })
-  // friend1.save()
-  // friend2.save()
+
+  let friend1 = new Friend({
+    user:res.locals.user.googleemail,
+    username: res.locals.profile.name,
+    friend:req.body.from,
+    friendname:req.body.fromname,
+    firstname: firstname,
+    lastname: lastname,
+    status:"friend",
+    group: "default"
+  })
+  let friend2 = new Friend({
+    user:req.body.from,
+    username:req.body.fromname,
+    friend:res.locals.user.googleemail,
+    friendname:res.locals.profile.name,
+    firstname: res.locals.profile.firstname,
+    lastname: res.locals.profile.lastname,
+    status:"friend",
+    group: "default"
+  })
+  friend1.save()
+  friend2.save()
   // delete notification
   Notification.deleteMany({
     type:"friend request",
@@ -198,6 +199,18 @@ function addFriend(req, res){
   .catch( error => {
     res.send( error );
   });
+}
+
+function getProfile(friendEmail){
+  Profile.find({email: friendEmail},
+  function(err, friendProfile){
+    if(err){
+      console.log(err.message)
+    }
+    else{
+      return friendProfile
+    }
+  })
 }
 
 function declineFriend(req, res){

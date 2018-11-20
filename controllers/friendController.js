@@ -4,6 +4,7 @@ const Profile = require('../models/Profile');
 const Input = require('../models/Input');
 const Notification = require('../models/Notification');
 const mongo = require('mongodb');
+var HashMap = require('hashmap');
 
 // use to add new friend
 exports.searchProfile_post = ( req, res ) => {
@@ -72,6 +73,7 @@ exports.getFriendProfile = (req, res) => {
     .exec()
     .then((profile_list) => {
       res.locals.profiles = profile_list
+      res.locals.friendsInGroup = separateGroup(res, profile_list)
       res.render('friend')
     }).catch( ( error ) => {
       console.log( error.message );
@@ -80,6 +82,27 @@ exports.getFriendProfile = (req, res) => {
     .then( () => {
       console.log( 'get friend complete' );
     } )
+}
+
+function separateGroup(res, profile_list){
+  console.log("in separate group")
+  console.log(profile_list[0])
+  var group = res.locals.group
+  var map = new HashMap()
+  for(var i = 0; i < group.length; i ++){
+    if(!map.has(group[i].name)){
+      console.log("creating newnames")
+      map.set(group[i].name, new Array());
+      console.log(map)
+    }
+    var curGroup = map.get(group[i].name)
+    for(var j = 0; j < profile_list.length; j ++){
+      if(profile_list[j].email == group[i].member){
+        curGroup = curGroup.push(profile_list[j])
+      }
+    }
+  }
+  return map
 }
 //
 // function getComplete(friends, profile_list){

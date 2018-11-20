@@ -146,6 +146,24 @@ function w3_close() {
 }
 
 function myFunc(id) {
+  console.log(id)
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+        //x.previousElementSibling.className += " w3-red";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+        //x.previousElementSibling.className.replace(" w3-red", "");
+    }
+}
+
+/**
+* Open group members 
+*/
+function myFunc1(id) {
+  const fid = event.currentTarget.attributes["fid"].nodeValue
+  console.log(id + fid)
+  id = id + fid
     var x = document.getElementById(id);
     if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
