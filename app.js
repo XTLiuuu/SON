@@ -28,11 +28,11 @@ const User = require( './models/user' )
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const passport = require('passport')
-// var api = require('googleapis')
-// const configIndex = require('./config/index')
+var api = require('googleapis')
+const configIndex = require('./config/index')
 const configPassport = require('./config/passport')
 configPassport(passport)
-// configIndex(api);
+configIndex(api);
 
 // here is where we connect to the database!
 const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
