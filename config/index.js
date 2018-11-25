@@ -87,6 +87,7 @@ function listEvents(auth) {
     if (events.length) {
       console.log('Upcoming 10 events:');
       events.map((event, i) => {
+        // find or create a new event (SON event)
         const start = event.start.dateTime || event.start.date;
         console.log(`${start} - ${event.summary}`);
       });

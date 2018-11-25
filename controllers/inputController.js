@@ -38,8 +38,11 @@ exports.attachInputs = ( req, res, next ) => {
 
 // save new event
 exports.saveInput = ( req, res ) => {
+  console.log("in save input")
   var sd = req.body.startDate;
   var start = sd.toString() + " " + req.body.startTime
+  console.log("start time: ")
+  console.log(start)
   var ed = req.body.endDate;
   if(ed == "") ed = sd
   var end = ed.toString() + " " + req.body.endTime
@@ -63,6 +66,8 @@ exports.saveInput = ( req, res ) => {
     adCheck: req.body.allDay,
     noti: "false"
   } )
+  console.log("newInput: ")
+  console.log(newInput)
   newInput.save()
     .then( () => {
       res.redirect( '/calendar/calendarD' );

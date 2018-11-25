@@ -106,6 +106,7 @@ $(document).ready(function(){
       checkDate: $("#checkDate").val(),
       checkTime: $("#checkTime").val()
     }
+    console.log("in input.guess-free")
     console.dir(theData)
     $.ajax({
       type: "POST",
@@ -158,7 +159,7 @@ function myFunc(id) {
 }
 
 /**
-* Open group members 
+* Open group members
 */
 function myFunc1(id) {
   const fid = event.currentTarget.attributes["fid"].nodeValue
