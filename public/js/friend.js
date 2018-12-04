@@ -177,8 +177,12 @@ function myFunc1(id) {
 
 function openMail(event) {
     event.preventDefault();
-    console.log(event)
+    console.log("in open mail")
+    console.dir(event)
+    console.dir(event.currentTarget.attributes)
     const personName = event.currentTarget.attributes[1].nodeValue;
+    console.log("name: " + event.currentTarget.attributes[1].nodeValue)
+    console.log(event.currentTarget)
     var i;
     var x = document.getElementsByClassName("person");
     for (i = 0; i < x.length; i++) {
@@ -188,11 +192,11 @@ function openMail(event) {
     for (i = 0; i < x.length; i++) {
        x[i].className = x[i].className.replace("w3-light-grey", "");
     }
+    console.log("in open mail: " + personName)
     document.getElementById(personName).style.display = "block";
     event.currentTarget.className += " w3-light-grey";
     //document.getElementById("021").style.display = "none";
 }
-
 
 function openModal(event) {
     event.preventDefault();
@@ -207,6 +211,11 @@ function openModal1(event) {
     console.log(event)
     const personName = event.currentTarget.attributes[1].nodeValue;
     document.getElementById(personName+"profile").style.display = "block";
+}
+
+function addGroup(event){
+  console.log("in add group")
+  document.getElementById("addGroup").style.display = "block";
 }
 
 function closeModal(event) {

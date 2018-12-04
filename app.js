@@ -32,7 +32,6 @@ var api = require('googleapis')
 const configIndex = require('./config/index')
 const configPassport = require('./config/passport')
 configPassport(passport)
-configIndex(api);
 
 // here is where we connect to the database!
 const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/SON';
@@ -66,13 +65,13 @@ var server = app.listen(3000, function(){
   console.log('API server listening...');
 })
 
-// The following changes are made for dialogflow
 app.use((req,res,next) => {
   res.locals.loggedIn = false
   if (req.isAuthenticated()){
+    console.log("here")
+    console.log(req)
     res.locals.user = req.user
     res.locals.loggedIn = true
-    res.locals.events = req.events;
     console.log(res.locals.events )
     if (req.user){
       if (req.user.googleemail=='lxt@brandeis.edu'){
@@ -103,6 +102,7 @@ app.get('/login/authorized',passport.authenticate('google', {
 function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated()){
+      configIndex(api);
       return next();
     }
     // if they aren't redirect them to the home page

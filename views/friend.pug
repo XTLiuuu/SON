@@ -39,30 +39,49 @@ block content
                     br 
       a.w3-bar-item.w3-button(href="/searchPage")
         i.fa.fa-hourglass-end.w3-margin-right
-        | Add new friends
+        | Add New Friends
+      a.w3-bar-item.w3-button
+        .w3-button.fa.fa-inbox.w3-left(onclick="myFunc('mygroup')" href="javascript:void(0)")
+        | Friend Groups 
+        i.fa.fa-caret-down.w3-margin-left
+        .w3-button.fa.fa-bars.w3-hover-teal.w3-right(onclick="document.getElementById('addGroup').style.display='block'")
+        #addGroup.w3-modal
+          .w3-modal-content.w3-card-4.w3-animate-zoom(style="max-width: 600px")
+            .w3-center
+              br
+              p Create New Groups 
+              br
+              br
+              .w3-button(onclick="document.getElementById('addGroup').style.display='none'") DONE
+          
+      #mygroup.w3-hide
+        each g in friendsInGroup.keys()
+          a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = g href="javascript:void(0)" onclick="openMail(event);w3_close();")
+            .w3-container
+              span.w3-text-dark-grey  #{g}
       a.w3-bar-item.w3-button.w3-teal(onclick="myFunc('allfriends')" href="javascript:void(0)")
         i.fa.fa-inbox.w3-margin-right
-        | All friends
+        | My Friends
         i.fa.fa-caret-down.w3-margin-left
-      #allfriends.w3-hide.w3-show
-        each g in friendsInGroup.keys()
-          a.w3-bar-item.w3-button.w3-blue(onclick="myFunc1('groupFriend')" href="javascript:void(0)" fid=g)
-            | #{g}
-            i.fa.fa-caret-down.w3-margin-left
-          .w3-hide.w3-animate-left.w3-show(id ="groupFriend"+g)
-            .w3-container
-              each p in friendsInGroup.get(g)
-                // now onclick is passed into as a string, how to give it the value
-                a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
-                  .w3-container
-                    img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
-                    span.w3-text-dark-grey #{p.name}
+      #allfriends.w3-hide.w3-animate-left.w3-show
+        .w3-container
+          each p in profiles
+            // now onclick is passed into as a string, how to give it the value
+            a.w3-bar-item.w3-button.w3-border-bottom.test.w3-hover-light-grey(friend_id = p._id href="javascript:void(0)" onclick="openMail(event);w3_close();")
+              .w3-container
+                img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
+                span.w3-text-dark-grey #{p.name}
     // Overlay effect when opening the side navigation on small screens
     #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
     // Page content
     .w3-main(style="margin-left:320px;") 
-      div#check-result.alert.alert-info(role="alert" style="display:none")
-          | I'm not stupid.
+      br
+      each g in friendsInGroup.keys()
+        .w3-container.person(id = g style="display:none")
+          each p in friendsInGroup.get(g)
+            // now onclick is passed into as a string, how to give it the value
+            img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
+            span.w3-text-dark-grey #{p.name}
       br
       each p in profiles
         .w3-container.person(id= p._id style="display:none")
@@ -134,10 +153,6 @@ block content
                   img.w3-round.w3-animate-top(src="../images/" +p.image+ ".png" style="width:20%;")
                   .row
                     .col-9
-                    //- .col-2
-                    //-   a.w3-button.w3-teal(role="button" name = "history" href="interact_history/"+p._id value = "history") Check History 
-                    //- .col-2
-                    //-   a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
                     .col-             
                       .w3-container
                         button.w3-button.w3-teal(friend_id= p._id onclick="openModal(event)") Check Availability

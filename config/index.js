@@ -7,11 +7,11 @@ const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = 'token.json';
-const GoogleCal = require( '../models/GoogleCal' )
+const TOKEN_PATH = './config/token.json';
 
 module.exports = function(passport) {
   // Load client secrets from a local file.
+  console.log("in config index")
   fs.readFile('./config/credentials.json', (err, content) => {
     if (err) return console.log('Error loading client secret file:', err);
     // Authorize a client with credentials, then call the Google Calendar API.
@@ -26,6 +26,7 @@ module.exports = function(passport) {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
+  console.log("in authorize 01")
   const {client_secret, client_id, redirect_uris} = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
@@ -45,6 +46,7 @@ function authorize(credentials, callback) {
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
 function getAccessToken(oAuth2Client, callback) {
+  console.log("in get access token")
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -74,6 +76,8 @@ function getAccessToken(oAuth2Client, callback) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 function listEvents(auth) {
+  console.log("in list event")
+  console.log(auth)
   const calendar = google.calendar({version: 'v3', auth});
   calendar.events.list({
     calendarId: 'primary',
