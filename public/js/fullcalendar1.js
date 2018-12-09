@@ -26,6 +26,8 @@ $(function() {
       textColor: 'black', // a non-ajax option,
     }
     ],
+    showNonCurrentDates: false,
+    displayEventTime: false,
     weekNumbers: true,
     timeFormat: 'H(:mm)',
     displayEventEnd: true,

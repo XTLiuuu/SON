@@ -80,8 +80,12 @@ block content
         .w3-container.person(id = g style="display:none")
           each p in friendsInGroup.get(g)
             // now onclick is passed into as a string, how to give it the value
-            img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:20%;")
+            img.w3-round.w3-margin-right(src="../images/" +p.image+ ".png" style="width:5%;")
             span.w3-text-dark-grey #{p.name}
+            br
+            br
+          br
+          .w3-button.w3-teal.w3-right SEND EVENTS
       br
       each p in profiles
         .w3-container.person(id= p._id style="display:none")
