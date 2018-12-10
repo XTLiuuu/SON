@@ -130,6 +130,7 @@ exports.attachNoti = (req, res, next) => {
   for(var i = 0; i < friend.length; i ++){
     friendEmails.push(friend[i].friendEmail)
   }
+  friendEmails.push(res.locals.userEmail)
   console.log(friendEmails);
   res.locals.friendEmails = friendEmails;
   Notification.find({from: {$in : friendEmails}, to: {$in : friendEmails}, type: {$in: ["eventviewed","event invitation"]}},
@@ -138,8 +139,10 @@ exports.attachNoti = (req, res, next) => {
         console.log(err.message)
       }
       else{
+        console.log("find notis")
         console.log(notis)
         res.locals.notis = notis;
+        friendEmails.pop()
         next();
       }
     }

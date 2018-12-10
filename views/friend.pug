@@ -74,7 +74,10 @@ block content
     // Overlay effect when opening the side navigation on small screens
     #myOverlay.w3-overlay.w3-hide-large.w3-animate-opacity(onclick="w3_close()" style="cursor:pointer" title="Close Sidemenu")
     // Page content
-    .w3-main(style="margin-left:320px;") 
+    .w3-main(style="margin-left:350px;") 
+      br
+      div#check-result.alert.alert-info(role="alert" style="display:none")
+      | I'm not stupid.
       br
       each g in friendsInGroup.keys()
         .w3-container.person(id = g style="display:none")
@@ -147,6 +150,7 @@ block content
                       p End Time: &nbsp #{noti.eDate} #{noti.eTime} 
                     p Status: #{noti.status}
                   span.time-left #{noti.time}
+            br
             br
             a.w3-button.w3-teal(role="button" name = "send_event" href="/calendar/sendCalendar/"+p._id value = "send_event") Send Event
             .w3-modal(id= p._id+"profile" style="display:none")
