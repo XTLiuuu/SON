@@ -9,7 +9,7 @@ var userEmail;
 var output_string = "Sorry, " + name + ". Can you say that again?";
 
 exports.process_request =  (req, res) => {
-  console.dir(req.body)
+  // console.dir(req.body)
   console.log("in process_request")
   var result = {
     "version": "beta",

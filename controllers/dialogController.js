@@ -7,7 +7,7 @@ console.log("in dialogflow")
 
 var result1;
 var name;
-var userEmail = "liuxuantong0611@gmail.com";
+var userEmail;
 var output_string = "Sorry, " + name + ". Can you say that again?";
 var result;
 
@@ -30,7 +30,13 @@ exports.process_request =  (req, res) => {
    }
    else if(req.body.result.metadata.intentId == "bfdfafa6-9302-412b-9e6b-5b3d8a966735"){
      addEvent(req, res)
-    }
+   }
+   else if(req.body.result.metadata.intentId == "d4489da3-80c8-4692-ad9d-4530e2cda7e8"){
+     ask_event(req, res)
+   }
+   else if(req.body.result.metadata.intentId == "8f9d3377-bcf3-4526-8539-e04708146aa7"){
+     delete_event(req, res)
+   }
    else if(req.body.result.metadata.intentId == "9fb21409-2c68-4193-8bfc-71c4a7d1493a"){
      ask_friend_number(req, res)
    }
@@ -43,12 +49,6 @@ exports.process_request =  (req, res) => {
    else if(req.body.result.metadata.intentId == "492d8e5f-49e0-4477-adea-125322660c83"){
      ask_friend_avail(req, res);
    }
-   else if(req.body.result.metadata.intentId == "d4489da3-80c8-4692-ad9d-4530e2cda7e8"){
-     ask_event(req, res)
-   }
-   else if(req.body.result.metadata.intentId == "8f9d3377-bcf3-4526-8539-e04708146aa7"){
-     delete_event(req, res)
-   }
    else if(req.body.result.metadata.intentId == "b2bcfa8d-f579-42f1-83ae-ad6982ec3fda"){
      change_name(req, res)
    }
@@ -56,14 +56,14 @@ exports.process_request =  (req, res) => {
 
 
 function addEvent(req, res){
-  console.log("in add event")
+  console.log("in add events")
    var title = req.body.result.parameters.name;
    var time = req.body.result.parameters.time;
    var recurence = req.body.result.parameters.recurence;
    var date = "";
    var sessionID = req.body.sessionId;
-   console.log(sessionID)
-   console.dir(req.body)
+   // console.log(sessionID)
+   // console.dir(req.body)
    if(time.charAt(2) == ':' && recurence == null){
      var today = new Date();
      var year = today.getFullYear();
@@ -87,55 +87,27 @@ function addEvent(req, res){
      time = time.substring(11, 19);
    }
    if(title == null){
-     output_string = "What is the name of your reminder, Pipi?"
+     output_string = "What is the name of your reminder, " + name + " ?"
    }
    if(time == null){
-     output_string = "When do you want me to remind you Pipi?"
+     output_string = "When do you want me to remind you, " + name + " ?"
    }
    else{
-     output_string = "Okay, Pipi, I will remind you to " + title + " on " + date + " at " + time;
+     output_string = "Okay, " + name + ", I will remind you to " + title + " on " + date + " at " + time;
    }
-   Input.findOne({sessionID:sessionID},
-     function(err, input){
-       if(err){
-         console.log("there is an error")
-       }
-       else{
-         console.log("input: " + input)
-         if(input == null){
-           let newInput = new Input ({
-              email: userEmail,
-              title: title,
-              start: date + " " + time,
-              startDate: date,
-              startTime: time,
-              recurence: recurence,
-              noti: "false",
-              sessionID: sessionID
-            })
-            newInput.save();
-         }
-         else{
-           const startDate =  date || input.startDate
-           const startTime =  time || input.startTime
-           input.update({sessionID:sessionID},
-             {email: userEmail,
-             title: title || input.title,
-             startDate: startDate,
-             startTime: startTime,
-             start: startDate + " " + startTime,
-             recurence: recurence || input.recurrence,
-             noti: "false",
-             sessionID: sessionID
-           }).exec()
-         }
-       }
-       console.log(result)
-       console.log(res)
-       result.speech = output_string;
-       res.json(result);
-     }
-   );
+   let newInput = new Input ({
+      email: userEmail,
+      title: title,
+      start: date + " " + time,
+      startDate: date,
+      startTime: time,
+      recurence: recurence,
+      noti: "false",
+      sessionID: sessionID
+    })
+    newInput.save();
+    result.speech = output_string;
+    res.json(result);
 }
 
 function change_name(req, res){
@@ -216,7 +188,7 @@ function ask_event(req, res){
   // the default time is today
   if(constraint){
     console.log("here1")
-    ask_event_withConstraint(req, res, time, date, constraint, time1)
+    ask_event_withConstraint(req, res, time, date, constraint)
   }
 
   // when the user asks a certain time slot
@@ -245,10 +217,10 @@ function ask_event_withDate(req, res, date){
         output_string = name + ", you have nothing scheduled for " + date
       } else {
         if(schedule_list.length == 1){
-          output_string = date + ", " + name + ": "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
+          output_string = date + ": " + schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
         }
         else{
-          output_string = date + ", " + name + ": "+ schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
+          output_string = date + ": " + schedule_list[0].title + " at " + schedule_list[0].startTime + "; ";
           for(var i = 1; i < schedule_list.length; i ++){
             output_string = output_string + schedule_list[i].title + " at " + schedule_list[i].startTime + "; ";
           }
@@ -262,10 +234,8 @@ function ask_event_withDate(req, res, date){
 
 function ask_event_withConstraint(req, res, time, date, constraint){
   console.log("here5")
-  var time1;
   if(time == null){
     var s = new Date(date);
-    time1 = "notime"
   }
   else{
     var s = new Date(date);
@@ -282,6 +252,7 @@ function ask_event_withConstraint(req, res, time, date, constraint){
         for(var i = 0; i < schedule_list.length; i ++){
           var today = new Date();
           if(schedule_list[i].start <= s && schedule_list[i].start >= today){
+            //console.log(schedule_list[i])
             result1.push(schedule_list[i]);
           }
         }
@@ -294,14 +265,14 @@ function ask_event_withConstraint(req, res, time, date, constraint){
           }
         }
         else{
-          if(time1 == "notime"){
-            output_string = "Before " + date + " ," + name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+          if(time == ""){
+            output_string = "Before " + date +  ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
             for(var i = 1; i < result1.length; i ++){
               output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
             }
           }
           else{
-            output_string = "Before " + date + " ," + time + " ," + name + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
+            output_string = "Before " + date + " ," + time + ": "+ result1[0].title + " at " + result1[0].startTime + " on " + result1[0].startDate + "; "
             for(var i = 1; i < result1.length; i ++){
               output_string = output_string + result1[i].title + " at " + result1[i].startTime + " on " + result1[i].startDate + "; ";
             }
@@ -404,12 +375,17 @@ function ask_friend_avail(req, res) {
 
 
 function check_in_friend(req, res){
+  console.log("in check in friend")
     var inputsentence = req.body.result.resolvedQuery.trim();
     var indexIS = inputsentence.indexOf(" ");
     var indexIN = inputsentence.indexOf("in");
     var friendName = inputsentence.substring(indexIS + 1, indexIN - 1);
     var index = friendName.indexOf(" ")
-    friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
+    console.log(friendName.charAt(index + 1).toUpperCase());
+    if(index != -1){
+      friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, index + 1) + friendName.charAt(index + 1).toUpperCase() + friendName.slice(index + 2, friendName.length)
+    }
+    friendName = friendName.charAt(0).toUpperCase() + friendName.slice(1, friendName.length)
     Friend.findOne({
       user: userEmail,
       friendname: friendName
@@ -590,7 +566,7 @@ function ask_friend_number(req, res){
          output_string = "You have only one friend. The name is " + names
        }
        else{
-         output_string = name + ", you currently have " + num + " friends."
+         output_string = "You have " + num + " friends."
        }
      }
      result.speech = output_string;
@@ -629,7 +605,7 @@ function open_chat(req, res){
         }
         else{
           userEmail = profile.email;
-          name = profile.name;
+          name = profile.firstname;
           output_string = "Hi, " + name + ". What can I do for you?"
         }
         result.speech = output_string;

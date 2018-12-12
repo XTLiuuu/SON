@@ -107,7 +107,7 @@ $(document).ready(function(){
       checkTime: $("#checkTime").val()
     }
     console.log("in input.guess-free")
-    console.dir(theData)
+    // console.dir(theData)
     $.ajax({
       type: "POST",
       url:"/guess_free",
@@ -178,8 +178,8 @@ function myFunc1(id) {
 function openMail(event) {
     event.preventDefault();
     console.log("in open mail")
-    console.dir(event)
-    console.dir(event.currentTarget.attributes)
+    // console.dir(event)
+    // console.dir(event.currentTarget.attributes)
     const personName = event.currentTarget.attributes[1].nodeValue;
     console.log("name: " + event.currentTarget.attributes[1].nodeValue)
     console.log(event.currentTarget)

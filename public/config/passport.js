@@ -60,7 +60,7 @@ module.exports = function(passport) {
                     return done(null, user);
                 } else {
                     console.log(`we need to create a new user`)
-                    console.dir(profile)
+                    // console.dir(profile)
                     // if the user isnt in our database, create a new user
                     var newUser
                      = new User(
@@ -68,7 +68,7 @@ module.exports = function(passport) {
                           googletoken: token,
                           googlename:profile.displayName,
                           googleemail:profile.emails[0].value,
-                        }); 
+                        });
 
                     // set all of the relevant information
                     /*
