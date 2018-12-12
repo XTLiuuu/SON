@@ -1,25 +1,26 @@
 extends layoutBS
 
 block content
-  .container
+  body
     br
     br
-    br 
     br
-    .margin
-      .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
-        h4.w3-wide.w3-center 
-          |  Enter an email below
-        br
-        br
-        form(method="post" action="searchProfile")
-          .row
-            .col-6
-              .input-group.md-3
-                input.form-control(name = "searchfriend" type = "text" placeholder = "Search an email" width='60%')
-            .col-2
-              input.w3-button.w3-teal(type="submit" value="Search")
-            .col-1
-              a.w3-button.w3-grey(href="/friend") Back
+    br
+      
+  .margin
+    .w3-container.w3-content.w3-padding-64.w3-light-grey.w3-center(style="max-width:1000px")        
+      h4.w3-wide.w3-center 
+        |  Enter an email below
+      br
+      br
+      form(method="post" action="searchProfile")
+        .row
+          .col-6
+            .input-group.md-3
+              input.form-control(name = "searchfriend" type = "text" placeholder = "Search an email" width='60%')
+          .col-2
+            input.w3-button.w3-teal(type="submit" value="Search")
+          .col-1
+            a.w3-button.w3-grey(href="/friend") Back
     br
     br

@@ -139,6 +139,7 @@ app.post('/hook', dialogController.process_request);
 //app.post('/hook', dialogController1.dialogflowFirebaseFulfillment);
 app.get('/test_json', isLoggedIn, usersController.attachUser, notiController.generateNoti);
 app.get('/countNoti', isLoggedIn, usersController.attachUser,notiController.countNoti)
+app.get('/countMessage', isLoggedIn, usersController.attachUser,notiController.countMessage)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

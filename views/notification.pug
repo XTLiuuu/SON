@@ -19,9 +19,6 @@ block content
       a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'FriendRequest')")
         i.fa.fa-vcard-o.w3-margin-right
         | Friend Request
-      a.button.w3-bar-item.w3-button.tablink(onclick="openTab(event, 'EventInvitation')") 
-        i.fa.fa-bell-o.w3-margin-right
-        | Event Invitation
     div(style='margin-left:330px')
       #AllNotifications.w3-container.tab
         each noti in notis
@@ -37,35 +34,7 @@ block content
                   .col-2
                     input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
                   .col-1
-                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")     
-          if noti.type == "event invitation"
-              .w3-panel.w3-light-grey.w3-card-4
-                p #{noti.content}
-                form(method="post" action="")
-                  input.form-control(name="from" type="hidden" value=noti.from)
-                  input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                  input.form-control(name="title" type="hidden" value=noti.title)
-                  input.form-control(name="description" type="hidden" value=noti.description)
-                  input.form-control(name="startDate" type="hidden" value=noti.sDate)
-                  input.form-control(name="startTime" type="hidden" value=noti.sTime)
-                  input.form-control(name="endDate" type="hidden" value=noti.eDate)
-                  input.form-control(name="endTime" type="hidden" value=noti.eTime)
-                  .row
-                    .col-12
-                      p.font-weight-bold Title: #{noti.title}
-                      if noti.description
-                        p Description: #{noti.description}
-                    .col-12
-                      p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
-                      if noti.eDate
-                        p End Time: &nbsp #{noti.eDate} #{noti.eTime}
-                  .row
-                    .col-8
-                    .col-2
-                      input.w3-button.w3-teal(type='submit' name = "add" value="Add")
-                    .col-2
-                      input.w3-button.w3-red(type='submit' name = "decline" value="Decline")
-              
+                    input.w3-button.w3-red(type='submit' name = "cancel" value="Ignore")     
           if noti.type == "event reminder"
             .w3-panel.w3-light-grey.w3-card-4
               p #{noti.content}
@@ -96,7 +65,7 @@ block content
                   .col-2
                     input.w3-button.w3-teal(type='submit' name = "accept" value="Accept") 
                   .col-1
-                    input.w3-button.w3-red(type='submit' name = "cancel" value="Cancel")                    
+                    input.w3-button.w3-red(type='submit' name = "cancel" value="Ignore")                    
       #UpcomingEvents.w3-container.tab(style='display:none')
         each noti in notis
           if noti.type == "event reminder"
@@ -113,36 +82,6 @@ block content
                   .col-10
                   .col-2
                     input.w3-button.w3-teal(type='submit' name = "ok" value="OK")
-                        
-      #EventInvitation.w3-container.tab(style='display:none')
-        each noti in notis
-          if noti.type == "event invitation"
-            .w3-panel.w3-light-grey.w3-card-4
-              p #{noti.content}
-              form(method="post" action="")
-                input.form-control(name="from" type="hidden" value=noti.from)
-                input.form-control(name="fromname" type="hidden" value=noti.fromname)
-                input.form-control(name="title" type="hidden" value=noti.title)
-                input.form-control(name="description" type="hidden" value=noti.description)
-                input.form-control(name="startDate" type="hidden" value=noti.sDate)
-                input.form-control(name="startTime" type="hidden" value=noti.sTime)
-                input.form-control(name="endDate" type="hidden" value=noti.eDate)
-                input.form-control(name="endTime" type="hidden" value=noti.eTime)
-                .row
-                  .col-12
-                    p.font-weight-bold Title: #{noti.title}
-                    if noti.description
-                      p Description: #{noti.description}
-                  .col-12
-                    p Start Time: &nbsp #{noti.sDate} #{noti.sTime}  
-                    if noti.eDate
-                      p End Time: &nbsp #{noti.eDate} #{noti.eTime}
-                .row
-                  .col-8
-                  .col-2
-                    input.w3-button.w3-teal(type='submit' name = "add" value="Add")
-                  .col-2
-                    input.w3-button.w3-red(type='submit' name = "decline" value="Decline")
           
   script.
     function openTab(evt, tabName) {

@@ -50,7 +50,21 @@ exports.getNoti = ( req, res ) => {
 
 exports.countNoti = (req, res) => {
   Notification.find({
-    to: req.user.googleemail
+    to: req.user.googleemail,
+    type: {$in: ["event reminder","friend request"]}
+  }).exec().then((noti_list)=> {
+    res.json(noti_list.length);
+  }).catch((err) => {
+    res.status(err.status || 500);
+    res.json(err);
+  })
+}
+
+exports.countMessage = (req, res) =>{
+  Notification.find({
+    to: req.user.googleemail,
+    type: {$in: ["event invitation"]},
+    status:{$in: "Waiting"}
   }).exec().then((noti_list)=> {
     res.json(noti_list.length);
   }).catch((err) => {
