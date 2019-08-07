@@ -32,7 +32,7 @@ It requires Google login to use the functions. In addition, to use the voice fun
     - Ask availability by person 
     - Ask availability by time 
 
-# Built with 
+# Built With 
 - W3.CSS - layout 
 - Bootstrap - layout 
 - Heroku - public website 
